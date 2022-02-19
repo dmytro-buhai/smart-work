@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SmartWork.Core.Abstractions.Repositories
 {
-    public interface IUserRepository<TEntity> where TEntity : IdentityUser<Guid> 
+    public interface IUserRepository<TEntity> where TEntity : IdentityUser 
     {
-        Task<TEntity> FindAsync(Guid id);
+        Task<TEntity> FindAsync(string id);
         Task<TEntity> FindAsync(Func<TEntity, bool> expression);
         Task<IEnumerable<TEntity>> GetAsync(Func<TEntity, bool> expression);
         Task AddAsync(TEntity entity);
