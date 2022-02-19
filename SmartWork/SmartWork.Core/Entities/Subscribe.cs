@@ -5,7 +5,7 @@ namespace SmartWork.Core.Entities
     public class Subscribe : Entity
     {
         public int SubscribeDetailId { get; set; }
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public DateTime StartSubscribe { get; set; }
         public DateTime EndSubscribe { get; set; }            
         public virtual SubscribeDetail SubscribeDetail { get; set; }
