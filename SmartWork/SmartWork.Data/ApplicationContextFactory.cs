@@ -11,7 +11,7 @@ namespace SmartWork.Data.AppContext
 
         public ApplicationContext CreateDbContext(string[] args)
         {
-            string connectionString = DBSettings.GetDBConnectionString();
+            var connectionString = DBSettings.GetDBConnectionString();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseSqlServer(connectionString,

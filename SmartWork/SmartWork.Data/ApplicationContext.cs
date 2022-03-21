@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SmartWork.Core.Entities;
+using System.Reflection;
 
 namespace SmartWork.Data
 {
     public class ApplicationContext : IdentityDbContext<User>
     {
         public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
 
         public DbSet<Company> Company { get; set; }
         public DbSet<Office> Office { get; set; }
