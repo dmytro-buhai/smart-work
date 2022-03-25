@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartWork.BLL.Services.General;
 using SmartWork.Core.Abstractions.Repositories;
+using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Core.ViewModels.Company;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
 {
-    public class CompanyService
+    public class CompanyService : ICompanyService
     {
         private readonly GeneralCompanyService _general;
 
