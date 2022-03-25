@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace SmartWork.Core.Abstractions.Services
 {
-    public interface IUserService: IService<User>
+    public interface IUserService<TUser> where TUser : User
     {
-        Task<UserInfoViewModel> GetUserInfoAsync(int id);
-        Task<UserInfoViewModel> GetUserInfoAsync(Func<User, bool> expression);
+        Task<UserInfoViewModel> GetUserInfoAsync(string id);
+        Task<UserInfoViewModel> GetUserInfoAsync(Func<TUser, bool> expression);
         Task<IdentityResult> SignInAsync(SignInViewModel model);
         Task<IdentityResult> SingUpAsync(SignUpViewModel model);
         Task<IdentityResult> UpdateAsync(EditUserViewModel model);
