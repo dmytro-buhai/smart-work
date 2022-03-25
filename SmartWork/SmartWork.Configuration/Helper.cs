@@ -6,36 +6,31 @@ using SmartWork.Configuration.Resources;
 using SmartWork.Core.Entities;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.Configuration
 {
     internal static class Helper
     {
-        internal static string GetConfigurationRootPath(string relativePathToFileDirectory)
+        internal static string GetConfigurationRootPath(string relativePath)
         {
-            var currentAssembly = Assembly.GetAssembly(typeof(Helper));
-            var currentDirectory = Directory.GetCurrentDirectory();
-            var solutionDirectory = Directory.GetParent(currentDirectory).Parent.Parent.Parent;
-            var configurationProjectDirectoryPath = Path.Combine(solutionDirectory.FullName, currentAssembly.GetName().Name);
-            var configurationRootPath = Path.Combine(configurationProjectDirectoryPath, relativePathToFileDirectory);
-
+            var solutionPath = VisualStudioProvider.TryGetSolutionDirectoryInfo().FullName;
+            var configurationRootPath = Path.Combine(solutionPath, relativePath);
             return configurationRootPath;
         }
-
-        internal static string GetProjectName()
+        
+        internal static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
         {
-            var currentAssembly = Assembly.GetAssembly(typeof(Helper));
-            var projectName = currentAssembly.GetName().Name;
-            return projectName;
-        }
-
-        internal static string GetConfigurationRootName()
-        {
-            var configurationRootName = HostSettingsResources.ResourceManager.GetString("AppSettings");
-            return configurationRootName;
+            using var reader = new StreamReader(pathToPassword);
+            dbPassword = reader.ReadToEnd();
+            var regex = new Regex(@"^password=\[.+\]");
+            var mathValue = regex.Match(dbPassword).Value;
+            dbPassword = dbPassword[(dbPassword.IndexOf('[') + 1)..];
+            dbPassword = dbPassword.Remove(dbPassword.LastIndexOf(']'));
         }
 
         internal static string GetLogFilePath()
