@@ -4,6 +4,7 @@ using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services.General
@@ -32,21 +33,21 @@ namespace SmartWork.BLL.Services.General
         public async Task<Company> FindAsync(int id) =>
             await _repository.FindAsync(id);
 
-        public async Task<Company> FindAsync(Func<Company, bool> expression) =>
+        public async Task<Company> FindAsync(Expression<Func<Company, bool>> expression) =>
             await _repository.FindAsync(expression);
 
-        public async Task<IEnumerable<Company>> GetAsync(Func<Company, bool> expression) =>
+        public async Task<IEnumerable<Company>> GetAsync(Expression<Func<Company, bool>> expression) =>
             await _repository.GetAsync(expression);
 
-        public async Task<IActionResult> RemoveAsync(int id)
+        public async Task<IActionResult> RemoveAsync(Company entity)
         {
-            await _repository.RemoveAsync(id);
+            await _repository.RemoveAsync(entity);
             return new OkObjectResult("removed");
         }
 
-        public async Task<IActionResult> RemoveAsync(IEnumerable<int> identifiers)
+        public async Task<IActionResult> RemoveAsync(IEnumerable<Company> entities)
         {
-            await _repository.RemoveAsync(identifiers);
+            await _repository.RemoveAsync(entities);
             return new OkObjectResult("removed");
         }
 
