@@ -4,17 +4,15 @@ using Serilog;
 using Serilog.Events;
 using SmartWork.Configuration.Resources;
 using SmartWork.Core.Entities;
+using SmartWork.Utils;
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.Configuration
 {
-    internal static class Helper
+    public static class Helper
     {
         internal static string GetConfigurationRootPath(string relativePath)
         {
@@ -23,7 +21,7 @@ namespace SmartWork.Configuration
             return configurationRootPath;
         }
         
-        internal static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
+        public static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
         {
             using var reader = new StreamReader(pathToPassword);
             dbPassword = reader.ReadToEnd();
@@ -35,7 +33,7 @@ namespace SmartWork.Configuration
 
         internal static string GetLogFilePath()
         {
-            var logFilePath = HostSettingsResources.ResourceManager.GetString("LogFilePath");
+            var logFilePath = HostSettingsResources.ResourceManager.GetString("LogRelativeFilePath");
             return logFilePath;
         }
 
