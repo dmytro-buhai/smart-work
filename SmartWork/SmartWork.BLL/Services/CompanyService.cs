@@ -6,6 +6,7 @@ using SmartWork.Core.Entities;
 using SmartWork.Core.ViewModels.Company;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
@@ -80,7 +81,7 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<IActionResult> FindAsync(Func<Company, bool> expression)
+        public async Task<IActionResult> FindAsync(Expression<Func<Company, bool>> expression)
         {
             try
             {
@@ -92,7 +93,7 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<IActionResult> GetAsync(Func<Company, bool> expression)
+        public async Task<IActionResult> GetAsync(Expression<Func<Company, bool>> expression)
         {
             try
             {
@@ -104,11 +105,11 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<IActionResult> RemoveAsync(int id)
+        public async Task<IActionResult> RemoveAsync(Company company)
         {
             try
             {
-                return new OkObjectResult(await _general.RemoveAsync(id));
+                return new OkObjectResult(await _general.RemoveAsync(company));
             }
             catch (Exception ex)
             {
@@ -116,11 +117,11 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<IActionResult> RemoveAsync(IEnumerable<int> identifiers)
+        public async Task<IActionResult> RemoveAsync(IEnumerable<Company> companies)
         {
             try
             {
-                return new OkObjectResult(await _general.RemoveAsync(identifiers));
+                return new OkObjectResult(await _general.RemoveAsync(companies));
             }
             catch (Exception ex)
             {
