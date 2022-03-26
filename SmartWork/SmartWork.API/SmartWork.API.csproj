@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SmartWork.Configuration\SmartWork.Configuration.csproj" />
+    <ProjectReference Include="..\SmartWork.Core\SmartWork.Core.csproj" />
+    <ProjectReference Include="..\SmartWork.Data\SmartWork.Data.csproj" />
+  </ItemGroup>
+
+
+</Project>
