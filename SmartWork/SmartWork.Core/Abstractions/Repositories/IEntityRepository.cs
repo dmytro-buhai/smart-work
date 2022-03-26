@@ -14,7 +14,7 @@ namespace SmartWork.Core.Abstractions.Repositories
         Task AddAsync(IEnumerable<TEntity> entities);
         Task UpdateAsync(TEntity entity);
         Task UpdateAsync(IEnumerable<TEntity> entities);
-        Task RemoveAsync(TEntity entity);
-        Task RemoveAsync(IEnumerable<TEntity> entities);
+        Task RemoveAsync(int id);
+        Task RemoveAsync(IEnumerable<int> identifiers);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SmartWork.Core.ViewModels.CompanyViewModels
+namespace SmartWork.Core.ViewModels.Company
 {
-    public class CompanyViewModel
+    public class UpdateCompanyViewModel
     {
         public int Id { get; set; }
 

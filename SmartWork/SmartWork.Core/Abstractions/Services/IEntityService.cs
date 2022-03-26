@@ -16,6 +16,6 @@ namespace SmartWork.Core.Abstractions.Services
         Task<IActionResult> UpdateAsync(TEntity entity);
         Task<IActionResult> UpdateAsync(IEnumerable<TEntity> entities);
         Task<IActionResult> RemoveAsync(int id);
-        Task<IActionResult> RemoveAsync(IEnumerable<TEntity> entities);
+        Task<IActionResult> RemoveAsync(IEnumerable<int> identifiers);
     }
 }
