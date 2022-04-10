@@ -11,6 +11,7 @@ namespace SmartWork.Core.Abstractions.Services
     {
         Task<TEntity> FindAsync(int id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
         Task<IActionResult> AddAsync(TEntity entity);
         Task<IActionResult> AddAsync(IEnumerable<TEntity> entities);

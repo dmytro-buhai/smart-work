@@ -14,6 +14,7 @@ namespace SmartWork.Core.Abstractions.Services.Base
         Task<IActionResult> AddAsync(IEnumerable<AddCompanyViewModel> models);
         Task<IActionResult> FindAsync(int id);
         Task<IActionResult> FindAsync(Expression<Func<Company, bool>> expression);
+        Task<IActionResult> AnyAsync(Expression<Func<Company, bool>> expression = null);
         Task<IActionResult> GetAsync(Expression<Func<Company, bool>> expression);
         Task<IActionResult> RemoveAsync(Company company);
         Task<IActionResult> RemoveAsync(IEnumerable<Company> companies);

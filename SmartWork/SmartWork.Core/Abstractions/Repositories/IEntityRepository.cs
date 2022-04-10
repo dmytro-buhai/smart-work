@@ -10,6 +10,7 @@ namespace SmartWork.Core.Abstractions.Repositories
     {
         Task<TEntity> FindAsync(int id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
         Task AddAsync(TEntity entity);
         Task AddAsync(IEnumerable<TEntity> entities);
@@ -17,5 +18,6 @@ namespace SmartWork.Core.Abstractions.Repositories
         Task UpdateAsync(IEnumerable<TEntity> entities);
         Task RemoveAsync(TEntity entities);
         Task RemoveAsync(IEnumerable<TEntity> entities);
+        Task SaveChangesAsync();
     }
 }
