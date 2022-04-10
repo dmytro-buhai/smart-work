@@ -93,6 +93,18 @@ namespace SmartWork.BLL.Services
             }
         }
 
+        public async Task<IActionResult> AnyAsync(Expression<Func<Company, bool>> expression = null)
+        {
+            try
+            {
+                return new OkObjectResult(await _general.AnyAsync(expression));
+            }
+            catch (Exception ex)
+            {
+                return new BadRequestObjectResult(ex);
+            }
+        }
+
         public async Task<IActionResult> GetAsync(Expression<Func<Company, bool>> expression)
         {
             try

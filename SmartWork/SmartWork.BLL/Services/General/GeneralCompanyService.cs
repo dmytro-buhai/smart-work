@@ -27,17 +27,21 @@ namespace SmartWork.BLL.Services.General
         public async Task<IActionResult> AddAsync(IEnumerable<Company> entities)
         {
             await _repository.AddAsync(entities);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("added");
         }
 
-        public async Task<Company> FindAsync(int id) =>
-            await _repository.FindAsync(id);
+        public Task<bool> AnyAsync(Expression<Func<Company, bool>> expression = null) => 
+            _repository.AnyAsync(expression);
 
-        public async Task<Company> FindAsync(Expression<Func<Company, bool>> expression) =>
-            await _repository.FindAsync(expression);
+        public Task<Company> FindAsync(int id) =>
+             _repository.FindAsync(id);
 
-        public async Task<IEnumerable<Company>> GetAsync(Expression<Func<Company, bool>> expression) =>
-            await _repository.GetAsync(expression);
+        public Task<Company> FindAsync(Expression<Func<Company, bool>> expression) =>
+             _repository.FindAsync(expression);
+
+        public Task<IEnumerable<Company>> GetAsync(Expression<Func<Company, bool>> expression) =>
+             _repository.GetAsync(expression);
 
         public async Task<IActionResult> RemoveAsync(Company entity)
         {
