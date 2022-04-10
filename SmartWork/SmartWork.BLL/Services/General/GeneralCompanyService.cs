@@ -21,6 +21,7 @@ namespace SmartWork.BLL.Services.General
         public async Task<IActionResult> AddAsync(Company entity)
         {
             await _repository.AddAsync(entity);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("added");
         }
 
@@ -46,24 +47,28 @@ namespace SmartWork.BLL.Services.General
         public async Task<IActionResult> RemoveAsync(Company entity)
         {
             await _repository.RemoveAsync(entity);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("removed");
         }
 
         public async Task<IActionResult> RemoveAsync(IEnumerable<Company> entities)
         {
             await _repository.RemoveAsync(entities);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("removed");
         }
 
         public async Task<IActionResult> UpdateAsync(Company entity)
         {
             await _repository.UpdateAsync(entity);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("updated");
         }
 
         public async Task<IActionResult> UpdateAsync(IEnumerable<Company> entities)
         {
             await _repository.UpdateAsync(entities);
+            await _repository.SaveChangesAsync();
             return new OkObjectResult("updated");
         }
     }
