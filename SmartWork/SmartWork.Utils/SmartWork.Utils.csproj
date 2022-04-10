@@ -4,4 +4,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SmartWork.Core\SmartWork.Core.csproj" />
+  </ItemGroup>
+
 </Project>

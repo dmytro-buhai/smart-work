@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using SmartWork.Configuration.Resources;
+using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Utils;
 using System;
@@ -63,6 +64,13 @@ namespace SmartWork.Configuration
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             var rolesManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             await RoleInitializer.InitializeAsync(userManager, rolesManager);
+        }
+
+        internal static async Task SeedDataAsync(IServiceProvider serviceProvider)
+        {
+            var companyService = serviceProvider.GetRequiredService<ICompanyService>();
+            var seed = new Seed(companyService);
+            await seed.SeedData();
         }
     }
 }

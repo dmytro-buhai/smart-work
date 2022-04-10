@@ -25,6 +25,7 @@ namespace SmartWork.Configuration
                     try
                     {
                         await Helper.InitializeRolesAsync(services);
+                        await Helper.SeedDataAsync(services);
                     }
                     catch (Exception exception)
                     {
