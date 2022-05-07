@@ -2,12 +2,7 @@
 using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Core.ViewModels.Company;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace SmartWork.API.Controllers
 {
@@ -23,11 +18,8 @@ namespace SmartWork.API.Controllers
         }
 
         [HttpGet("IsAny")]
-        public async Task<IActionResult> IsAnyAsync()
-        {
-            var result = await _companyService.AnyAsync();
-            return result;
-        }
+        public Task<IActionResult> IsAnyAsync() => 
+            _companyService.AnyAsync();
 
         [HttpGet("GetCompanies")]
         public Task<IActionResult> Get() => 
@@ -35,13 +27,11 @@ namespace SmartWork.API.Controllers
 
         [HttpGet("FindById")]
         public Task<IActionResult> FindById(int id) =>
-            _companyService.GetAsync(c => c.Id == id);
-
+            _companyService.FindAsync(id);
 
         [HttpPost("Add")]
         public Task<IActionResult> Add(AddCompanyViewModel model) =>
             _companyService.AddAsync(model);
-
 
         [HttpPut("Update")]
         public Task<IActionResult> Update(UpdateCompanyViewModel model) =>
