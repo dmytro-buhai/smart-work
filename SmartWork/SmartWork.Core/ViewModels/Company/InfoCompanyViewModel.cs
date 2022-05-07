@@ -2,7 +2,7 @@
 
 namespace SmartWork.Core.ViewModels.Company
 {
-    public class CompanyViewModel
+    public class InfoCompanyViewModel
     {
         public int Id { get; set; }
 
