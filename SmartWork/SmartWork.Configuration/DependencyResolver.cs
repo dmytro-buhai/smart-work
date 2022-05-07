@@ -2,7 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartWork.BLL.Services;
+using SmartWork.BLL.Services.General;
 using SmartWork.Core.Abstractions.Repositories;
+using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
@@ -33,6 +35,7 @@ namespace SmartWork.Configuration
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
 
             // Register Services
+            services.AddTransient<IEntityService<Company>, GeneralCompanyService>();
             services.AddTransient<ICompanyService, CompanyService>();
         }
     }
