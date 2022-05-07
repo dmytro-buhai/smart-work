@@ -13,11 +13,11 @@ namespace SmartWork.Core.Abstractions.Services
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
-        Task<IActionResult> AddAsync(TEntity entity);
-        Task<IActionResult> AddAsync(IEnumerable<TEntity> entities);
-        Task<IActionResult> UpdateAsync(TEntity entity);
-        Task<IActionResult> UpdateAsync(IEnumerable<TEntity> entities);
-        Task<IActionResult> RemoveAsync(TEntity entity);
-        Task<IActionResult> RemoveAsync(IEnumerable<TEntity> entities);
+        Task<bool> AddAsync(TEntity entity);
+        Task<bool> AddAsync(IEnumerable<TEntity> entities);
+        Task<bool> UpdateAsync(TEntity entity);
+        Task<bool> UpdateAsync(IEnumerable<TEntity> entities);
+        Task<bool> RemoveAsync(TEntity entity);
+        Task<bool> RemoveAsync(IEnumerable<TEntity> entities);
     }
 }

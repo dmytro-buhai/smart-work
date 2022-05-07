@@ -46,9 +46,9 @@ namespace SmartWork.Data.Repositories
             return this.entities.FirstOrDefaultAsync(expression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return await this.entities.Where(expression).ToListAsync();
+            return Task.FromResult(this.entities.Where(expression).AsEnumerable());
         }
 
         public virtual Task RemoveAsync(TEntity entities)

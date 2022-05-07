@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SmartWork.Core\SmartWork.Core.csproj" />
+    <ProjectReference Include="..\SmartWork.Utils\SmartWork.Utils.csproj" />
   </ItemGroup>
 
 </Project>

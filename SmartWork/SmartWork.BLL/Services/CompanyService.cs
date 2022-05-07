@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartWork.BLL.Services.General;
 using SmartWork.Core.Abstractions.Repositories;
+using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Enums;
 using SmartWork.Core.ViewModels.Company;
+using SmartWork.Utils.CompanyUtils;
+using SmartWork.Utils.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,185 +16,116 @@ namespace SmartWork.BLL.Services
 {
     public class CompanyService : ICompanyService
     {
-        private readonly GeneralCompanyService _general;
+        private readonly IEntityService<Company> _generalCompanyService;
+        private readonly CompanyModelConverter _modelConverter;
 
-        public CompanyService(IEntityRepository<Company> repository)
+        public CompanyService(IEntityRepository<Company> repository, IEntityService<Company> generalCompanyService)
         {
-            _general = new GeneralCompanyService(repository);
+            _generalCompanyService = generalCompanyService;
+            _modelConverter = new CompanyModelConverter();
         }
 
         public async Task<IActionResult> AddAsync(AddCompanyViewModel model)
         {
-            try
-            {
-                var company = new Company
-                {
-                    Name = model.Name,
-                    Address = model.Address,
-                    PhoneNumber = model.PhoneNumber,
-                    Description = model.Description,
-                    PhotoFileName = model.PhotoFileName
-                };
+            var company = _modelConverter.AddModelToEntity(model);
 
-                return await _general.AddAsync(company);
-            }
-            catch (Exception ex)
+            if (await _generalCompanyService.AddAsync(company))
             {
-                return new BadRequestObjectResult(ex);
+                return new OkObjectResult(ResponseType.Success);
             }
+                
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> AddAsync(IEnumerable<AddCompanyViewModel> models)
         {
-            try
+            var companies = models.AddModelsToEntity();
+
+            if (await _generalCompanyService.AddAsync(companies))
             {
-                var companies = new List<Company>();
-
-                foreach(var model in models)
-                {
-                    var company = new Company
-                    {
-                        Name = model.Name,
-                        Address = model.Address,
-                        PhoneNumber = model.PhoneNumber,
-                        Description = model.Description,
-                        PhotoFileName = model.PhotoFileName
-                    };
-
-                    companies.Add(company);
-                }
-
-                return await _general.AddAsync(companies);
+                return new OkObjectResult(ResponseType.Success);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> FindAsync(int id)
         {
-            try
+            var company = await _generalCompanyService.FindAsync(id);
+
+            if(company != null)
             {
-                return new OkObjectResult(await _general.FindAsync(id));
+                return new OkObjectResult(company);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> FindAsync(Expression<Func<Company, bool>> expression)
         {
-            try
+            var company = await _generalCompanyService.FindAsync(expression);
+
+            if (company != null)
             {
-                return new OkObjectResult(await _general.FindAsync(expression));
+                return new OkObjectResult(company);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> AnyAsync(Expression<Func<Company, bool>> expression = null)
         {
-            try
-            {
-                return new OkObjectResult(await _general.AnyAsync(expression));
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+            return new OkObjectResult(await _generalCompanyService.AnyAsync(expression));
         }
 
         public async Task<IActionResult> GetAsync(Expression<Func<Company, bool>> expression)
         {
-            try
-            {
-                return new OkObjectResult(await _general.GetAsync(expression));
-            }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+            var res = await _generalCompanyService.GetAsync(expression);
+            return new OkObjectResult(res);
         }
 
         public async Task<IActionResult> RemoveAsync(Company company)
         {
-            try
+            if (await _generalCompanyService.RemoveAsync(company))
             {
-                return new OkObjectResult(await _general.RemoveAsync(company));
+                return new OkObjectResult(ResponseType.Success);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> RemoveAsync(IEnumerable<Company> companies)
         {
-            try
+            if (await _generalCompanyService.RemoveAsync(companies))
             {
-                return new OkObjectResult(await _general.RemoveAsync(companies));
+                return new OkObjectResult(ResponseType.Success);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
 
         public async Task<IActionResult> UpdateAsync(UpdateCompanyViewModel model)
         {
-            try
+            var company = _modelConverter.UpdateModelToEntity(model);
+
+            if (await _generalCompanyService.UpdateAsync(company))
             {
-                var company = await _general.FindAsync(model.Id);
-
-                if (company == null)
-                    return new BadRequestObjectResult("NULL_RESULT");
-
-                company.Name = model.Name;
-                company.Address = model.Address;
-                company.PhoneNumber = model.PhoneNumber;
-                company.Description = model.Description;
-                company.PhotoFileName = model.PhotoFileName;
-
-                return new OkObjectResult(await _general.UpdateAsync(company));
+                return new OkObjectResult(ResponseType.Success);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);           
         }
 
         public async Task<IActionResult> UpdateAsync(IEnumerable<UpdateCompanyViewModel> models)
         {
-            try
+            var companies = models.UpdateModelsToEntity();
+
+            if (await _generalCompanyService.UpdateAsync(companies))
             {
-                var companies = new List<Company>();
-
-                foreach(var model in models)
-                {
-                    var company = await _general.FindAsync(model.Id);
-
-                    if (company == null)
-                        return new BadRequestObjectResult("invalid data");
-
-                    company.Name = model.Name;
-                    company.Address = model.Address;
-                    company.PhoneNumber = model.PhoneNumber;
-                    company.Description = model.Description;
-                    company.PhotoFileName = model.PhotoFileName;
-
-                    companies.Add(company);
-                }
-
-                return new OkObjectResult(await _general.UpdateAsync(companies));
+                return new OkObjectResult(ResponseType.Success);
             }
-            catch (Exception ex)
-            {
-                return new BadRequestObjectResult(ex);
-            }
+
+            return new BadRequestObjectResult(ResponseType.Failed);
         }
     }
 }
