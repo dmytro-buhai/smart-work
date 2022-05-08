@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SmartWork.Core.Abstractions;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class UserInfoViewModel
+    public class UserInfoViewModel : IViewModel
     {
         public string Id { get; set; }
 

@@ -9,6 +9,7 @@ using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
 using SmartWork.Data.Repositories;
+using SmartWork.Utils.Validators;
 
 namespace SmartWork.Configuration
 {
@@ -37,6 +38,9 @@ namespace SmartWork.Configuration
             // Register Services
             services.AddTransient<IEntityService<Company>, GeneralCompanyService>();
             services.AddTransient<ICompanyService, CompanyService>();
+
+            //Register Attributes
+            services.AddScoped<LogAttribute>();
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SmartWork.Core.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.Company
 {
-    public class InfoCompanyViewModel
+    public class InfoCompanyViewModel : IViewModel
     {
         public int Id { get; set; }
 

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SmartWork.Core.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.Company
 {
-    public class AddCompanyViewModel
+    public class AddCompanyViewModel : IViewModel
     {
         [Display(Name = "Company name")]
         public string Name { get; set; }

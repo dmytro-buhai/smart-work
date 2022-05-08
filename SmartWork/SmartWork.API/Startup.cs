@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Microsoft.OpenApi.Models;
 using SmartWork.Configuration;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
+using SmartWork.Utils;
 
 namespace SmartWork.API
 {
@@ -39,7 +41,9 @@ namespace SmartWork.API
             // Dependencies
             var resolver = new DependencyResolver(services);
 
-            services.AddControllers();
+            // FluentValidation
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AssemblyIdentifier>());
 
             // Swagger
             services.AddSwaggerGen(c =>

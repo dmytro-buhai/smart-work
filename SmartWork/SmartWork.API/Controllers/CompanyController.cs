@@ -2,7 +2,9 @@
 using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Core.ViewModels.Company;
+using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
+
 
 namespace SmartWork.API.Controllers
 {
@@ -21,6 +23,7 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> IsAnyAsync() => 
             _companyService.AnyAsync();
 
+        
         [HttpGet("GetCompanies")]
         public Task<IActionResult> Get() => 
             _companyService.GetAsync(c => c.Id != 0);
@@ -30,10 +33,12 @@ namespace SmartWork.API.Controllers
             _companyService.FindAsync(id);
 
         [HttpPost("Add")]
-        public Task<IActionResult> Add(AddCompanyViewModel model) =>
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public Task<IActionResult> Add(AddCompanyViewModel model) => 
             _companyService.AddAsync(model);
 
         [HttpPut("Update")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateCompanyViewModel model) =>
              _companyService.UpdateAsync(model);
 

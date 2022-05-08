@@ -1,11 +1,12 @@
-﻿using System;
+﻿using SmartWork.Core.Abstractions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class SignInViewModel
+    public class SignInViewModel : IViewModel
     {
         [Required]
         [Display(Name = "Email")]

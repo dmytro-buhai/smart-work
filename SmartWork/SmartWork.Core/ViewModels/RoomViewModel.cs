@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SmartWork.Core.Abstractions;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels
 {
-    public class RoomViewModel
+    public class RoomViewModel : IViewModel
     {
         public int Id { get; set; }
 

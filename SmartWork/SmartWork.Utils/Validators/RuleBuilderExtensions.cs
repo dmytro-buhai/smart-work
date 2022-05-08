@@ -12,8 +12,7 @@ namespace SmartWork.Utils.Validators
                           .MinimumLength(8)
                           .MaximumLength(16)
                           .Matches("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$")
-                          .WithMessage("Required length for password is between 8 and 16\n" +
-                                       "Password must contains numbers, capital letters and symbols");
+                          .WithMessage("Password must contains numbers, capital letters and symbols");
 
             return options;
         }
@@ -23,10 +22,9 @@ namespace SmartWork.Utils.Validators
             var options = ruleBuilder
                           .NotEmpty()
                           .NotNull()
-                          .Length(9)
-                          .Matches(@"^0[0-9]\d{2}-\d{3}-\d{4}$")
-                          .WithMessage("Required length for phone number is 9\n" +
-                                       "Please, specify the correct phone number");
+                          .Length(10)
+                          .Matches(@"^0\d{9}$")
+                          .WithMessage("Please, specify the correct phone number that starts from 0, for example 0661234567");
 
             return options;
         }
@@ -37,9 +35,8 @@ namespace SmartWork.Utils.Validators
                           .NotEmpty()
                           .NotNull()
                           .MaximumLength(256)
-                          .Matches(@"^[a-zA-Z0-9\_,]+$")
-                          .WithMessage("Maximum length for address is 256\n" +
-                                       "Please, specify the correct address");
+                          .Matches(@"^[A-Za-z0-9]+(?:\s[A-Za-z0-9',/_-]+)+$")
+                          .WithMessage("Please, specify the correct address, for example, Correct address, 54 or Correct address, 54/2");
 
             return options;
         }

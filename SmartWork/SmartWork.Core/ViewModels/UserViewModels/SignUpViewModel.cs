@@ -1,9 +1,10 @@
-﻿using System;
+﻿using SmartWork.Core.Abstractions;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class SignUpViewModel
+    public class SignUpViewModel : IViewModel
     {
         [Required]
         [DataType(DataType.EmailAddress)]
