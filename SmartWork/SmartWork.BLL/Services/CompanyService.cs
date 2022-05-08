@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
+using SmartWork.Core.Models;
 using SmartWork.Core.ViewModels.Company;
 using SmartWork.Utils.CompanyUtils;
 using SmartWork.Utils.Extensions;
@@ -19,7 +19,7 @@ namespace SmartWork.BLL.Services
         private readonly IEntityService<Company> _generalCompanyService;
         private readonly CompanyModelConverter _modelConverter;
 
-        public CompanyService(IEntityRepository<Company> repository, IEntityService<Company> generalCompanyService)
+        public CompanyService(IEntityService<Company> generalCompanyService)
         {
             _generalCompanyService = generalCompanyService;
             _modelConverter = new CompanyModelConverter();
@@ -31,10 +31,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalCompanyService.AddAsync(company))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
                 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> AddAsync(IEnumerable<AddCompanyViewModel> models)
@@ -43,10 +43,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalCompanyService.AddAsync(companies))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> FindAsync(int id)
@@ -58,7 +58,7 @@ namespace SmartWork.BLL.Services
                 return new OkObjectResult(company);
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> FindAsync(Expression<Func<Company, bool>> expression)
@@ -70,7 +70,7 @@ namespace SmartWork.BLL.Services
                 return new OkObjectResult(company);
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> AnyAsync(Expression<Func<Company, bool>> expression = null)
@@ -80,28 +80,27 @@ namespace SmartWork.BLL.Services
 
         public async Task<IActionResult> GetAsync(Expression<Func<Company, bool>> expression)
         {
-            var res = await _generalCompanyService.GetAsync(expression);
-            return new OkObjectResult(res);
+            return new OkObjectResult(await _generalCompanyService.GetAsync(expression));
         }
 
         public async Task<IActionResult> RemoveAsync(Company company)
         {
             if (await _generalCompanyService.RemoveAsync(company))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> RemoveAsync(IEnumerable<Company> companies)
         {
             if (await _generalCompanyService.RemoveAsync(companies))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> UpdateAsync(UpdateCompanyViewModel model)
@@ -110,10 +109,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalCompanyService.UpdateAsync(company))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);           
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));           
         }
 
         public async Task<IActionResult> UpdateAsync(IEnumerable<UpdateCompanyViewModel> models)
@@ -122,10 +121,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalCompanyService.UpdateAsync(companies))
             {
-                return new OkObjectResult(ResponseType.Success);
+                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(ResponseType.Failed);
+            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
     }
 }

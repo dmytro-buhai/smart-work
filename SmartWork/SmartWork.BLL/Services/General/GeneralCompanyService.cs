@@ -14,7 +14,8 @@ namespace SmartWork.BLL.Services.General
         private readonly IEntityRepository<Company> _repository;
         private readonly ILogger<GeneralCompanyService> _logger;
 
-        public GeneralCompanyService(IEntityRepository<Company> repository, ILogger<GeneralCompanyService> logger)
+        public GeneralCompanyService(IEntityRepository<Company> repository, 
+            ILogger<GeneralCompanyService> logger)
         {
             _repository = repository;
             _logger = logger;
