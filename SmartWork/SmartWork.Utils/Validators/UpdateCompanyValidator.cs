@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using SmartWork.Core.Entities;
+using SmartWork.Core.ViewModels.Company;
 
 namespace SmartWork.Utils.Validators
 {
-    public class UpdateCompanyValidator : AbstractValidator<Company>
+    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyViewModel>
     {
         public UpdateCompanyValidator()
         {
