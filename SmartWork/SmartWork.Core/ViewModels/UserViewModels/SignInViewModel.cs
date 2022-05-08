@@ -12,6 +12,10 @@ namespace SmartWork.Core.ViewModels.UserViewModels
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "Full name")]
+        public string FullName { get; set; }
+
+        [Required]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
