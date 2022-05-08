@@ -3,10 +3,11 @@ using SmartWork.Core.Entities;
 
 namespace SmartWork.Utils.Validators
 {
-    public class CompanyValidator : AbstractValidator<Company>
+    public class UpdateCompanyValidator : AbstractValidator<Company>
     {
-        public CompanyValidator()
+        public UpdateCompanyValidator()
         {
+            RuleFor(x => x.Id).NotEmpty().NotNull();
             RuleFor(x => x.Name).NotEmpty().MaximumLength(256).Matches(@"^\D+$")
                 .WithMessage("Please, specify a company name");
             RuleFor(x => x.Address).Address();
