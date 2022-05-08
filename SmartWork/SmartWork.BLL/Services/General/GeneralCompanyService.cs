@@ -137,11 +137,6 @@ namespace SmartWork.BLL.Services.General
         {
             try
             {
-                if(_repository.FindAsync(entity.Id).Result == null)
-                {
-                    return Task.FromResult<bool>(false);
-                }
-
                 _repository.UpdateAsync(entity);
                 _repository.SaveChangesAsync();
                 return Task.FromResult<bool>(true);
