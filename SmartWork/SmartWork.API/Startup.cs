@@ -10,6 +10,7 @@ using SmartWork.Configuration;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
 using SmartWork.Utils;
+using SmartWork.Utils.Middlewares;
 
 namespace SmartWork.API
 {
@@ -78,6 +79,9 @@ namespace SmartWork.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            // Custom Middlewares
+            app.UseMiddleware<RoutingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
