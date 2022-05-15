@@ -11,25 +11,25 @@ namespace SmartWork.Utils.Extensions
     {
         private static readonly CompanyModelConverter ModelConverter = new CompanyModelConverter();
 
-        public static List<Company> AddModelsToEntity(this IEnumerable<AddCompanyViewModel> models)
+        public static List<Company> ToEntities(this IEnumerable<AddCompanyDTO> models)
         {
             var companies = new List<Company>();
 
             foreach (var model in models)
             {
-                companies.Add(ModelConverter.AddModelToEntity(model));
+                companies.Add(ModelConverter.ToEntity(model));
             }
 
             return companies;
         }
 
-        public static List<Company> UpdateModelsToEntity(this IEnumerable<UpdateCompanyViewModel> models)
+        public static List<Company> ToEntities(this IEnumerable<UpdateCompanyDTO> models)
         {
             var companies = new List<Company>();
 
             foreach (var model in models)
             {
-                companies.Add(ModelConverter.UpdateModelToEntity(model));
+                companies.Add(ModelConverter.ToEntity(model));
             }
 
             return companies;

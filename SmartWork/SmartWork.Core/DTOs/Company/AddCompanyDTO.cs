@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.Company
 {
-    public class UpdateCompanyViewModel : IViewModel
+    public class AddCompanyDTO : IViewModel
     {
-        public int Id { get; set; }
-
         [Display(Name = "Company name")]
         public string Name { get; set; }
 

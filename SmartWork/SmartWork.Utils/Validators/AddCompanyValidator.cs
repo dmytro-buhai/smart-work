@@ -3,7 +3,7 @@ using SmartWork.Core.ViewModels.Company;
 
 namespace SmartWork.Utils.Validators
 {
-    public class AddCompanyValidator : AbstractValidator<AddCompanyViewModel>
+    public class AddCompanyValidator : AbstractValidator<AddCompanyDTO>
     {
         public AddCompanyValidator()
         {

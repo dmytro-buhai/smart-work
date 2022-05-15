@@ -1,18 +1,15 @@
 ﻿using SmartWork.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartWork.Core.Abstractions.ModelConvertors
 {
-    public interface IModelConverter<TEnity, TInfoModel, TAddModel, TUpdateModel>
+    public interface IModelConverter<TEnity, TInfoDTO, TAddDTO, TUpdateDTO>
         where TEnity : Entity
-        where TInfoModel : class
-        where TAddModel : class
-        where TUpdateModel : class
+        where TInfoDTO : class
+        where TAddDTO : class
+        where TUpdateDTO : class
     {
-        public TEnity InfoModelToEntity(TInfoModel model);
-        public TEnity AddModelToEntity(TAddModel model);
-        public TEnity UpdateModelToEntity(TUpdateModel model);
+        public TEnity ToEntity(TInfoDTO model);
+        public TEnity ToEntity(TAddDTO model);
+        public TEnity ToEntity(TUpdateDTO model);
     }
 }

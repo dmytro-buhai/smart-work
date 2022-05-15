@@ -34,12 +34,12 @@ namespace SmartWork.API.Controllers
 
         [HttpPost("Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Add(AddCompanyViewModel model) => 
+        public Task<IActionResult> Add(AddCompanyDTO model) => 
             _companyService.AddAsync(model);
 
         [HttpPut("Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Update(UpdateCompanyViewModel model) =>
+        public Task<IActionResult> Update(UpdateCompanyDTO model) =>
              _companyService.UpdateAsync(model);
 
         [HttpDelete("Delete")]

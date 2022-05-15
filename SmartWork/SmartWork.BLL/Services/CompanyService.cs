@@ -25,9 +25,9 @@ namespace SmartWork.BLL.Services
             _modelConverter = new CompanyModelConverter();
         }
 
-        public async Task<IActionResult> AddAsync(AddCompanyViewModel model)
+        public async Task<IActionResult> AddAsync(AddCompanyDTO transferObject)
         {
-            var company = _modelConverter.AddModelToEntity(model);
+            var company = _modelConverter.ToEntity(transferObject);
 
             if (await _generalCompanyService.AddAsync(company))
             {
@@ -37,9 +37,9 @@ namespace SmartWork.BLL.Services
             return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
-        public async Task<IActionResult> AddAsync(IEnumerable<AddCompanyViewModel> models)
+        public async Task<IActionResult> AddAsync(IEnumerable<AddCompanyDTO> transferObjects)
         {
-            var companies = models.AddModelsToEntity();
+            var companies = transferObjects.ToEntities();
 
             if (await _generalCompanyService.AddAsync(companies))
             {
@@ -103,9 +103,9 @@ namespace SmartWork.BLL.Services
             return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
         }
 
-        public async Task<IActionResult> UpdateAsync(UpdateCompanyViewModel model)
+        public async Task<IActionResult> UpdateAsync(UpdateCompanyDTO transferObject)
         {
-            var company = _modelConverter.UpdateModelToEntity(model);
+            var company = _modelConverter.ToEntity(transferObject);
 
             if (await _generalCompanyService.UpdateAsync(company))
             {
@@ -115,9 +115,9 @@ namespace SmartWork.BLL.Services
             return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));           
         }
 
-        public async Task<IActionResult> UpdateAsync(IEnumerable<UpdateCompanyViewModel> models)
+        public async Task<IActionResult> UpdateAsync(IEnumerable<UpdateCompanyDTO> transferObjects)
         {
-            var companies = models.UpdateModelsToEntity();
+            var companies = transferObjects.ToEntities();
 
             if (await _generalCompanyService.UpdateAsync(companies))
             {

@@ -5,23 +5,25 @@ using SmartWork.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services.General
 {
-    public class GeneralCompanyService : IEntityService<Company>
+    public class GeneralOfficeService : IEntityService<Office>
     {
-        private readonly IEntityRepository<Company> _repository;
-        private readonly ILogger<GeneralCompanyService> _logger;
+        private readonly IEntityRepository<Office> _repository;
+        private readonly ILogger<GeneralOfficeService> _logger;
 
-        public GeneralCompanyService(IEntityRepository<Company> repository, 
-            ILogger<GeneralCompanyService> logger)
+        public GeneralOfficeService(IEntityRepository<Office> repository,
+            ILogger<GeneralOfficeService> logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
-        public Task<bool> AddAsync(Company entity)
+        public Task<bool> AddAsync(Office entity)
         {
             try
             {
@@ -36,12 +38,12 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> AddAsync(IEnumerable<Company> entities)
+        public Task<bool> AddAsync(IEnumerable<Office> entities)
         {
             try
             {
-                 _repository.AddAsync(entities);
-                 _repository.SaveChangesAsync();
+                _repository.AddAsync(entities);
+                _repository.SaveChangesAsync();
                 return Task.FromResult<bool>(true);
             }
             catch (Exception ex)
@@ -51,33 +53,33 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> AnyAsync(Expression<Func<Company, bool>> expression = null)
+        public Task<bool> AnyAsync(Expression<Func<Office, bool>> expression = null)
         {
             try
             {
                 return _repository.AnyAsync(expression);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(string.Concat(GetType().Name, " : ", "AnyAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
-        }   
+        }
 
-        public Task<Company> FindAsync(int id)
+        public Task<Office> FindAsync(int id)
         {
             try
             {
                 return _repository.FindAsync(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
-                return Task.FromResult<Company>(null);
+                return Task.FromResult<Office>(null);
             }
         }
 
-        public Task<Company> FindAsync(Expression<Func<Company, bool>> expression)
+        public Task<Office> FindAsync(Expression<Func<Office, bool>> expression)
         {
             try
             {
@@ -86,11 +88,11 @@ namespace SmartWork.BLL.Services.General
             catch (Exception ex)
             {
                 _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
-                return Task.FromResult<Company>(null);
+                return Task.FromResult<Office>(null);
             }
         }
 
-        public Task<IEnumerable<Company>> GetAsync(Expression<Func<Company, bool>> expression)
+        public Task<IEnumerable<Office>> GetAsync(Expression<Func<Office, bool>> expression)
         {
             try
             {
@@ -99,11 +101,11 @@ namespace SmartWork.BLL.Services.General
             catch (Exception ex)
             {
                 _logger.LogError(string.Concat(GetType().Name, " : ", "GetAsync -> ", ex.Message));
-                return Task.FromResult<IEnumerable<Company>>(null);
+                return Task.FromResult<IEnumerable<Office>>(null);
             }
-        }          
+        }
 
-        public Task<bool> RemoveAsync(Company entity)
+        public Task<bool> RemoveAsync(Office entity)
         {
             try
             {
@@ -118,7 +120,7 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> RemoveAsync(IEnumerable<Company> entities)
+        public Task<bool> RemoveAsync(IEnumerable<Office> entities)
         {
             try
             {
@@ -133,7 +135,7 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> UpdateAsync(Company entity)
+        public Task<bool> UpdateAsync(Office entity)
         {
             try
             {
@@ -148,7 +150,7 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> UpdateAsync(IEnumerable<Company> entities)
+        public Task<bool> UpdateAsync(IEnumerable<Office> entities)
         {
             try
             {

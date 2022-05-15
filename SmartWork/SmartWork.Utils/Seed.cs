@@ -29,9 +29,9 @@ namespace SmartWork.Utils
 
                 if (isAnyCompanies) return;
 
-                var companies = new List<AddCompanyViewModel>
+                var companies = new List<AddCompanyDTO>
                 {
-                    new AddCompanyViewModel
+                    new AddCompanyDTO
                     {
                         Name = "SmartWork company inc.",
                         Address = "SmartWork street, 64",
