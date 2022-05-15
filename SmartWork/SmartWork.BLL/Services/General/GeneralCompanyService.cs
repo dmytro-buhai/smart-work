@@ -31,7 +31,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("AddAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
@@ -46,7 +46,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("AddAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
@@ -59,7 +59,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("AnyAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }   
@@ -72,7 +72,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("FindAsync -> ", ex.Message));
                 return Task.FromResult<Company>(null);
             }
         }
@@ -85,7 +85,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("FindAsync -> ", ex.Message));
                 return Task.FromResult<Company>(null);
             }
         }
@@ -98,7 +98,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("GetAsync -> ", ex.Message));
                 return Task.FromResult<IEnumerable<Company>>(null);
             }
         }          
@@ -113,7 +113,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("RemoveAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
@@ -128,7 +128,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("RemoveAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
@@ -143,7 +143,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("UpdateAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
@@ -158,7 +158,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(string.Concat("UpdateAsync -> ", ex.Message));
                 return Task.FromResult<bool>(false);
             }
         }
