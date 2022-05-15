@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class SignUpViewModel : IViewModel
+    public class SignUpViewModel : IDTO
     {
         [Required]
         [DataType(DataType.EmailAddress)]

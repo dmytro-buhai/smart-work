@@ -1,9 +1,9 @@
 ﻿using SmartWork.Core.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
-namespace SmartWork.Core.ViewModels.Company
+namespace SmartWork.Core.DTOs.CompanyDTOs
 {
-    public class AddCompanyDTO : IViewModel
+    public class AddCompanyDTO : IDTO
     {
         [Display(Name = "Company name")]
         public string Name { get; set; }

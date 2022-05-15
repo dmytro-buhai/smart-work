@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class UserInfoViewModel : IViewModel
+    public class UserInfoViewModel : IDTO
     {
         public string Id { get; set; }
 

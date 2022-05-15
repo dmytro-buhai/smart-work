@@ -1,35 +1,33 @@
-﻿using SmartWork.Core.Entities;
-using SmartWork.Core.ViewModels.Company;
-using SmartWork.Utils.CompanyUtils;
-using System;
+﻿using SmartWork.Core.DTOs.CompanyDTOs;
+using SmartWork.Core.Entities;
+using SmartWork.Utils.EntitiesUtils;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartWork.Utils.Extensions
 {
     public static class CompanyConverterExtensions
     {
-        private static readonly CompanyModelConverter ModelConverter = new CompanyModelConverter();
+        private static readonly CompanyEntityConverter EntityConverter = new CompanyEntityConverter();
 
-        public static List<Company> ToEntities(this IEnumerable<AddCompanyDTO> models)
+        public static List<Company> ToEntities(this IEnumerable<AddCompanyDTO> transferObjects)
         {
             var companies = new List<Company>();
 
-            foreach (var model in models)
+            foreach (var transferObject in transferObjects)
             {
-                companies.Add(ModelConverter.ToEntity(model));
+                companies.Add(EntityConverter.ToEntity(transferObject));
             }
 
             return companies;
         }
 
-        public static List<Company> ToEntities(this IEnumerable<UpdateCompanyDTO> models)
+        public static List<Company> ToEntities(this IEnumerable<UpdateCompanyDTO> transferObjects)
         {
             var companies = new List<Company>();
 
-            foreach (var model in models)
+            foreach (var transferObject in transferObjects)
             {
-                companies.Add(ModelConverter.ToEntity(model));
+                companies.Add(EntityConverter.ToEntity(transferObject));
             }
 
             return companies;

@@ -12,9 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SmartWork.BLL\SmartWork.BLL.csproj" />
     <ProjectReference Include="..\SmartWork.Configuration\SmartWork.Configuration.csproj" />
-    <ProjectReference Include="..\SmartWork.Core\SmartWork.Core.csproj" />
-    <ProjectReference Include="..\SmartWork.Data\SmartWork.Data.csproj" />
+    <ProjectReference Include="..\SmartWork.Utils\SmartWork.Utils.csproj" />
   </ItemGroup>
 
 </Project>

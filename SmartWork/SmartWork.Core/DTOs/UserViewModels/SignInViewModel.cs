@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SmartWork.Core.ViewModels.UserViewModels
 {
-    public class SignInViewModel : IViewModel
+    public class SignInViewModel : IDTO
     {
         [Required]
         [Display(Name = "Email")]

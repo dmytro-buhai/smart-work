@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Abstractions.Services.Base;
+using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
-using SmartWork.Core.ViewModels.Company;
-using SmartWork.Utils.CompanyUtils;
+using SmartWork.Utils.EntitiesUtils;
 using SmartWork.Utils.Extensions;
 using System;
 using System.Collections.Generic;
@@ -17,17 +17,17 @@ namespace SmartWork.BLL.Services
     public class CompanyService : ICompanyService
     {
         private readonly IEntityService<Company> _generalCompanyService;
-        private readonly CompanyModelConverter _modelConverter;
+        private readonly CompanyEntityConverter _entityConverter;
 
         public CompanyService(IEntityService<Company> generalCompanyService)
         {
             _generalCompanyService = generalCompanyService;
-            _modelConverter = new CompanyModelConverter();
+            _entityConverter = new CompanyEntityConverter();
         }
 
         public async Task<IActionResult> AddAsync(AddCompanyDTO transferObject)
         {
-            var company = _modelConverter.ToEntity(transferObject);
+            var company = _entityConverter.ToEntity(transferObject);
 
             if (await _generalCompanyService.AddAsync(company))
             {
@@ -105,7 +105,7 @@ namespace SmartWork.BLL.Services
 
         public async Task<IActionResult> UpdateAsync(UpdateCompanyDTO transferObject)
         {
-            var company = _modelConverter.ToEntity(transferObject);
+            var company = _entityConverter.ToEntity(transferObject);
 
             if (await _generalCompanyService.UpdateAsync(company))
             {

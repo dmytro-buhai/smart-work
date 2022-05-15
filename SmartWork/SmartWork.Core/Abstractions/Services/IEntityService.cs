@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SmartWork.Core.Entities;
+﻿using SmartWork.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;

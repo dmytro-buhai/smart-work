@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SmartWork.Core.Abstractions
 {
-    public interface IViewModel
+    public interface IDTO
     {
     }
 }

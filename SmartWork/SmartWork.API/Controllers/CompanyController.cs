@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services.Base;
+using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
-using SmartWork.Core.ViewModels.Company;
+
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 

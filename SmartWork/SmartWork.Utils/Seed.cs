@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services.Base;
-using SmartWork.Core.Entities;
-using SmartWork.Core.ViewModels.Company;
-using System;
+using SmartWork.Core.DTOs.CompanyDTOs;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartWork.Utils
