@@ -10,7 +10,6 @@ using SmartWork.Core.Entities;
 using SmartWork.Data;
 using SmartWork.Data.Repositories;
 using SmartWork.Utils.ActionFilters;
-using SmartWork.Utils.Validators;
 
 namespace SmartWork.Configuration
 {
@@ -24,7 +23,7 @@ namespace SmartWork.Configuration
             ConfigureServices(services);
         }
 
-        private void ConfigureServices(IServiceCollection services)
+        private static void ConfigureServices(IServiceCollection services)
         {
             //services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationSettings"));
 
@@ -37,8 +36,8 @@ namespace SmartWork.Configuration
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
 
             // Register Services
-            services.AddTransient<IEntityService<Company>, GeneralCompanyService>();
-            services.AddTransient<ICompanyService, CompanyService>();
+            services.AddScoped<IEntityService<Company>, GeneralCompanyService>();
+            services.AddScoped<ICompanyService, CompanyService>();
 
             //Register Attributes
             services.AddScoped<ValidationFilterAttribute>();
