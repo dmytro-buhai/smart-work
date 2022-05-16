@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services.General
 {
-    public abstract class GeneralEntityService<TEntity> : IEntityService<TEntity> 
+    public abstract class GeneralEntityService<TEntity> : IGeneralEntityService<TEntity> 
         where TEntity : Entity
     {
         private readonly IEntityRepository<TEntity> _repository;

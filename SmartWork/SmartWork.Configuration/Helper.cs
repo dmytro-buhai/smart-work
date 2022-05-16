@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using SmartWork.Configuration.Resources;
-using SmartWork.Core.Abstractions.Services.Base;
+using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
 using SmartWork.Utils;
 using System;

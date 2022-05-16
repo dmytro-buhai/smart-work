@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.Abstractions.Services.Base;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
@@ -16,10 +15,10 @@ namespace SmartWork.BLL.Services
 {
     public class CompanyService : ICompanyService
     {
-        private readonly IEntityService<Company> _generalCompanyService;
+        private readonly IGeneralEntityService<Company> _generalCompanyService;
         private readonly CompanyEntityConverter _entityConverter;
 
-        public CompanyService(IEntityService<Company> generalCompanyService)
+        public CompanyService(IGeneralEntityService<Company> generalCompanyService)
         {
             _generalCompanyService = generalCompanyService;
             _entityConverter = new CompanyEntityConverter();

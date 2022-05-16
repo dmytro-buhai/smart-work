@@ -5,7 +5,7 @@ using SmartWork.BLL.Services;
 using SmartWork.BLL.Services.General;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.Abstractions.Services.Base;
+using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
 using SmartWork.Data.Repositories;
@@ -36,7 +36,7 @@ namespace SmartWork.Configuration
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
 
             // Register Services
-            services.AddScoped<IEntityService<Company>, GeneralCompanyService>();
+            services.AddScoped<IGeneralEntityService<Company>, GeneralCompanyService>();
             services.AddScoped<ICompanyService, CompanyService>();
 
             //Register Attributes
