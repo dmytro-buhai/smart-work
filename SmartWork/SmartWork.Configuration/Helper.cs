@@ -69,7 +69,8 @@ namespace SmartWork.Configuration
         internal static async Task SeedDataAsync(IServiceProvider serviceProvider)
         {
             var companyService = serviceProvider.GetRequiredService<ICompanyService>();
-            var seed = new Seed(companyService);
+            var officeService = serviceProvider.GetRequiredService<IOfficeService>();
+            var seed = new Seed(companyService, officeService);
             await seed.SeedData();
         }
     }

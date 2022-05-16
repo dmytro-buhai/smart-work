@@ -36,17 +36,19 @@ namespace SmartWork.Configuration
             // Register Repositories
             services.AddScoped<IUserRepository<User>, EFCoreUserRepository<User>>();
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
-
+            services.AddScoped<IEntityRepository<Office>, EFCoreRepository<Office>>();
+            
             // Register Entity Converters
             services.AddScoped<ICompanyEntityConverter, CompanyEntityConverter>();
             services.AddScoped<IOfficeEntityConverter, OfficeEntityConverter>();
 
-            // Register Services
+            // Register General Services
             services.AddScoped<IGeneralEntityService<Company>, GeneralCompanyService>();
-            services.AddScoped<ICompanyService, CompanyService>();
+            services.AddScoped<IGeneralEntityService<Office>, GeneralOfficeService>();
 
-            //services.AddScoped<IGeneralEntityService<Office>, GeneralOfficeService>();
-            //services.AddScoped<ICompanyService, CompanyService>();
+            // Register Services
+            services.AddScoped<ICompanyService, CompanyService>();           
+            services.AddScoped<IOfficeService, OfficeService>();
 
             //Register Attributes
             services.AddScoped<ValidationFilterAttribute>();

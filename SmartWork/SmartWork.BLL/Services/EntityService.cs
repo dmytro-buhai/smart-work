@@ -12,7 +12,8 @@ using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
 {
-    public abstract class EntityService<TEntity, TAddDTO, TUpdateDTO> : IEntityService<TEntity, TAddDTO, TUpdateDTO>
+    public abstract class EntityService<TEntity, TAddDTO, TUpdateDTO> : 
+        IEntityService<TEntity, TAddDTO, TUpdateDTO>
         where TEntity : Entity
         where TAddDTO : IDTO
         where TUpdateDTO : IDTO 

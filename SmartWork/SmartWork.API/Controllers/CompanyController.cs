@@ -2,7 +2,6 @@
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
-
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 
@@ -23,7 +22,6 @@ namespace SmartWork.API.Controllers
         [HttpGet("IsAny")]
         public Task<IActionResult> IsAnyAsync() => 
             _companyService.AnyAsync();
-
         
         [HttpGet("GetCompanies")]
         public Task<IActionResult> Get() => 

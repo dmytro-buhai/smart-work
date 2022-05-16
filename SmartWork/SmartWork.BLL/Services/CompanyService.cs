@@ -9,14 +9,14 @@ namespace SmartWork.BLL.Services
         EntityService<Company, AddCompanyDTO, UpdateCompanyDTO>,
         ICompanyService
     {
-        private readonly IGeneralEntityService<Company> _generalCompanyService;
+        private readonly IGeneralEntityService<Company> _generalEntityService;
         private readonly ICompanyEntityConverter _entityConverter;
 
-        public CompanyService(IGeneralEntityService<Company> generalCompanyService, 
+        public CompanyService(IGeneralEntityService<Company> generalEntityService, 
             ICompanyEntityConverter entityConverter) :
-            base(generalCompanyService, entityConverter)
+            base(generalEntityService, entityConverter)
         {
-            _generalCompanyService = generalCompanyService;
+            _generalEntityService = generalEntityService;
             _entityConverter = entityConverter;
         }
     }
