@@ -2,9 +2,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SmartWork.Core.ViewModels.UserViewModels
+namespace SmartWork.Core.DTOs.UserDTOs
 {
-    public class SignUpViewModel : IDTO
+    public class RegisterUserDTO : IDTO
     {
         [Required]
         [DataType(DataType.EmailAddress)]

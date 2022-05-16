@@ -1,15 +1,13 @@
 ﻿using FluentValidation;
 using SmartWork.Core.DTOs.CompanyDTOs;
 
-namespace SmartWork.Utils.Validators
+namespace SmartWork.Utils.Validators.CompanyValidators
 {
-    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyDTO>
+    public class AddCompanyValidator : AbstractValidator<AddCompanyDTO>
     {
-        public UpdateCompanyValidator()
+        public AddCompanyValidator()
         {
-            RuleFor(x => x.Id).NotEmpty().NotNull();
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(256).Matches(@"^\D+$")
-                .WithMessage("Please, specify a company name");
+            RuleFor(x => x.Name).ObjectName();
             RuleFor(x => x.Address).Address();
             RuleFor(x => x.PhoneNumber).PhoneNumber();
             RuleFor(x => x.Description).MaximumLength(512);

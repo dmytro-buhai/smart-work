@@ -1,16 +1,17 @@
 ﻿using FluentValidation;
-using SmartWork.Core.ViewModels.UserViewModels;
+using SmartWork.Core.DTOs.UserDTOs;
 
 namespace SmartWork.Utils.Validators
 {
-    public class SignUpUserValidator : AbstractValidator<SignInViewModel>
+    public class UpdateUserValidator : AbstractValidator<UpdateUserDTO>
     {
-        public SignUpUserValidator()
+        public UpdateUserValidator()
         {
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.FullName).NotEmpty().MaximumLength(128)
                 .WithMessage("Please, specify your full name");
-            RuleFor(x => x.Password).Password();
+            RuleFor(x => x.PhoneNumber).PhoneNumber();
+            RuleFor(x => x.DateOfBirth).BirthDate();
         }
     }
 }
