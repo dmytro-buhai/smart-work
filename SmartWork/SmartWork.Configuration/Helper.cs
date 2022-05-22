@@ -70,7 +70,8 @@ namespace SmartWork.Configuration
         {
             var companyService = serviceProvider.GetRequiredService<ICompanyService>();
             var officeService = serviceProvider.GetRequiredService<IOfficeService>();
-            var seed = new Seed(companyService, officeService);
+            var roomService = serviceProvider.GetRequiredService<IRoomService>();
+            var seed = new Seed(companyService, officeService, roomService);
             await seed.SeedData();
         }
     }

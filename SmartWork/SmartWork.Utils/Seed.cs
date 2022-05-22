@@ -2,6 +2,7 @@
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.DTOs.OfficeDTOs;
+using SmartWork.Core.DTOs.RoomDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,11 +12,13 @@ namespace SmartWork.Utils
     {
         private readonly ICompanyService _companyService;
         private readonly IOfficeService _officeService;
+        private readonly IRoomService _roomServise;
 
-        public Seed(ICompanyService companyService, IOfficeService officeService)
+        public Seed(ICompanyService companyService, IOfficeService officeService, IRoomService roomServise)
         {
             _companyService = companyService;
             _officeService = officeService;
+            _roomServise = roomServise;
         }
 
         public async Task SeedData()
@@ -75,6 +78,39 @@ namespace SmartWork.Utils
                     };
 
                     await _officeService.AddAsync(offices);
+                }
+            }
+
+            result = await _roomServise.AnyAsync();
+
+            if (result.GetType() == typeof(OkObjectResult))
+            {
+                var isAnyRooms = (bool)((OkObjectResult)result).Value;
+
+                if (!isAnyRooms)
+                {
+                    var rooms = new List<AddRoomDTO>
+                    {
+                        new AddRoomDTO
+                        {
+                            OfficeId = 2,
+                            Name = "SmartWork the best room",
+                            Number = "1",
+                            Square = "30",
+                            PhotoFileName = "default_room_photo_file_name",
+                        },
+                        new AddRoomDTO
+                        {
+                            OfficeId = 2,
+                            Name = "The best second room",
+                            Number = "2",
+                            Square = "35",
+                            PhotoFileName = "default_room_photo_file_name",
+                        },
+                    };
+
+                    await _roomServise.AddAsync(rooms[0]);
+                    await _roomServise.AddAsync(rooms[1]);
                 }
             }
         }

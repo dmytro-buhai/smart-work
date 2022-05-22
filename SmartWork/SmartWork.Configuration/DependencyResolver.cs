@@ -6,7 +6,6 @@ using SmartWork.BLL.Services.General;
 using SmartWork.Core.Abstractions.EntityConvertors;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
 using SmartWork.Data;
 using SmartWork.Data.Repositories;
@@ -37,18 +36,22 @@ namespace SmartWork.Configuration
             services.AddScoped<IUserRepository<User>, EFCoreUserRepository<User>>();
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
             services.AddScoped<IEntityRepository<Office>, EFCoreRepository<Office>>();
-            
+            services.AddScoped<IEntityRepository<Room>, EFCoreRepository<Room>>();
+
             // Register Entity Converters
             services.AddScoped<ICompanyEntityConverter, CompanyEntityConverter>();
             services.AddScoped<IOfficeEntityConverter, OfficeEntityConverter>();
+            services.AddScoped<IRoomEntityConverter, RoomEntityConverter>();
 
             // Register General Services
             services.AddScoped<IGeneralEntityService<Company>, GeneralCompanyService>();
             services.AddScoped<IGeneralEntityService<Office>, GeneralOfficeService>();
+            services.AddScoped<IGeneralEntityService<Room>, GeneralRoomService>();
 
             // Register Services
             services.AddScoped<ICompanyService, CompanyService>();           
             services.AddScoped<IOfficeService, OfficeService>();
+            services.AddScoped<IRoomService, RoomService>();
 
             //Register Attributes
             services.AddScoped<ValidationFilterAttribute>();

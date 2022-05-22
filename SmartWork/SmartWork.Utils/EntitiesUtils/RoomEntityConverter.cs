@@ -6,17 +6,30 @@ using System.Collections.Generic;
 
 namespace SmartWork.Utils.EntitiesUtils
 {
-    public class RoomEntityConverter :
-        IEntityConverter<Room, AddRoomDTO, UpdateRoomDTO>
+    public class RoomEntityConverter : IRoomEntityConverter
     {
         public IEnumerable<Room> ToEntities(IEnumerable<AddRoomDTO> transferObjects)
         {
-            throw new NotImplementedException();
+            var rooms = new List<Room>();
+
+            foreach (var transferObject in transferObjects)
+            {
+                rooms.Add(ToEntity(transferObject));
+            }
+
+            return rooms;
         }
 
         public IEnumerable<Room> ToEntities(IEnumerable<UpdateRoomDTO> transferObjects)
         {
-            throw new NotImplementedException();
+            var rooms = new List<Room>();
+
+            foreach (var transferObject in transferObjects)
+            {
+                rooms.Add(ToEntity(transferObject));
+            }
+
+            return rooms;
         }
 
         public Room ToEntity(AddRoomDTO transferObject)
