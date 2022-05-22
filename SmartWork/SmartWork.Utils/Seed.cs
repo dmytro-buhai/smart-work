@@ -59,21 +59,12 @@ namespace SmartWork.Utils
                     {
                         new AddOfficeDTO
                         {
-                            CompanyId = 2,
+                            CompanyId = 1,
                             Name = "SmartWork the best office",
                             Address = "SmartWork street, 61",
                             PhoneNumber = "0661234567",
                             PhotoFileName = "default_office_photo_file_name",
                             IsFavourite = true
-                        },
-                        new AddOfficeDTO
-                        {
-                            CompanyId = 2,
-                            Name = "Second SmartWork office",
-                            Address = "SmartWork street, 68",
-                            PhoneNumber = "0661209567",
-                            PhotoFileName = "default_office_photo_file_name",
-                            IsFavourite = false
                         }
                     };
 
@@ -93,24 +84,15 @@ namespace SmartWork.Utils
                     {
                         new AddRoomDTO
                         {
-                            OfficeId = 2,
+                            OfficeId = 1,
                             Name = "SmartWork the best room",
                             Number = "1",
                             Square = "30",
                             PhotoFileName = "default_room_photo_file_name",
-                        },
-                        new AddRoomDTO
-                        {
-                            OfficeId = 2,
-                            Name = "The best second room",
-                            Number = "2",
-                            Square = "35",
-                            PhotoFileName = "default_room_photo_file_name",
-                        },
+                        }
                     };
 
-                    await _roomServise.AddAsync(rooms[0]);
-                    await _roomServise.AddAsync(rooms[1]);
+                    await _roomServise.AddAsync(rooms);
                 }
             }
         }
