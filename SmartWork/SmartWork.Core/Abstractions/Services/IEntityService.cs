@@ -7,16 +7,20 @@ using System.Threading.Tasks;
 
 namespace SmartWork.Core.Abstractions.Services
 {
-    public interface IEntityService<TEntity> where TEntity : Entity
+    public interface IEntityService<TEntity, TAddDTO, TUpdateDTO>
+        where TEntity : Entity
+        where TAddDTO : IDTO
+        where TUpdateDTO : IDTO
     {
-        Task<TEntity> FindAsync(int id);
-        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
-        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
-        Task<IActionResult> AddAsync(TEntity entity);
-        Task<IActionResult> AddAsync(IEnumerable<TEntity> entities);
-        Task<IActionResult> UpdateAsync(TEntity entity);
-        Task<IActionResult> UpdateAsync(IEnumerable<TEntity> entities);
-        Task<IActionResult> RemoveAsync(TEntity entity);
-        Task<IActionResult> RemoveAsync(IEnumerable<TEntity> entities);
+        Task<IActionResult> AddAsync(TAddDTO model);
+        Task<IActionResult> AddAsync(IEnumerable<TAddDTO> models);
+        Task<IActionResult> FindAsync(int id);
+        Task<IActionResult> FindAsync(Expression<Func<TEntity, bool>> expression);
+        Task<IActionResult> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
+        Task<IActionResult> GetAsync(Expression<Func<TEntity, bool>> expression);
+        Task<IActionResult> RemoveAsync(TEntity company);
+        Task<IActionResult> RemoveAsync(IEnumerable<TEntity> companies);
+        Task<IActionResult> UpdateAsync(TUpdateDTO model);
+        Task<IActionResult> UpdateAsync(IEnumerable<TUpdateDTO> models);
     }
 }

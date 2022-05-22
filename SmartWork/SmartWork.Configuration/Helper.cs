@@ -3,18 +3,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using SmartWork.Configuration.Resources;
+using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
+using SmartWork.Utils;
 using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.Configuration
 {
-    internal static class Helper
+    public static class Helper
     {
         internal static string GetConfigurationRootPath(string relativePath)
         {
@@ -23,7 +22,7 @@ namespace SmartWork.Configuration
             return configurationRootPath;
         }
         
-        internal static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
+        public static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
         {
             using var reader = new StreamReader(pathToPassword);
             dbPassword = reader.ReadToEnd();
@@ -35,7 +34,7 @@ namespace SmartWork.Configuration
 
         internal static string GetLogFilePath()
         {
-            var logFilePath = HostSettingsResources.ResourceManager.GetString("LogFilePath");
+            var logFilePath = HostSettingsResources.ResourceManager.GetString("LogRelativeFilePath");
             return logFilePath;
         }
 
@@ -65,6 +64,15 @@ namespace SmartWork.Configuration
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             var rolesManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             await RoleInitializer.InitializeAsync(userManager, rolesManager);
+        }
+
+        internal static async Task SeedDataAsync(IServiceProvider serviceProvider)
+        {
+            var companyService = serviceProvider.GetRequiredService<ICompanyService>();
+            var officeService = serviceProvider.GetRequiredService<IOfficeService>();
+            var roomService = serviceProvider.GetRequiredService<IRoomService>();
+            var seed = new Seed(companyService, officeService, roomService);
+            await seed.SeedData();
         }
     }
 }

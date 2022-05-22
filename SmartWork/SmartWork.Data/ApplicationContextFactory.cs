@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using SmartWork.Configuration;
 using System.Reflection;
 
 namespace SmartWork.Data.AppContext
@@ -11,7 +10,7 @@ namespace SmartWork.Data.AppContext
 
         public ApplicationContext CreateDbContext(string[] args)
         {
-            var connectionString = DBSettings.GetDBConnectionString();
+            var connectionString = DataHelper.GetDBConnectionString();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>()
                 .UseSqlServer(connectionString,

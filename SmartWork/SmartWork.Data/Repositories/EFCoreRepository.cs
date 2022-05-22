@@ -21,6 +21,11 @@ namespace SmartWork.Data.Repositories
             this.entities = this.context.Set<TEntity>();
         }
 
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null)
+        {
+            return expression == null ? this.entities.AnyAsync() : this.entities.AnyAsync(expression);
+        }
+
         public virtual Task AddAsync(TEntity entity)
         {
             return this.entities.AddAsync(entity).AsTask();
@@ -41,9 +46,9 @@ namespace SmartWork.Data.Repositories
             return this.entities.FirstOrDefaultAsync(expression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
         {
-            return await this.entities.Where(expression).ToListAsync();
+            return Task.FromResult(this.entities.Where(expression).AsEnumerable());
         }
 
         public virtual Task RemoveAsync(TEntity entities)

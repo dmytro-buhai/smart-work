@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SmartWork.Core.ViewModels.UserViewModels;
+using SmartWork.Core.DTOs.UserDTOs;
 using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -9,11 +9,11 @@ namespace SmartWork.Core.Abstractions.Services
 {
     public interface IUserService<TEntity> where TEntity : IdentityUser
     {
-        Task<UserInfoViewModel> GetUserInfoAsync(string id);
-        Task<UserInfoViewModel> GetUserInfoAsync(Expression<Func<TEntity, bool>> expression);
-        Task<IdentityResult> SignInAsync(SignInViewModel model);
-        Task<IdentityResult> SingUpAsync(SignUpViewModel model);
-        Task<IdentityResult> UpdateAsync(EditUserViewModel model);
+        Task<InfoUserDTO> GetUserInfoAsync(string id);
+        Task<InfoUserDTO> GetUserInfoAsync(Expression<Func<TEntity, bool>> expression);
+        Task<IdentityResult> LoginAsync(LoginUserDTO transferObject);
+        Task<IdentityResult> RegisterAsync(RegisterUserDTO transferObject);
+        Task<IdentityResult> UpdateAsync(UpdateUserDTO transferObject);
         Task<IActionResult> Logout();
     }
 }
