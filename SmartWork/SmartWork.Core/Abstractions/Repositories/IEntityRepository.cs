@@ -1,0 +1,23 @@
+﻿using SmartWork.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+
+namespace SmartWork.Core.Abstractions.Repositories
+{
+    public interface IEntityRepository<TEntity> where TEntity : Entity
+    {
+        Task<TEntity> FindAsync(int id);
+        Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
+        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
+        Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression);
+        Task AddAsync(TEntity entity);
+        Task AddAsync(IEnumerable<TEntity> entities);
+        Task UpdateAsync(TEntity entity);
+        Task UpdateAsync(IEnumerable<TEntity> entities);
+        Task RemoveAsync(TEntity entities);
+        Task RemoveAsync(IEnumerable<TEntity> entities);
+        Task SaveChangesAsync();
+    }
+}
