@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.Entities;
@@ -22,24 +23,27 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> IsAnyAsync() =>
             _roomService.AnyAsync();
 
-        [HttpGet("GetRooms")]
+        [HttpGet("List")]
         public Task<IActionResult> Get() =>
             _roomService.GetAsync(c => c.Id != 0);
 
-        [HttpGet("FindById")]
+        [HttpGet("FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _roomService.FindAsync(id);
 
+        [Authorize]
         [HttpPost("Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddRoomDTO model) =>
             _roomService.AddAsync(model);
 
+        [Authorize]
         [HttpPut("Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateRoomDTO model) =>
             _roomService.UpdateAsync(model);
 
+        [Authorize]
         [HttpDelete("Delete")]
         public Task<IActionResult> Delete(Room company) =>
             _roomService.RemoveAsync(company);

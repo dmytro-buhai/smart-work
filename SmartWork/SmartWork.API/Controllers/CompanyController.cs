@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
@@ -23,24 +25,27 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> IsAnyAsync() => 
             _companyService.AnyAsync();
         
-        [HttpGet("GetCompanies")]
+        [HttpGet("List")]
         public Task<IActionResult> Get() => 
             _companyService.GetAsync(c => c.Id != 0);
 
-        [HttpGet("FindById")]
+        [HttpGet("FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _companyService.FindAsync(id);
 
+        [Authorize]
         [HttpPost("Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddCompanyDTO model) => 
             _companyService.AddAsync(model);
 
+        [Authorize]
         [HttpPut("Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateCompanyDTO model) =>
              _companyService.UpdateAsync(model);
 
+        [Authorize]
         [HttpDelete("Delete")]
         public Task<IActionResult> Delete(Company company) =>
              _companyService.RemoveAsync(company);

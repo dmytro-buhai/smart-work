@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartWork.BLL.Services;
@@ -14,24 +13,18 @@ using SmartWork.Data.Repositories;
 using SmartWork.Utils.ActionFilters;
 using SmartWork.Utils.EntitiesUtils;
 
-namespace SmartWork.Configuration
+namespace SmartWork.Configuration.Extensions
 {
-    public class DependencyResolver
+    public static class ApplicationServiceExtensions
     {
-        public DependencyResolver(IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services,
+               IConfiguration config)
         {
-            ConfigureServices(services);
-        }
+            services.Configure<ApplicationSettings>(config.GetSection("ApplicationSettings"));
 
-        private void ConfigureServices(IServiceCollection services)
-        {
             // Register DbContext class
             services.AddDbContext<ApplicationContext>(options =>
                  options.UseSqlServer(DBSettings.GetDBConnectionString()));
-
-            // Autentification
-            services.AddScoped<UserManager<User>>();
-            services.AddScoped<SignInManager<User>>();
 
             // Register Repositories
             services.AddScoped<IUserRepository<User>, EFCoreUserRepository<User>>();
@@ -51,7 +44,7 @@ namespace SmartWork.Configuration
 
             // Register Services
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ICompanyService, CompanyService>();           
+            services.AddScoped<ICompanyService, CompanyService>();
             services.AddScoped<IOfficeService, OfficeService>();
             services.AddScoped<IRoomService, RoomService>();
 
@@ -60,6 +53,10 @@ namespace SmartWork.Configuration
 
             // JWT service
             services.AddScoped<JwtService>();
+
+            services.AddAuthentication();
+
+            return services;
         }
     }
 }

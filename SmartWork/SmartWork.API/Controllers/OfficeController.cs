@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.OfficeDTOs;
 using SmartWork.Core.Entities;
@@ -22,24 +23,27 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> IsAnyAsync() =>
            _officeService.AnyAsync();
 
-        [HttpGet("GetOffices")]
+        [HttpGet("List")]
         public Task<IActionResult> Get() =>
             _officeService.GetAsync(c => c.Id != 0);
 
-        [HttpGet("FindById")]
+        [HttpGet("FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _officeService.FindAsync(id);
 
+        [Authorize]
         [HttpPost("Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddOfficeDTO model) =>
             _officeService.AddAsync(model);
 
+        [Authorize]
         [HttpPut("Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateOfficeDTO model) =>
              _officeService.UpdateAsync(model);
 
+        [Authorize]
         [HttpDelete("Delete")]
         public Task<IActionResult> Delete(Office company) =>
              _officeService.RemoveAsync(company);

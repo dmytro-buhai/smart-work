@@ -1,16 +1,24 @@
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SmartWork.BLL.Services;
 using SmartWork.Configuration;
+using SmartWork.Configuration.Extensions;
+using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Data;
 using SmartWork.Utils;
 using SmartWork.Utils.Middlewares;
+using System;
+using System.Text;
 
 namespace SmartWork.API
 {
@@ -18,33 +26,20 @@ namespace SmartWork.API
     {
         private readonly IConfiguration _config;
 
-        public Startup(IConfiguration config)
+        public Startup()
         {
-            _config = config;
+            _config = ConfigurationSettings.GetConfiguration();
         }
  
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers().AddFluentValidation(config => {
+                config.RegisterValidatorsFromAssemblyContaining<AssemblyIdentifier>();
+            });
 
-            // AddIdentity 
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedAccount = false;
-            }).AddEntityFrameworkStores<ApplicationContext>();
-
-            // Dependencies
-            var resolver = new DependencyResolver(services);
-
-            // FluentValidation
-            services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AssemblyIdentifier>());
+            services.AddApplicationServices(_config);
+            services.AddIdentityServices(_config);
 
             // Swagger
             services.AddSwaggerGen(c =>
@@ -65,7 +60,14 @@ namespace SmartWork.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.Use(async (ctx, next) =>
+            {
+                await next();
+                if (ctx.Response.StatusCode == 204)
+                {
+                    ctx.Response.ContentLength = 0;
+                }
+            });
 
             if (env.IsDevelopment())
             {
@@ -78,6 +80,9 @@ namespace SmartWork.API
 
             app.UseRouting();
 
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             // Custom Middlewares

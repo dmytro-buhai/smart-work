@@ -10,7 +10,6 @@ namespace SmartWork.Utils.Validators
             RuleFor(x => x.Email).EmailAddress();
             RuleFor(x => x.FullName).NotEmpty().MaximumLength(128)
                 .WithMessage("Please, specify your full name");
-            RuleFor(x => x.Password).Password();
             RuleFor(x => x.PhoneNumber).PhoneNumber();
             RuleFor(x => x.DateOfBirth).BirthDate();
             RuleFor(x => x.Password).Password();
