@@ -24,7 +24,8 @@ namespace SmartWork.Core.Abstractions.Services
         Task<User> GetUserByIdAsync(string id);
         //Task<IEnumerable<Subscribe>> GetUserSubscribesAsync(string id);
         Task<ActionResult<UserDTO>> LoginAsync(LoginUserDTO transferObject);
-        Task<IdentityResult> RegisterAsync(RegisterUserDTO transferObject);
+        Task<ActionResult<UserDTO>> RegisterAsync(RegisterUserDTO transferObject);
+        Task<ActionResult<UserDTO>> GetCurrentUserAsync(string email);
         Task<IdentityResult> UpdateAsync(UpdateUserDTO transferObject);
         Task<IdentityResult> ChangePasswordAsync(ChangePasswordDTO transferObject);
         Task<IdentityResult> DeleteAsync(string id);

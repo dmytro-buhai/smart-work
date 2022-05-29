@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Core.Entities;
 using SmartWork.Utils.ActionFilters;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
@@ -39,28 +41,6 @@ namespace SmartWork.API.Controllers
         public Task<User> GetUserById(string id)
         {
             return _userService.GetUserByIdAsync(id);
-        }
-
-        // POST: api/User/Login
-        [HttpPost("Login")]
-        public Task<ActionResult<UserDTO>> Login(LoginUserDTO model)
-        {
-            return _userService.LoginAsync(model);
-        }
-
-        // POST: api/User/Register
-        [HttpPost("Register")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IdentityResult> Register(RegisterUserDTO transferObject)
-        {
-            return _userService.RegisterAsync(transferObject);
-        }
-
-        // POST: api/User/Logout
-        [HttpPost("Logout")]
-        public Task<ActionResult> Logout()
-        {
-            return _userService.Logout();
         }
 
         // PUT: api/User/Update

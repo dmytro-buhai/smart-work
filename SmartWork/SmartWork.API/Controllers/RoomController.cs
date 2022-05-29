@@ -19,32 +19,32 @@ namespace SmartWork.API.Controllers
             _roomService = roomService;
         }
 
-        [HttpGet("IsAny")]
+        [AllowAnonymous]
+        [HttpGet("Rooms/IsAny")]
         public Task<IActionResult> IsAnyAsync() =>
             _roomService.AnyAsync();
 
-        [HttpGet("List")]
+        [AllowAnonymous]
+        [HttpGet("Rooms/List")]
         public Task<IActionResult> Get() =>
             _roomService.GetAsync(c => c.Id != 0);
 
-        [HttpGet("FindById/{id}")]
+        [AllowAnonymous]
+        [HttpGet("[controller]/FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _roomService.FindAsync(id);
 
-        [Authorize]
-        [HttpPost("Add")]
+        [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddRoomDTO model) =>
             _roomService.AddAsync(model);
 
-        [Authorize]
-        [HttpPut("Update")]
+        [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateRoomDTO model) =>
             _roomService.UpdateAsync(model);
 
-        [Authorize]
-        [HttpDelete("Delete")]
+        [HttpDelete("[controller]/Delete")]
         public Task<IActionResult> Delete(Room company) =>
             _roomService.RemoveAsync(company);
     }

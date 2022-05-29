@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using SmartWork.Core.Abstractions.Repositories;
@@ -134,12 +135,7 @@ namespace SmartWork.BLL.Services
 
             if (result.Succeeded)
             {
-                return new UserDTO
-                {
-                    DisplayName = user.FullName,
-                    Username = user.Email,
-                    Token = _tokenService.CreateToken(user)
-                };
+                return CreateUserObject(user);
             }
 
             return new UnauthorizedResult();
@@ -150,9 +146,15 @@ namespace SmartWork.BLL.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public async Task<IdentityResult> RegisterAsync(RegisterUserDTO transferObject)
+        public async Task<ActionResult<UserDTO>> RegisterAsync(RegisterUserDTO transferObject)
         {
             const string userRole = "user";
+
+            if (await _userManager.Users.AnyAsync(x => x.Email == transferObject.Email))
+            {
+                return new BadRequestObjectResult("Email taken");
+            }
+            
             var user = new User
             {
                 Email = transferObject.Email,
@@ -163,12 +165,30 @@ namespace SmartWork.BLL.Services
             };
 
             var result = await _userManager.CreateAsync(user, transferObject.Password);
+
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, userRole);
-                await _signInManager.SignInAsync(user, false);
+                return CreateUserObject(user);
             }
-            return result;
+
+            return new BadRequestObjectResult("An error during user registration");
+        }
+
+        public async Task<ActionResult<UserDTO>> GetCurrentUserAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return CreateUserObject(user);
+        }
+
+        private UserDTO CreateUserObject(User user)
+        {
+            return new UserDTO
+            {
+                DisplayName = user.FullName,
+                Username = user.Email,
+                Token = _tokenService.CreateToken(user)
+            };
         }
 
         /// <summary>

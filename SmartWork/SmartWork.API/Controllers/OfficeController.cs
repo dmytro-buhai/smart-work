@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class OfficeController : ControllerBase
     {
@@ -19,32 +19,32 @@ namespace SmartWork.API.Controllers
             _officeService = officeService;
         }
 
-        [HttpGet("IsAny")]
+        [AllowAnonymous]
+        [HttpGet("Offices/IsAny")]
         public Task<IActionResult> IsAnyAsync() =>
            _officeService.AnyAsync();
 
-        [HttpGet("List")]
+        [AllowAnonymous]
+        [HttpGet("Offices/List")]
         public Task<IActionResult> Get() =>
             _officeService.GetAsync(c => c.Id != 0);
 
-        [HttpGet("FindById/{id}")]
+        [AllowAnonymous]
+        [HttpGet("[controller]/FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _officeService.FindAsync(id);
 
-        [Authorize]
-        [HttpPost("Add")]
+        [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddOfficeDTO model) =>
             _officeService.AddAsync(model);
 
-        [Authorize]
-        [HttpPut("Update")]
+        [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Update(UpdateOfficeDTO model) =>
              _officeService.UpdateAsync(model);
 
-        [Authorize]
-        [HttpDelete("Delete")]
+        [HttpDelete("[controller]/Delete")]
         public Task<IActionResult> Delete(Office company) =>
              _officeService.RemoveAsync(company);
     }
