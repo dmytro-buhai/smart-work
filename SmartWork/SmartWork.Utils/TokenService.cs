@@ -1,17 +1,24 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SmartWork.Utils
 {
     public class TokenService
     {
+        private readonly ApplicationSettings _appSettings;
+
+        public TokenService(IOptions<ApplicationSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }
+
         public string CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -21,7 +28,7 @@ namespace SmartWork.Utils
                 new Claim(ClaimTypes.Email, user.Email),
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1234567890123456"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.JWT_Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor

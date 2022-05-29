@@ -1,22 +1,17 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Core.Entities;
-using SmartWork.Core.Models;
 using SmartWork.Utils;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
@@ -24,7 +19,6 @@ namespace SmartWork.BLL.Services
     public class UserService : IUserService
     {
         private readonly IUserRepository<User> _repository;
-        private readonly ApplicationSettings _appSettings;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly TokenService _tokenService;
@@ -32,14 +26,12 @@ namespace SmartWork.BLL.Services
         //private readonly ISubscribeService _subscribeService;
 
         public UserService(IUserRepository<User> repository,
-            IOptions<ApplicationSettings> applicationSettings,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             TokenService tokenService,
             ILogger<UserService> logger)
         {
             _repository = repository;
-            _appSettings = applicationSettings.Value;
             _userManager = userManager;
             _signInManager = signInManager;
             _tokenService = tokenService;

@@ -18,4 +18,19 @@
     <ProjectReference Include="..\SmartWork.Utils\SmartWork.Utils.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Properties\Resources\HostSettingsResources.Designer.cs">
+      <DependentUpon>HostSettingsResources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources\HostSettingsResources.resx">
+      <LastGenOutput>HostSettingsResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

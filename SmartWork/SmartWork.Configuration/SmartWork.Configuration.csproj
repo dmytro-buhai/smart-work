@@ -25,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Resources\HostSettingsResources.Designer.cs">
+    <Compile Update="Resources\LogResources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
-      <DependentUpon>HostSettingsResources.resx</DependentUpon>
+      <DependentUpon>LogResources.resx</DependentUpon>
     </Compile>
     <Compile Update="Resources\RoleInitializerResources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -38,9 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\HostSettingsResources.resx">
+    <EmbeddedResource Update="Resources\LogResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>HostSettingsResources.Designer.cs</LastGenOutput>
+      <LastGenOutput>LogResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\RoleInitializerResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

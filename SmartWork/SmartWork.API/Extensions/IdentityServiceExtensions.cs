@@ -4,15 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Data;
 using SmartWork.Utils;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SmartWork.Configuration.Extensions
+namespace SmartWork.API.Extensions
 {
     public static class IdentityServiceExtensions
     {

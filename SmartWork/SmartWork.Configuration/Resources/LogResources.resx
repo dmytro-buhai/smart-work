@@ -117,22 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AppSettingsName" xml:space="preserve">
-    <value>appsettings.json</value>
-  </data>
   <data name="FileOutputTemplate" xml:space="preserve">
     <value>{Timestamp} {Message}{NewLine:1}{Exception:1}</value>
   </data>
-  <data name="LogApplicationFatal" xml:space="preserve">
-    <value>The Application failed to start.</value>
-  </data>
-  <data name="LogApplicationStartInformation" xml:space="preserve">
-    <value>Application starting...</value>
-  </data>
   <data name="LogRelativeFilePath" xml:space="preserve">
     <value>Logs/log-.txt</value>
-  </data>
-  <data name="LogSeedingDBError" xml:space="preserve">
-    <value>An error occurred while seeding the database.</value>
   </data>
 </root>

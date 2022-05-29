@@ -38,7 +38,7 @@ namespace SmartWork.Utils.EntitiesUtils
             {
                 OfficeId = transferObject.OfficeId,
                 Name = transferObject.Name,
-                Number = transferObject.Number == string.Empty ? null : Convert.ToInt32(transferObject.Number),
+                Number = transferObject.Number,
                 Square = Convert.ToInt32(transferObject.Square),
                 PhotoFileName = transferObject.PhotoFileName
             };
@@ -51,7 +51,7 @@ namespace SmartWork.Utils.EntitiesUtils
                 Id = transferObject.Id,
                 OfficeId = transferObject.OfficeId,
                 Name = transferObject.Name,
-                Number = transferObject.Number == string.Empty ? null : Convert.ToInt32(transferObject.Number),
+                Number = transferObject.Number,
                 Square = Convert.ToInt32(transferObject.Square),
                 PhotoFileName = transferObject.PhotoFileName,
                 Equipment = transferObject.Equipment

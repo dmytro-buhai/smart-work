@@ -9,7 +9,7 @@ namespace SmartWork.Configuration
         {
             var configuration = ConfigurationSettings.GetConfiguration();
             var dataBaseConnectionString = configuration.GetConnectionString("DataBaseConnection");
-            Helper.GetSecurePasswordForDb(PATH_TO_PASSWORD, out string dbPassword);
+            Helper.GetSecurePasswordForDB(PATH_TO_PASSWORD, out string dbPassword);
             dataBaseConnectionString = dataBaseConnectionString.Replace("********", dbPassword);
             return dataBaseConnectionString;
         }

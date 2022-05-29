@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SmartWork.BLL.Services;
 using SmartWork.BLL.Services.General;
+using SmartWork.Configuration;
 using SmartWork.Core.Abstractions.EntityConvertors;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
@@ -13,7 +14,7 @@ using SmartWork.Data.Repositories;
 using SmartWork.Utils.ActionFilters;
 using SmartWork.Utils.EntitiesUtils;
 
-namespace SmartWork.Configuration.Extensions
+namespace SmartWork.API.Extensions
 {
     public static class ApplicationServiceExtensions
     {
@@ -21,6 +22,15 @@ namespace SmartWork.Configuration.Extensions
                IConfiguration config)
         {
             services.Configure<ApplicationSettings>(config.GetSection("ApplicationSettings"));
+
+            // Enable CORS   
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options
+                            .AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+            });
 
             // Register DbContext class
             services.AddDbContext<ApplicationContext>(options =>

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using SmartWork.Configuration;
 using System.Threading.Tasks;
 
 namespace SmartWork.API
