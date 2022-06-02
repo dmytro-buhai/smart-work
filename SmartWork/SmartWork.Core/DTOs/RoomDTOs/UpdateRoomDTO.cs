@@ -20,6 +20,9 @@ namespace SmartWork.Core.DTOs.RoomDTOs
         [Display(Name = "Room Square")]
         public string Square { get; set; }
 
+        [Display(Name = "Amount of workplaces")]
+        public int AmountOfWorkplaces { get; set; }
+
         [Display(Name = "Room photo")]
         public string PhotoFileName { get; set; }
 

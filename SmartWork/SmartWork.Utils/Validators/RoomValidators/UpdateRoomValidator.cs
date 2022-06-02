@@ -13,6 +13,7 @@ namespace SmartWork.Utils.Validators.RoomValidators
             RuleFor(x => x.Name).ObjectName();
             RuleFor(x => x.Number).Matches(@"^\w+$");
             RuleFor(x => x.Square).Matches(@"^\d+$");
+            RuleFor(x => x.AmountOfWorkplaces).GreaterThan(0);
             RuleFor(x => x.PhotoFileName).PhotoFileName();
         }
     }
