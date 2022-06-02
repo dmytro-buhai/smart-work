@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -19,7 +20,7 @@ namespace SmartWork.Core.Abstractions.Services
         //Task<IdentityResult> UpdateAsync(UpdateUserDTO transferObject);
        
 
-        Task<IEnumerable<User>> GetUsersAsync(Expression<Func<User, bool>> expression);
+        Task<List<User>> GetUsersAsync(PageInfo pageInfo);
         Task<InfoUserDTO> GetUserProfileAsync(ClaimsPrincipal user);
         Task<User> GetUserByIdAsync(string id);
         //Task<IEnumerable<Subscribe>> GetUserSubscribesAsync(string id);

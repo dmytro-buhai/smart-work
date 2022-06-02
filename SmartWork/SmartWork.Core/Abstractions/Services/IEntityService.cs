@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -17,7 +18,8 @@ namespace SmartWork.Core.Abstractions.Services
         Task<IActionResult> FindAsync(int id);
         Task<IActionResult> FindAsync(Expression<Func<TEntity, bool>> expression);
         Task<IActionResult> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
-        Task<IActionResult> GetAsync(Expression<Func<TEntity, bool>> expression);
+        Task<IActionResult> GetAsync(PageInfo pageInfo);
+        Task<IActionResult> GetAsyncWithInclude(PageInfo pageInfo, string includeName);
         Task<IActionResult> RemoveAsync(TEntity company);
         Task<IActionResult> RemoveAsync(IEnumerable<TEntity> companies);
         Task<IActionResult> UpdateAsync(TUpdateDTO model);

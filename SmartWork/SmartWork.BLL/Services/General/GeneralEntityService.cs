@@ -2,6 +2,7 @@
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -22,7 +23,7 @@ namespace SmartWork.BLL.Services.General
             _logger = logger;
         }
 
-        public Task<bool> AddAsync(TEntity entity)
+        public virtual Task<bool> AddAsync(TEntity entity)
         {
             try
             {
@@ -91,11 +92,24 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public Task<List<TEntity>> GetAsync(PageInfo pageInfo)
         {
             try
             {
-                return _repository.GetAsync(expression);
+                return _repository.GetAsync(pageInfo);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Concat(GetType().Name, " : ", "GetAsync -> ", ex.Message));
+                return default;
+            }
+        }
+
+        public Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
+        {
+            try
+            {
+                return _repository.GetAsyncWithInclude(pageInfo, includeName);
             }
             catch (Exception ex)
             {

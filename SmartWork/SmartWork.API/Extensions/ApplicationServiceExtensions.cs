@@ -41,11 +41,16 @@ namespace SmartWork.API.Extensions
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
             services.AddScoped<IEntityRepository<Office>, EFCoreRepository<Office>>();
             services.AddScoped<IEntityRepository<Room>, EFCoreRepository<Room>>();
+            services.AddScoped<IEntityRepository<Statistic>, EFCoreRepository<Statistic>>();
 
             // Register Entity Converters
             services.AddScoped<ICompanyEntityConverter, CompanyEntityConverter>();
             services.AddScoped<IOfficeEntityConverter, OfficeEntityConverter>();
             services.AddScoped<IRoomEntityConverter, RoomEntityConverter>();
+            services.AddScoped<IStatisticEntityConverter, StatisticEntityConverter>();
+
+            // Register first
+            services.AddScoped<IStatisticService, StatisticService>();
 
             // Register General Services
             services.AddScoped<IGeneralEntityService<Company>, GeneralCompanyService>();

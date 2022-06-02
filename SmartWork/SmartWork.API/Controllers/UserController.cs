@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -22,37 +23,32 @@ namespace SmartWork.API.Controllers
             _userService = userService;
         }
 
-        // GET: api/Users
-        [HttpGet("List")]
-        public async Task<IEnumerable<User>> GetUsers()
+        [HttpPost("Users/List")]
+        public async Task<List<User>> GetUsers(PageInfo pageInfo)
         {
-            return await _userService.GetUsersAsync((u => u.Id != string.Empty));
+            return await _userService.GetUsersAsync(pageInfo);
         }
 
-        // GET: api/User/Profile
-        [HttpGet("Profile")]
+        [HttpGet("[controller]/Profile")]
         public Task<InfoUserDTO> GetUserProfile()
         {
             return _userService.GetUserProfileAsync(this.User);
         }
 
-        // POST: api/User/5
-        [HttpPost("{id}")]
+        [HttpPost("[controller]/{id}")]
         public Task<User> GetUserById(string id)
         {
             return _userService.GetUserByIdAsync(id);
         }
 
-        // PUT: api/User/Update
-        [HttpPut("Update")]
+        [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IdentityResult> Update(UpdateUserDTO transferObject)
         {
             return _userService.UpdateAsync(transferObject);
         }
 
-        // DELETE: api/User/Delete/5
-        [HttpDelete("Delete/{id}")]
+        [HttpDelete("[controller]/Delete/{id}")]
         public Task<IdentityResult> Delete(string id)
         {
             return _userService.DeleteAsync(id);

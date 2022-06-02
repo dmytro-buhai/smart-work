@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartWork.Core.Enums
+﻿namespace SmartWork.Core.Enums
 {
     public enum StatisticType
     {
+        NotSet,
         Attendance,
-        Room
+        Climate,
+        Lighting
     }
 }

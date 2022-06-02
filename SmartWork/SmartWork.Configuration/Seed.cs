@@ -1,5 +1,6 @@
 ﻿using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace SmartWork.Configuration
 
         public async Task SeedData()
         {
+            var pageInfo = new PageInfo { CountItems = 1 };
             var isAnyCompanies = await _companyService.AnyAsync();
 
             if (!isAnyCompanies)
@@ -44,7 +46,7 @@ namespace SmartWork.Configuration
             {
                 var office = new Office
                 {
-                    CompanyId = (await _companyService.GetAsync(c => c.Id != -1)).ToList().FirstOrDefault().Id,
+                    CompanyId = (await _companyService.GetAsync(pageInfo)).FirstOrDefault().Id,
                     Name = "SmartWork the best office",
                     Address = "SmartWork street, 61",
                     PhoneNumber = "0661234567",
@@ -61,7 +63,7 @@ namespace SmartWork.Configuration
             {
                 var room = new Room
                 {
-                    OfficeId = (await _officeService.GetAsync(c => c.Id != -1)).ToList().FirstOrDefault().Id,
+                    OfficeId = (await _officeService.GetAsync(pageInfo)).FirstOrDefault().Id,
                     Name = "SmartWork the best room",
                     Number = "1a",
                     Square = 30,

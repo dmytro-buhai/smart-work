@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,9 @@ namespace SmartWork.Data.Repositories
             return expression == null ? this.entities.AnyAsync() : this.entities.AnyAsync(expression);
         }
 
-        public virtual Task AddAsync(TEntity entity)
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
-            return this.entities.AddAsync(entity).AsTask();
+            return (await this.entities.AddAsync(entity)).Entity;
         }
 
         public virtual Task AddAsync(IEnumerable<TEntity> entities)
@@ -46,9 +47,19 @@ namespace SmartWork.Data.Repositories
             return this.entities.FirstOrDefaultAsync(expression);
         }
 
-        public virtual Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual Task<List<TEntity>> GetAsync(PageInfo pageInfo, Expression<Func<TEntity, bool>> expression = null)
         {
-            return Task.FromResult(this.entities.Where(expression).AsEnumerable());
+            if (expression != null)
+            {
+                return this.entities.Where(expression).Take(pageInfo.CountItems).ToListAsync();
+            }
+
+            return this.entities.Take(pageInfo.CountItems).ToListAsync();
+        }
+
+        public virtual Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
+        {
+            return this.entities.Take(pageInfo.CountItems).Include(includeName).ToListAsync();
         }
 
         public virtual Task RemoveAsync(TEntity entities)

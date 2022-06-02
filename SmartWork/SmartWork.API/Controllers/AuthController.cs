@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Utils.ActionFilters;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -18,12 +20,14 @@ namespace SmartWork.API.Controllers
             _userService = userService;
         }
 
+        [AllowAnonymous]
         [HttpPost("Login")]
         public Task<ActionResult<UserDTO>> Login(LoginUserDTO model)
         {
             return _userService.LoginAsync(model);
         }
 
+        [AllowAnonymous]
         [HttpPost("Register")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<ActionResult<UserDTO>> Register(RegisterUserDTO transferObject)

@@ -10,5 +10,6 @@ namespace SmartWork.Core.Entities
         public int Square { get; set; }
         public string PhotoFileName { get; set; }
         public virtual ICollection<Equipment> Equipment { get; set; }
+        public virtual ICollection<Statistic> Statistics { get; set; }
     }
 }

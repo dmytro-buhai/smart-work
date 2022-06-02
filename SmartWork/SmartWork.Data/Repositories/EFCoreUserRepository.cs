@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SmartWork.Core.Abstractions.Repositories;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,11 +43,16 @@ namespace SmartWork.Data.Repositories
             return this.entities.FirstOrDefaultAsync(expression);
         }
 
-        public virtual async Task<IEnumerable<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual Task<List<TEntity>> GetAsync(PageInfo pageInfo, Expression<Func<TEntity, bool>> expression = null)
         {
-            return await this.entities.Where(expression).ToListAsync();
+            if (expression != null)
+            {
+                return this.entities.Where(expression).Take(pageInfo.CountItems).ToListAsync();
+            }
+
+            return this.entities.Take(pageInfo.CountItems).ToListAsync();
         }
- 
+
         public virtual Task RemoveAsync(TEntity entities)
         {
             this.entities.Remove(entities);

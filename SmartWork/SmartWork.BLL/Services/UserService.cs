@@ -7,6 +7,7 @@ using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.UserDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Utils;
 using System;
 using System.Collections.Generic;
@@ -45,9 +46,9 @@ namespace SmartWork.BLL.Services
         /// </summary>
         /// <param name="specification"></param>
         /// <returns></returns>
-        public Task<IEnumerable<User>> GetUsersAsync(Expression<Func<User, bool>> expression)
+        public Task<List<User>> GetUsersAsync(PageInfo pageInfo)
         {
-            return _repository.GetAsync(expression);
+            return _repository.GetAsync(pageInfo);
         }
 
         /// <summary>

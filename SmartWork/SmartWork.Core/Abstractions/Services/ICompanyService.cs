@@ -5,5 +5,6 @@ namespace SmartWork.Core.Abstractions.Services
 {
     public interface ICompanyService : IEntityService<Company, AddCompanyDTO, UpdateCompanyDTO>
     {
+          
     }
 }

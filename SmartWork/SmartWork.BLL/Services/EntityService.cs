@@ -81,9 +81,14 @@ namespace SmartWork.BLL.Services
             return new OkObjectResult(await _generalEntityService.AnyAsync(expression));
         }
 
-        public async Task<IActionResult> GetAsync(Expression<Func<TEntity, bool>> expression)
+        public async Task<IActionResult> GetAsync(PageInfo pageInfo)
         {
-            return new OkObjectResult(await _generalEntityService.GetAsync(expression));
+            return new OkObjectResult(await _generalEntityService.GetAsync(pageInfo));
+        }
+
+        public async Task<IActionResult> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
+        {
+            return new OkObjectResult(await _generalEntityService.GetAsyncWithInclude(pageInfo, includeName));
         }
 
         public async Task<IActionResult> RemoveAsync(TEntity entity)

@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class RoomController : ControllerBase
     {
@@ -25,9 +26,14 @@ namespace SmartWork.API.Controllers
             _roomService.AnyAsync();
 
         [AllowAnonymous]
-        [HttpGet("Rooms/List")]
-        public Task<IActionResult> Get() =>
-            _roomService.GetAsync(c => c.Id != 0);
+        [HttpPost("Rooms/List")]
+        public Task<IActionResult> Get(PageInfo pageInfo) =>
+            _roomService.GetAsync(pageInfo);
+
+        [AllowAnonymous]
+        [HttpPost("RoomsWithStatistics/List")]
+        public Task<IActionResult> GetWithStatistics(PageInfo pageInfo) =>
+            _roomService.GetAsyncWithInclude(pageInfo, "Statistics");
 
         [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]

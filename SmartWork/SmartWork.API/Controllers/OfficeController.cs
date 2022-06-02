@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.OfficeDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 
@@ -25,9 +26,9 @@ namespace SmartWork.API.Controllers
            _officeService.AnyAsync();
 
         [AllowAnonymous]
-        [HttpGet("Offices/List")]
-        public Task<IActionResult> Get() =>
-            _officeService.GetAsync(c => c.Id != 0);
+        [HttpPost("Offices/List")]
+        public Task<IActionResult> Get(PageInfo pageInfo) =>
+            _officeService.GetAsync(pageInfo);
 
         [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]

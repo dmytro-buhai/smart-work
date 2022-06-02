@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 
 
 namespace SmartWork.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class CompanyController : ControllerBase
     {
@@ -26,9 +27,9 @@ namespace SmartWork.API.Controllers
             _companyService.AnyAsync();
 
         [AllowAnonymous]
-        [HttpGet("Companies/List")]
-        public Task<IActionResult> Get() => 
-            _companyService.GetAsync(c => c.Id != 0);
+        [HttpPost("Companies/List")]
+        public Task<IActionResult> Get(PageInfo pageInfo) => 
+            _companyService.GetAsync(pageInfo);
 
         [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]
