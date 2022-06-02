@@ -34,10 +34,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalEntityService.AddAsync(entity))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> AddAsync(IEnumerable<TAddDTO> transferObjects)
@@ -46,10 +46,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalEntityService.AddAsync(entities))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> FindAsync(int id)
@@ -61,7 +61,7 @@ namespace SmartWork.BLL.Services
                 return new OkObjectResult(entity);
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> FindAsync(Expression<Func<TEntity, bool>> expression)
@@ -73,7 +73,7 @@ namespace SmartWork.BLL.Services
                 return new OkObjectResult(entity);
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> AnyAsync(Expression<Func<TEntity, bool>> expression = null)
@@ -95,20 +95,20 @@ namespace SmartWork.BLL.Services
         {
             if (await _generalEntityService.RemoveAsync(entity))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> RemoveAsync(IEnumerable<TEntity> entities)
         {
             if (await _generalEntityService.RemoveAsync(entities))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> UpdateAsync(TUpdateDTO transferObject)
@@ -117,10 +117,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalEntityService.UpdateAsync(entity))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         public async Task<IActionResult> UpdateAsync(IEnumerable<TUpdateDTO> transferObjects)
@@ -129,10 +129,10 @@ namespace SmartWork.BLL.Services
 
             if (await _generalEntityService.UpdateAsync(entities))
             {
-                return new OkObjectResult(Response.GetResponse(ResponseType.Success));
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
             }
 
-            return new BadRequestObjectResult(Response.GetResponse(ResponseType.Failed));
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
     }
 }

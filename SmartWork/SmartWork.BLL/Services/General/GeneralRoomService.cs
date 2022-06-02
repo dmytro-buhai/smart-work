@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
+using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -33,7 +35,7 @@ namespace SmartWork.BLL.Services.General
                         RoomId = entity.Id,
                         Title = string.Empty,
                         Type = StatisticType.Attendance,
-                        Data = string.Empty,
+                        Data = JsonConvert.SerializeObject(new List<AttendanceStatisticForDate>()),
                         Description = $"Statistic type: {StatisticType.Attendance} " +
                         $"for room {entity.Name} {entity.Number}"
                     },
