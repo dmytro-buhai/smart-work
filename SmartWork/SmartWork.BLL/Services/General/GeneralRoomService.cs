@@ -14,14 +14,17 @@ namespace SmartWork.BLL.Services.General
     public class GeneralRoomService : GeneralEntityService<Room>
     {
         private readonly IStatisticService _statisticService;
+        private readonly ISubscribeService _subscribeService;
         private readonly IEntityRepository<Room> _repository;
         private readonly ILogger<GeneralRoomService> _logger;
 
         public GeneralRoomService(IStatisticService statisticService,
+            ISubscribeService subscribeService,
             IEntityRepository<Room> repository,
             ILogger<GeneralRoomService> logger) : base(repository, logger)
         {
             _statisticService = statisticService;
+            _subscribeService = subscribeService;
             _repository = repository;
             _logger = logger;
         }
@@ -59,8 +62,9 @@ namespace SmartWork.BLL.Services.General
 
                 entity.Statistics = statisticCollection;
                 
-                await _repository.AddAsync(entity);
+                var room = await _repository.AddAsync(entity);
                 await _repository.SaveChangesAsync();
+                await _subscribeService.AddDefaultsSubscribeDetailsForRoom(room);
 
                 return true;
             }

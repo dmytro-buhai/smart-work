@@ -12,5 +12,6 @@ namespace SmartWork.Core.Entities
         public string PhotoFileName { get; set; }
         public virtual ICollection<Equipment> Equipment { get; set; }
         public virtual ICollection<Statistic> Statistics { get; set; }
+        public virtual ICollection<SubscribeDetail> SubscribeDetails { get; set; }
     }
 }

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.RoomDTOs;
+using SmartWork.Core.DTOs.SubscribeDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
@@ -36,6 +38,11 @@ namespace SmartWork.API.Controllers
             _roomService.GetAsyncWithInclude(pageInfo, "Statistics");
 
         [AllowAnonymous]
+        [HttpPost("RoomsWithSubscribeDetails/List")]
+        public Task<IActionResult> GetWithSubscribeDetails(PageInfo pageInfo) =>
+            _roomService.GetAsyncWithInclude(pageInfo, "SubscribeDetails");
+
+        [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]
         public Task<IActionResult> FindById(int id) =>
             _roomService.FindAsync(id);
@@ -53,5 +60,19 @@ namespace SmartWork.API.Controllers
         [HttpDelete("[controller]/Delete")]
         public Task<IActionResult> Delete(Room company) =>
             _roomService.RemoveAsync(company);
+
+        [HttpPut("[controller]/UpdateSubscribeDetails/{roomId}")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> UpdateSubscribeDetailsAsync(int roomId, UpdateSubscribeDetailDTO newSubscribeDetails)
+        {
+            var result = await _roomService.UpdateSubscribeDetails(roomId, newSubscribeDetails);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
     }
 }
