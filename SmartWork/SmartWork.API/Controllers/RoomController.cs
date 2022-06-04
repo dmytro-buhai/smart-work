@@ -76,11 +76,11 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> Delete(Room company) =>
             _roomService.RemoveAsync(company);
 
-        [HttpPut("[controller]/UpdateSubscribeDetails/{roomId}")]
+        [HttpPut("[controller]/UpdateSubscribeDetails")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> UpdateSubscribeDetailsAsync(int roomId, UpdateSubscribeDetailDTO newSubscribeDetails)
+        public async Task<IActionResult> UpdateSubscribeDetailsAsync(UpdateSubscribeDetailDTO newSubscribeDetails)
         {
-            var result = await _roomService.UpdateSubscribeDetails(roomId, newSubscribeDetails);
+            var result = await _roomService.UpdateSubscribeDetails(newSubscribeDetails);
 
             if (result)
             {

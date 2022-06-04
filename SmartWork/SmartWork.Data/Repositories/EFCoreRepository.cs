@@ -51,6 +51,7 @@ namespace SmartWork.Data.Repositories
         {
             return this.entities.Include(includeNames[0])
                                 .Include(includeNames[1])
+                                .Include(includeNames[2])
                                 .Where(x => x.Id == id)
                                 .AsSplitQuery()
                                 .AsNoTracking()
@@ -82,6 +83,7 @@ namespace SmartWork.Data.Repositories
             return this.entities.Take(pageInfo.CountItems)
                                 .Include(includeNames[0])
                                 .Include(includeNames[1])
+                                .Include(includeNames[2])
                                 .ToListAsync();
         }
 

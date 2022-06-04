@@ -1,5 +1,6 @@
 ﻿using SmartWork.Core.Abstractions.EntityConvertors;
 using SmartWork.Core.Abstractions.Services;
+using SmartWork.Core.DTOs.EquipmentDTOs;
 using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.DTOs.StatisticDTOs;
 using SmartWork.Core.DTOs.SubscribeDTOs;
@@ -27,14 +28,14 @@ namespace SmartWork.BLL.Services
             _subscribeService = subscribeService;
         }
 
-        public Task<bool> UpdateSubscribeDetails(int roomId, UpdateSubscribeDetailDTO newSubscribeDetails)
+        public Task<bool> UpdateSubscribeDetails(UpdateSubscribeDetailDTO newSubscribeDetails)
         {
-            return _subscribeService.UpdateSubscribeDetailsForRoom(roomId, newSubscribeDetails);
+            return _subscribeService.UpdateSubscribeDetailsForRoom(newSubscribeDetails);
         }
 
         public async Task<InfoRoomDTO> GetRoomInfoById(int roomId)
         {
-            var includesForRoom = new string[] { "Statistics", "SubscribeDetails" };
+            var includesForRoom = new string[] { "Equipment", "Statistics", "SubscribeDetails" };
             var room = await _generalRoomService.FindWithIncludesAsync(roomId, includesForRoom);
 
             if(room == null)
@@ -53,8 +54,23 @@ namespace SmartWork.BLL.Services
                 PhotoFileName = room.PhotoFileName,
             };
 
+            var equipments = new List<InfoEquipmentDTO>();
             var subscribeDetails = new List<InfoSubscribeDetailDTO>();
             var statistics = new List<InfoStatisticDTO>();
+
+            foreach (var equipment in room.Equipment)
+            {
+                equipments.Add(new InfoEquipmentDTO
+                {
+                    Id = equipment.Id,
+                    RoomId = equipment.RoomId,
+                    Type = (int)equipment.Type,
+                    Name = equipment.Name,
+                    Description = equipment.Description,
+                    Amount = equipment.Amount,
+                    IsAvailable = equipment.IsAvailable
+                });
+            }
 
             foreach (var subscribeDetail in room.SubscribeDetails)
             {
@@ -80,6 +96,7 @@ namespace SmartWork.BLL.Services
                 });
             }
 
+            roomInfo.Equipments = equipments;
             roomInfo.SubscribeDetails = subscribeDetails;
             roomInfo.Statistics = statistics;
 

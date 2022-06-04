@@ -7,6 +7,6 @@ namespace SmartWork.Core.Abstractions.Services
     public interface ISubscribeService
     {
         public Task<bool> AddDefaultsSubscribeDetailsForRoom(Room room);
-        public Task<bool> UpdateSubscribeDetailsForRoom(int roomId, UpdateSubscribeDetailDTO subscribeDetail);
+        public Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail);
     }
 }

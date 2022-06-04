@@ -74,10 +74,10 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<bool> UpdateSubscribeDetailsForRoom(int roomId, UpdateSubscribeDetailDTO subscribeDetail)
+        public async Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail)
         {
 
-            if(!await _subscribeDetailRepository.AnyAsync(d => d.RoomId == roomId))
+            if(!await _subscribeDetailRepository.AnyAsync(d => d.RoomId == subscribeDetail.RoomId))
             {
                 return false;
             }

@@ -43,6 +43,7 @@ namespace SmartWork.API.Extensions
             services.AddScoped<IEntityRepository<Company>, EFCoreRepository<Company>>();
             services.AddScoped<IEntityRepository<Office>, EFCoreRepository<Office>>();
             services.AddScoped<IEntityRepository<Room>, EFCoreRepository<Room>>();
+            services.AddScoped<IEntityRepository<Equipment>, EFCoreRepository<Equipment>>();
             services.AddScoped<IEntityRepository<Statistic>, EFCoreRepository<Statistic>>();
             services.AddScoped<IEntityRepository<Subscribe>, EFCoreRepository<Subscribe>>();
             services.AddScoped<IEntityRepository<SubscribeDetail>, EFCoreRepository<SubscribeDetail>>();
@@ -54,6 +55,7 @@ namespace SmartWork.API.Extensions
             services.AddScoped<IStatisticEntityConverter, StatisticEntityConverter>();
 
             // Register before another services
+            services.AddScoped<IEquipmentService, EquipmentService>();
             services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<ISubscribeService, SubscribeService>();
 

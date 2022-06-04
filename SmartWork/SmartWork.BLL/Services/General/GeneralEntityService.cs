@@ -266,9 +266,9 @@ namespace SmartWork.BLL.Services.General
         {
             errorMessage = string.Empty;
 
-            if (includeNames.Length > 2)
+            if (includeNames.Length > 3)
             {
-                errorMessage = "too many includes (max length is 2)";
+                errorMessage = "too many includes (max length is 3)";
             }
 
             var propertyInfo = typeof(TEntity).GetProperties();
