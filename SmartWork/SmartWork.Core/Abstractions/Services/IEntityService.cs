@@ -16,6 +16,7 @@ namespace SmartWork.Core.Abstractions.Services
         Task<IActionResult> AddAsync(TAddDTO model);
         Task<IActionResult> AddAsync(IEnumerable<TAddDTO> models);
         Task<IActionResult> FindAsync(int id);
+        Task<TEntity> FindWithIncludeAsync(int id, string includeName);
         Task<IActionResult> FindAsync(Expression<Func<TEntity, bool>> expression);
         Task<IActionResult> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<IActionResult> GetAsync(PageInfo pageInfo);

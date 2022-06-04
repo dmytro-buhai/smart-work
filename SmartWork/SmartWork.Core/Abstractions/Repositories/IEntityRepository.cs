@@ -11,9 +11,12 @@ namespace SmartWork.Core.Abstractions.Repositories
     {
         Task<TEntity> FindAsync(int id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
+        Task<TEntity> FindWithIncludeAsync(int id, string includeName);
+        Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetAsync(PageInfo pageInfo, Expression<Func<TEntity, bool>> expression = null);
-        Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName);
+        Task<List<TEntity>> GetWithIncludeAsync(PageInfo pageInfo, string includeName);
+        Task<List<TEntity>> GetWithIncludesAsync(PageInfo pageInfo, string[] includeNames);
         Task<TEntity> AddAsync(TEntity entity);
         Task AddAsync(IEnumerable<TEntity> entities);
         Task UpdateAsync(TEntity entity);

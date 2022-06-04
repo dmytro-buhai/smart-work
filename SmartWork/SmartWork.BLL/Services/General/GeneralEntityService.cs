@@ -5,6 +5,7 @@ using SmartWork.Core.Entities;
 using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -79,6 +80,48 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
+        public Task<TEntity> FindWithIncludeAsync(int id, string includeName)
+        {
+            ValidateIncludeName(includeName, out string errorMessage);
+
+            if (errorMessage != string.Empty)
+            {
+                _logger.LogError(errorMessage);
+                return default;
+            }
+
+            try
+            {
+                return _repository.FindWithIncludeAsync(id, includeName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                return default;
+            }
+        }
+
+        public Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames)
+        {
+            ValidateIncludeNames(includeNames, out string errorMessage);
+
+            if(errorMessage != string.Empty)
+            {
+                _logger.LogError(errorMessage);
+                return default;
+            }
+
+            try
+            {
+                return _repository.FindWithIncludesAsync(id, includeNames);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                return default;
+            }
+        }
+
         public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression)
         {
             try
@@ -107,13 +150,42 @@ namespace SmartWork.BLL.Services.General
 
         public Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
         {
+            ValidateIncludeName(includeName, out string errorMessage);
+
+            if (errorMessage != string.Empty)
+            {
+                _logger.LogError(errorMessage);
+                return default;
+            }
+
             try
             {
-                return _repository.GetAsyncWithInclude(pageInfo, includeName);
+                return _repository.GetWithIncludeAsync(pageInfo, includeName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "GetAsync -> ", ex.Message));
+                _logger.LogError($"error during getting '{typeof(TEntity).Name}' from db: {ex.Message}");
+                return default;
+            }
+        }
+
+        public Task<List<TEntity>> GetAsyncWithIncludes(PageInfo pageInfo, string[] includeNames)
+        {
+            ValidateIncludeNames(includeNames, out string errorMessage);
+
+            if (errorMessage != string.Empty)
+            {
+                _logger.LogError(errorMessage);
+                return default;
+            }
+
+            try
+            {
+                return _repository.GetWithIncludesAsync(pageInfo, includeNames);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during getting '{typeof(TEntity).Name}' from db: {ex.Message}");
                 return default;
             }
         }
@@ -128,7 +200,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "RemoveAsync -> ", ex.Message));
+                _logger.LogError($"error during removing '{typeof(TEntity).Name}' from db: {ex.Message}");
                 return default;
             }
         }
@@ -143,7 +215,7 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "RemoveAsync -> ", ex.Message));
+                _logger.LogError($"error during removing '{typeof(TEntity).Name}' from db: {ex.Message}");
                 return default;
             }
         }
@@ -175,6 +247,36 @@ namespace SmartWork.BLL.Services.General
             {
                 _logger.LogError(string.Concat(GetType().Name, " : ", "UpdateAsync -> ", ex.Message));
                 return default;
+            }
+        }
+
+        private void ValidateIncludeName(string includeName, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            var propertyInfo = typeof(TEntity).GetProperties();
+
+            if (!propertyInfo.Any(pif => pif.Name == includeName))
+            {
+                errorMessage = "wrong include name";
+            }
+        }
+
+        private void ValidateIncludeNames(string[] includeNames, out string errorMessage)
+        {
+            errorMessage = string.Empty;
+
+            if (includeNames.Length > 2)
+            {
+                errorMessage = "too many includes (max length is 2)";
+            }
+
+            var propertyInfo = typeof(TEntity).GetProperties();
+
+            if (!propertyInfo.Any(pif => pif.Name == includeNames[0]) ||
+                !propertyInfo.Any(pif => pif.Name == includeNames[1]))
+            {
+                errorMessage = "wrong include name";
             }
         }
     }

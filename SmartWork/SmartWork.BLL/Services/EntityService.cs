@@ -64,6 +64,11 @@ namespace SmartWork.BLL.Services
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        public Task<TEntity> FindWithIncludeAsync(int id, string includeName)
+        {
+            return _generalEntityService.FindWithIncludeAsync(id, includeName);
+        }
+
         public async Task<IActionResult> FindAsync(Expression<Func<TEntity, bool>> expression)
         {
             var entity = await _generalEntityService.FindAsync(expression);

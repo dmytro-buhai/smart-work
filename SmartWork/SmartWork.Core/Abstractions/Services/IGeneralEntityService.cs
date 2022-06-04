@@ -10,6 +10,7 @@ namespace SmartWork.Core.Abstractions.Services
     public interface IGeneralEntityService<TEntity> where TEntity : Entity
     {
         Task<TEntity> FindAsync(int id);
+        Task<TEntity> FindWithIncludeAsync(int id, string includeName);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetAsync(PageInfo pageInfo);
@@ -20,5 +21,7 @@ namespace SmartWork.Core.Abstractions.Services
         Task<bool> UpdateAsync(IEnumerable<TEntity> entities);
         Task<bool> RemoveAsync(TEntity entity);
         Task<bool> RemoveAsync(IEnumerable<TEntity> entities);
+        Task<List<TEntity>> GetAsyncWithIncludes(PageInfo pageInfo, string[] includeNames);
+        Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames);
     }
 }

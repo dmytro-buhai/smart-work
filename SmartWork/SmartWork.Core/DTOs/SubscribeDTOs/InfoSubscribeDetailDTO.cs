@@ -1,13 +1,13 @@
 ﻿using SmartWork.Core.Abstractions;
 
-namespace SmartWork.Core.DTOs.StatisticDTOs
+namespace SmartWork.Core.DTOs.SubscribeDTOs
 {
-    public class InfoStatisticDTO : IDTO
+    public class InfoSubscribeDetailDTO : IDTO
     {
         public int Id { get; set; }
         public string Type { get; set; }
-        public string Title { get; set; }
+        public string Name { get; set; }
+        public int Price { get; set; }
         public string Description { get; set; }
-        public string Data { get; set; }
     }
 }

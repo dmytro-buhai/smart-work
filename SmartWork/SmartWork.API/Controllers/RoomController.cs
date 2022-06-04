@@ -47,6 +47,21 @@ namespace SmartWork.API.Controllers
         public Task<IActionResult> FindById(int id) =>
             _roomService.FindAsync(id);
 
+        [AllowAnonymous]
+        [HttpGet("[controller]/GetRoomInfoById/{id}")]
+        public async Task<IActionResult> GetRoomInfoById(int id)
+        {
+            var roomInfo = await _roomService.GetRoomInfoById(id);
+
+            if(roomInfo == null)
+            {
+                return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+            }
+
+            return new OkObjectResult(roomInfo);
+        }
+            
+
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public Task<IActionResult> Add(AddRoomDTO model) =>

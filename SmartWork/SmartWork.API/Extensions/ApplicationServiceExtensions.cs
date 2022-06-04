@@ -34,7 +34,9 @@ namespace SmartWork.API.Extensions
 
             // Register DbContext class
             services.AddDbContext<ApplicationContext>(options =>
-                 options.UseSqlServer(DBSettings.GetDBConnectionString()));
+                 options.UseSqlServer(DBSettings.GetDBConnectionString())
+                        .UseSqlServer(o => o.UseQuerySplittingBehavior(
+                            QuerySplittingBehavior.SplitQuery)));
 
             // Register Repositories
             services.AddScoped<IUserRepository<User>, EFCoreUserRepository<User>>();
