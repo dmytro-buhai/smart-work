@@ -33,38 +33,10 @@ namespace SmartWork.BLL.Services.General
         {
             try
             {
-                var statisticCollection = new List<Statistic>{
-                    new Statistic{
-                        RoomId = entity.Id,
-                        Title = string.Empty,
-                        Type = StatisticType.Attendance,
-                        Data = JsonConvert.SerializeObject(new List<AttendanceStatisticForDate>()),
-                        Description = $"Statistic type: {StatisticType.Attendance} " +
-                        $"for room {entity.Name} {entity.Number}"
-                    },
-                    new Statistic{
-                        RoomId = entity.Id,
-                        Title = string.Empty,
-                        Type = StatisticType.Climate,
-                        Data = string.Empty,
-                        Description = $"Statistic type: {StatisticType.Climate} " +
-                        $"for room {entity.Name} {entity.Number}"
-                    },
-                    new Statistic{
-                        RoomId = entity.Id,
-                        Title = string.Empty,
-                        Type = StatisticType.Lighting,
-                        Data = string.Empty,
-                        Description = $"Statistic type: {StatisticType.Lighting} " +
-                        $"for room {entity.Name} {entity.Number}"
-                    }
-                };
-
-                entity.Statistics = statisticCollection;
-                
                 var room = await _repository.AddAsync(entity);
                 await _repository.SaveChangesAsync();
                 await _subscribeService.AddDefaultsSubscribeDetailsForRoom(room);
+                await _statisticService.AddDefaultsStatisticDataForRoom(room);
 
                 return true;
             }

@@ -15,29 +15,71 @@ namespace SmartWork.BLL.Services
 {
     public class StatisticService : IStatisticService
     {
-        private readonly IEntityRepository<Statistic> _repository;
+        private readonly IEntityRepository<Statistic> _statisticRepository;
         private readonly IStatisticEntityConverter _entityConverter;
         private readonly ILogger<StatisticService> _logger;
 
-        public StatisticService(IEntityRepository<Statistic> repository,
+        public StatisticService(IEntityRepository<Statistic> statisticRepository,
             IStatisticEntityConverter entityConverter,
             ILogger<StatisticService> logger)
         {
-            _repository = repository;
+            _statisticRepository = statisticRepository;
             _entityConverter = entityConverter;
             _logger = logger;
         }
 
+        public async Task<bool> AddDefaultsStatisticDataForRoom(Room room)
+        {
+            var statisticCollection = new List<Statistic>{
+                new Statistic{
+                    RoomId = room.Id,
+                    Title = string.Empty,
+                    Type = StatisticType.Attendance,
+                    Data = JsonConvert.SerializeObject(new List<AttendanceStatisticForDate>()),
+                    Description = $"Statistic type: {StatisticType.Attendance} " +
+                    $"for room {room.Name} {room.Number}"
+                },
+                new Statistic{
+                    RoomId = room.Id,
+                    Title = string.Empty,
+                    Type = StatisticType.Climate,
+                    Data = string.Empty,
+                    Description = $"Statistic type: {StatisticType.Climate} " +
+                    $"for room {room.Name} {room.Number}"
+                },
+                new Statistic{
+                    RoomId = room.Id,
+                    Title = string.Empty,
+                    Type = StatisticType.Lighting,
+                    Data = string.Empty,
+                    Description = $"Statistic type: {StatisticType.Lighting} " +
+                    $"for room {room.Name} {room.Number}"
+                }
+            };
+            try
+            {
+                await _statisticRepository.AddAsync(statisticCollection);
+                await _statisticRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error duting adding room statistics: {ex.Message}");
+                return false;
+            }
+        }
+
         public Task<List<Statistic>> GetAsync(PageInfo pageInfo)
         {
-            return _repository.GetAsync(pageInfo);
+            return _statisticRepository.GetAsync(pageInfo);
         }
 
         public Task<Statistic> FindAsync(int id)
         {
             try
             {
-                return _repository.FindAsync(id);
+                return _statisticRepository.FindAsync(id);
             }
             catch (Exception ex)
             {
@@ -49,21 +91,21 @@ namespace SmartWork.BLL.Services
         public async Task<bool> AddAttendanceStatisticInfoAsync(int statisticId, 
             AttendanceStatisticForDate attendanceStatistic)
         {
-            var statistic = await _repository.FindAsync(statisticId);
+            var statistic = await _statisticRepository.FindAsync(statisticId);
             return await AddStatisticDataForAttendance(statistic, attendanceStatistic);
         }
 
         public async Task<bool> AddClimateStatisticInfoAsync(int statisticId,
             ClimateStatisticForDate climateStatistic)
         {
-            var statistic = await _repository.FindAsync(statisticId);
+            var statistic = await _statisticRepository.FindAsync(statisticId);
             return await AddStatisticDataForClimate(statistic, climateStatistic);
         }
 
         public async Task<bool> AddLightingStatisticInfo(int statisticId,
             LightingStatisticForDate lightingStatistic)
         {
-            var statistic = await _repository.FindAsync(statisticId);
+            var statistic = await _statisticRepository.FindAsync(statisticId);
             return await AddStatisticDataForLighting(statistic, lightingStatistic);
         }
 
@@ -71,7 +113,7 @@ namespace SmartWork.BLL.Services
         {
             try
             {
-                await _repository.AddAsync(_entityConverter.ToEntities(statistics));
+                await _statisticRepository.AddAsync(_entityConverter.ToEntities(statistics));
                 return true;
             }
             catch(Exception ex)
@@ -83,7 +125,7 @@ namespace SmartWork.BLL.Services
 
         public async Task<StatisticType> GetStatisticType(int statisticId)
         {
-            var statistic = await _repository.FindAsync(s => s.Id == statisticId);
+            var statistic = await _statisticRepository.FindAsync(s => s.Id == statisticId);
 
             if (statistic == null)
             {
@@ -130,8 +172,8 @@ namespace SmartWork.BLL.Services
             try
             {
                 AddStatisticData(ref statistic, attendanceStatistic);
-                await _repository.UpdateAsync(statistic);
-                await _repository.SaveChangesAsync();
+                await _statisticRepository.UpdateAsync(statistic);
+                await _statisticRepository.SaveChangesAsync();
 
                 return true;
             }
@@ -153,8 +195,8 @@ namespace SmartWork.BLL.Services
             try
             {
                 AddStatisticData(ref statistic, attendanceStatistics);
-                await _repository.UpdateAsync(statistic);
-                await _repository.SaveChangesAsync();
+                await _statisticRepository.UpdateAsync(statistic);
+                await _statisticRepository.SaveChangesAsync();
 
                 return true;
             }
@@ -176,8 +218,8 @@ namespace SmartWork.BLL.Services
             try
             {
                 AddStatisticData(ref statistic, climateStatistic);
-                await _repository.UpdateAsync(statistic);
-                await _repository.SaveChangesAsync();
+                await _statisticRepository.UpdateAsync(statistic);
+                await _statisticRepository.SaveChangesAsync();
 
                 return true;
             }
@@ -199,8 +241,8 @@ namespace SmartWork.BLL.Services
             try
             {
                 AddStatisticData(ref statistic, lightingStatistic);
-                await _repository.UpdateAsync(statistic);
-                await _repository.SaveChangesAsync();
+                await _statisticRepository.UpdateAsync(statistic);
+                await _statisticRepository.SaveChangesAsync();
 
                 return true;
             }

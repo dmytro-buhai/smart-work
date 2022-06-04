@@ -19,5 +19,6 @@ namespace SmartWork.Core.Abstractions.Services
         public Task<bool> AddClimateStatisticInfoAsync(int statisticId, ClimateStatisticForDate climateStatistic);
         public Task<bool> AddLightingStatisticInfo(int statisticId, LightingStatisticForDate lightingStatistic);
         public Task<StatisticType> GetStatisticType(int statisticId);
+        Task<bool> AddDefaultsStatisticDataForRoom(Room room);
     }
 }
