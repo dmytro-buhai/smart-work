@@ -35,7 +35,7 @@ namespace SmartWork.BLL.Services
                     RoomId = room.Id,
                     Title = string.Empty,
                     Type = StatisticType.Attendance,
-                    Data = JsonConvert.SerializeObject(new List<AttendanceStatisticForDate>()),
+                    Data = JsonConvert.SerializeObject(new List<AttendanceForDateDTO>()),
                     Description = $"Statistic type: {StatisticType.Attendance} " +
                     $"for room {room.Name} {room.Number}"
                 },
@@ -43,7 +43,7 @@ namespace SmartWork.BLL.Services
                     RoomId = room.Id,
                     Title = string.Empty,
                     Type = StatisticType.Climate,
-                    Data = string.Empty,
+                    Data = JsonConvert.SerializeObject(new List<ClimateForDateDTO>()),
                     Description = $"Statistic type: {StatisticType.Climate} " +
                     $"for room {room.Name} {room.Number}"
                 },
@@ -51,7 +51,7 @@ namespace SmartWork.BLL.Services
                     RoomId = room.Id,
                     Title = string.Empty,
                     Type = StatisticType.Lighting,
-                    Data = string.Empty,
+                    Data =JsonConvert.SerializeObject(new List<LightingForDateDTO>()),
                     Description = $"Statistic type: {StatisticType.Lighting} " +
                     $"for room {room.Name} {room.Number}"
                 }
@@ -88,25 +88,22 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<bool> AddAttendanceStatisticInfoAsync(int statisticId, 
-            AttendanceStatisticForDate attendanceStatistic)
+        public async Task<bool> AddAttendanceStatisticInfoAsync(AttendanceForDateDTO attendanceByDay)
         {
-            var statistic = await _statisticRepository.FindAsync(statisticId);
-            return await AddStatisticDataForAttendance(statistic, attendanceStatistic);
+            var statistic = await _statisticRepository.FindAsync(attendanceByDay.StatisticId);
+            return await AddStatisticDataForAttendance(statistic, attendanceByDay);
         }
 
-        public async Task<bool> AddClimateStatisticInfoAsync(int statisticId,
-            ClimateStatisticForDate climateStatistic)
+        public async Task<bool> AddClimateStatisticInfoAsync(ClimateForDateDTO climateByDay)
         {
-            var statistic = await _statisticRepository.FindAsync(statisticId);
-            return await AddStatisticDataForClimate(statistic, climateStatistic);
+            var statistic = await _statisticRepository.FindAsync(climateByDay.StatisticId);
+            return await AddStatisticDataForClimate(statistic, climateByDay);
         }
 
-        public async Task<bool> AddLightingStatisticInfo(int statisticId,
-            LightingStatisticForDate lightingStatistic)
+        public async Task<bool> AddLightingStatisticInfo(LightingForDateDTO lightingByDay)
         {
-            var statistic = await _statisticRepository.FindAsync(statisticId);
-            return await AddStatisticDataForLighting(statistic, lightingStatistic);
+            var statistic = await _statisticRepository.FindAsync(lightingByDay.StatisticId);
+            return await AddStatisticDataForLighting(statistic, lightingByDay);
         }
 
         public async Task<bool> AddAsync(IEnumerable<AddStatisticDTO> statistics)
@@ -161,8 +158,8 @@ namespace SmartWork.BLL.Services
             statistic.Data = JsonConvert.SerializeObject(data);
         }
 
-        private async Task<bool> AddStatisticDataForAttendance(Statistic statistic, 
-            AttendanceStatisticForDate attendanceStatistic)
+        private async Task<bool> AddStatisticDataForAttendance(Statistic statistic,
+            AttendanceForDateDTO attendanceByDay)
         {
             if(statistic.Type != StatisticType.Attendance)
             {
@@ -171,7 +168,7 @@ namespace SmartWork.BLL.Services
 
             try
             {
-                AddStatisticData(ref statistic, attendanceStatistic);
+                AddStatisticData(ref statistic, attendanceByDay);
                 await _statisticRepository.UpdateAsync(statistic);
                 await _statisticRepository.SaveChangesAsync();
 
@@ -185,7 +182,7 @@ namespace SmartWork.BLL.Services
         }
 
         private async Task<bool> AddStatisticDataForAttendance(Statistic statistic, 
-            List<AttendanceStatisticForDate> attendanceStatistics)
+            List<AttendanceForDateDTO> attendanceStatistics)
         {
             if (statistic.Type != StatisticType.Attendance)
             {
@@ -208,7 +205,7 @@ namespace SmartWork.BLL.Services
         }
 
         private async Task<bool> AddStatisticDataForClimate(Statistic statistic,
-           ClimateStatisticForDate climateStatistic)
+            ClimateForDateDTO climateByDay)
         {
             if (statistic.Type != StatisticType.Climate)
             {
@@ -217,7 +214,7 @@ namespace SmartWork.BLL.Services
 
             try
             {
-                AddStatisticData(ref statistic, climateStatistic);
+                AddStatisticData(ref statistic, climateByDay);
                 await _statisticRepository.UpdateAsync(statistic);
                 await _statisticRepository.SaveChangesAsync();
 
@@ -231,7 +228,7 @@ namespace SmartWork.BLL.Services
         }
 
         private async Task<bool> AddStatisticDataForLighting(Statistic statistic,
-           LightingStatisticForDate lightingStatistic)
+            LightingForDateDTO lightingByDay)
         {
             if (statistic.Type != StatisticType.Lighting)
             {
@@ -240,7 +237,7 @@ namespace SmartWork.BLL.Services
 
             try
             {
-                AddStatisticData(ref statistic, lightingStatistic);
+                AddStatisticData(ref statistic, lightingByDay);
                 await _statisticRepository.UpdateAsync(statistic);
                 await _statisticRepository.SaveChangesAsync();
 

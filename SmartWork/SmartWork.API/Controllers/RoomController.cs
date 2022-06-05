@@ -59,8 +59,7 @@ namespace SmartWork.API.Controllers
             }
 
             return new OkObjectResult(roomInfo);
-        }
-            
+        }           
 
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

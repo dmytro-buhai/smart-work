@@ -48,7 +48,6 @@ namespace SmartWork.API.Controllers
         }
 
         [HttpDelete("[controller]/DeleteEquipment/{id}")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> DeleteEquipmentAsync(int id)
         {
             var result = await _equipmentService.DeleteEquipment(id);
