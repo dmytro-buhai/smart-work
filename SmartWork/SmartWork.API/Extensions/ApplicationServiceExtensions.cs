@@ -59,10 +59,10 @@ namespace SmartWork.API.Extensions
             services.AddScoped<IStatisticService, StatisticService>();
             services.AddScoped<ISubscribeService, SubscribeService>();
 
-            // Register General Services
-            services.AddScoped<IGeneralEntityService<Company>, GeneralCompanyService>();
-            services.AddScoped<IGeneralEntityService<Office>, GeneralOfficeService>();
-            services.AddScoped<IGeneralEntityService<Room>, GeneralRoomService>();
+            //// Register General Services
+            //services.AddScoped<IGeneralEntityOperations<Company>, GeneralCompanyService>();
+            //services.AddScoped<IGeneralEntityOperations<Office>, GeneralOfficeService>();
+            //services.AddScoped<IGeneralEntityOperations<Room>, GeneralRoomService>();
 
             // Register Services
             services.AddScoped<IUserService, UserService>();

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using SmartWork.Core.Abstractions;
+using SmartWork.Core.Abstractions.EntityConvertors;
 using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.Entities;
@@ -11,50 +13,58 @@ using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services.General
 {
-    public abstract class GeneralEntityService<TEntity> : IGeneralEntityService<TEntity> 
+    public abstract class GeneraEntityOperations<TEntity, TAddDTO, TUpdateDTO> : 
+        IGeneralEntityOperations<TEntity, TAddDTO, TUpdateDTO> 
         where TEntity : Entity
+        where TAddDTO : IDTO
+        where TUpdateDTO : IDTO
     {
         private readonly IEntityRepository<TEntity> _repository;
-        private readonly ILogger<GeneralEntityService<TEntity>> _logger;
+        private readonly IEntityConverter<TEntity, TAddDTO, TUpdateDTO> _entityConverter;
+        private readonly ILogger<GeneraEntityOperations<TEntity, TAddDTO, TUpdateDTO>> _logger;
 
-        public GeneralEntityService(IEntityRepository<TEntity> repository,
-            ILogger<GeneralEntityService<TEntity>> logger)
+        public GeneraEntityOperations(IEntityRepository<TEntity> repository,
+            IEntityConverter<TEntity, TAddDTO, TUpdateDTO> entityConverter,
+            ILogger<GeneraEntityOperations<TEntity, TAddDTO, TUpdateDTO>> logger)
         {
             _repository = repository;
+            _entityConverter = entityConverter;
             _logger = logger;
         }
 
-        public virtual Task<bool> AddAsync(TEntity entity)
+        public virtual async Task<bool> AddAsync(TAddDTO addEntityDTO)
         {
             try
             {
-                _repository.AddAsync(entity);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                var entity = _entityConverter.ToEntity(addEntityDTO);
+                await _repository.AddAsync(entity);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "AddAsync -> ", ex.Message));
-                return default;
+                _logger.LogError($"error during adding {typeof(TEntity).Name}: {ex.Message}");
+                return false;
             }
         }
 
-        public Task<bool> AddAsync(IEnumerable<TEntity> entities)
+        public virtual async Task<bool> AddAsync(IEnumerable<TAddDTO> transferObjects)
         {
             try
             {
-                _repository.AddAsync(entities);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                var entities = _entityConverter.ToEntities(transferObjects);
+                await _repository.AddAsync(entities);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "AddAsync -> ", ex.Message));
-                return default;
+                _logger.LogError($"error during adding {typeof(TEntity).Name}: {ex.Message}");
+                return false;
             }
         }
 
-        public Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null)
+        public virtual Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null)
         {
             try
             {
@@ -62,12 +72,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "AnyAsync -> ", ex.Message));
+                _logger.LogError($"error during finding any type of {typeof(TEntity).Name} in db: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<TEntity> FindAsync(int id)
+        public virtual Task<TEntity> FindAsync(int id)
         {
             try
             {
@@ -75,12 +85,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                _logger.LogError($"error during finding {typeof(TEntity).Name}: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<TEntity> FindWithIncludeAsync(int id, string includeName)
+        public virtual Task<TEntity> FindWithIncludeAsync(int id, string includeName)
         {
             ValidateIncludeName(includeName, out string errorMessage);
 
@@ -96,12 +106,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                _logger.LogError($"error during finding {typeof(TEntity).Name}: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames)
+        public virtual Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames)
         {
             ValidateIncludeNames(includeNames, out string errorMessage);
 
@@ -117,12 +127,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                _logger.LogError($"error during finding {typeof(TEntity).Name}: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression)
+        public virtual Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression)
         {
             try
             {
@@ -130,12 +140,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "FindAsync -> ", ex.Message));
+                _logger.LogError($"error during finding {typeof(TEntity).Name}: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<List<TEntity>> GetAsync(PageInfo pageInfo)
+        public virtual Task<List<TEntity>> GetAsync(PageInfo pageInfo)
         {
             try
             {
@@ -143,12 +153,12 @@ namespace SmartWork.BLL.Services.General
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "GetAsync -> ", ex.Message));
+                _logger.LogError($"error during getting '{typeof(TEntity).Name}' from db: {ex.Message}");
                 return default;
             }
         }
 
-        public Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
+        public virtual Task<List<TEntity>> GetAsyncWithInclude(PageInfo pageInfo, string includeName)
         {
             ValidateIncludeName(includeName, out string errorMessage);
 
@@ -169,7 +179,7 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<List<TEntity>> GetAsyncWithIncludes(PageInfo pageInfo, string[] includeNames)
+        public virtual Task<List<TEntity>> GetAsyncWithIncludes(PageInfo pageInfo, string[] includeNames)
         {
             ValidateIncludeNames(includeNames, out string errorMessage);
 
@@ -190,13 +200,14 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> RemoveAsync(TEntity entity)
+        public virtual async Task<bool> RemoveAsync(int entityId)
         {
             try
             {
-                _repository.RemoveAsync(entity);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                var entity = await _repository.FindAsync(entityId);
+                await _repository.RemoveAsync(entity);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -205,13 +216,13 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> RemoveAsync(IEnumerable<TEntity> entities)
+        public virtual async Task<bool> RemoveAsync(IEnumerable<TEntity> entities)
         {
             try
             {
-                _repository.RemoveAsync(entities);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                await _repository.RemoveAsync(entities);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
@@ -220,37 +231,39 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        public Task<bool> UpdateAsync(TEntity entity)
+        public virtual async Task<bool> UpdateAsync(TUpdateDTO updateEntityDTO)
         {
             try
             {
-                _repository.UpdateAsync(entity);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                var entity = _entityConverter.ToEntity(updateEntityDTO);
+                await _repository.UpdateAsync(entity);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "UpdateAsync -> ", ex.Message));
+                _logger.LogError($"error during updating '{typeof(TEntity).Name}': {ex.Message}");
                 return default;
             }
         }
 
-        public Task<bool> UpdateAsync(IEnumerable<TEntity> entities)
+        public virtual async Task<bool> UpdateAsync(IEnumerable<TUpdateDTO> transferObjects)
         {
             try
             {
-                _repository.UpdateAsync(entities);
-                _repository.SaveChangesAsync();
-                return Task.FromResult(true);
+                var entities = _entityConverter.ToEntities(transferObjects);
+                await _repository.UpdateAsync(entities);
+                await _repository.SaveChangesAsync();
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(string.Concat(GetType().Name, " : ", "UpdateAsync -> ", ex.Message));
+                _logger.LogError($"error during updating '{typeof(TEntity).Name}': {ex.Message}");
                 return default;
             }
         }
 
-        private void ValidateIncludeName(string includeName, out string errorMessage)
+        private static void ValidateIncludeName(string includeName, out string errorMessage)
         {
             errorMessage = string.Empty;
 
@@ -262,7 +275,7 @@ namespace SmartWork.BLL.Services.General
             }
         }
 
-        private void ValidateIncludeNames(string[] includeNames, out string errorMessage)
+        private static void ValidateIncludeNames(string[] includeNames, out string errorMessage)
         {
             errorMessage = string.Empty;
 

@@ -24,32 +24,77 @@ namespace SmartWork.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Rooms/IsAny")]
-        public Task<IActionResult> IsAnyAsync() =>
-            _roomService.AnyAsync();
+        public async Task<IActionResult> IsAnyAsync()
+        {
+            var result = await _roomService.AnyAsync();
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
         [HttpPost("Rooms/List")]
-        public Task<IActionResult> Get(PageInfo pageInfo) =>
-            _roomService.GetAsync(pageInfo);
+        public async Task<IActionResult> GetRoomsListAsync(PageInfo pageInfo)
+        {
+            var roomsList = await _roomService.GetAsync(pageInfo);
+
+            if (roomsList != null)
+            {
+                return new OkObjectResult(roomsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
-        [HttpPost("RoomsWithStatistics/List")]
-        public Task<IActionResult> GetWithStatistics(PageInfo pageInfo) =>
-            _roomService.GetAsyncWithInclude(pageInfo, "Statistics");
+        [HttpPost("RoomsWithStatistic/List")]
+        public async Task<IActionResult> GetRoomsListWithStatisticAsync(PageInfo pageInfo)
+        {
+            var roomsList = await _roomService.GetAsyncWithInclude(pageInfo, "Statistics");
+
+            if (roomsList != null)
+            {
+                return new OkObjectResult(roomsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
         [HttpPost("RoomsWithSubscribeDetails/List")]
-        public Task<IActionResult> GetWithSubscribeDetails(PageInfo pageInfo) =>
-            _roomService.GetAsyncWithInclude(pageInfo, "SubscribeDetails");
+        public async Task<IActionResult> GetRoomsListWithSubscribeDetailsAsync(PageInfo pageInfo)
+        {
+            var roomsList = await _roomService.GetAsyncWithInclude(pageInfo, "SubscribeDetails");
+
+            if (roomsList != null)
+            {
+                return new OkObjectResult(roomsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]
-        public Task<IActionResult> FindById(int id) =>
-            _roomService.FindAsync(id);
+        public async Task<IActionResult> FindByIdAsync(int id)
+        {
+            var room = await _roomService.FindAsync(id);
+
+            if (room != null)
+            {
+                return new OkObjectResult(room);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
         [HttpGet("[controller]/GetRoomInfoById/{id}")]
-        public async Task<IActionResult> GetRoomInfoById(int id)
+        public async Task<IActionResult> GetRoomInfoByIdAsync(int id)
         {
             var roomInfo = await _roomService.GetRoomInfoById(id);
 
@@ -63,17 +108,44 @@ namespace SmartWork.API.Controllers
 
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Add(AddRoomDTO model) =>
-            _roomService.AddAsync(model);
+        public async Task<IActionResult> AddAsync(AddRoomDTO addRoomDTO)
+        {
+            var result = await _roomService.AddAsync(addRoomDTO);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Update(UpdateRoomDTO model) =>
-            _roomService.UpdateAsync(model);
+        public async Task<IActionResult> UpdateAsync(UpdateRoomDTO updateRoomDTO)
+        {
+            var result = await _roomService.UpdateAsync(updateRoomDTO);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [HttpDelete("[controller]/Delete")]
-        public Task<IActionResult> Delete(Room company) =>
-            _roomService.RemoveAsync(company);
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _roomService.RemoveAsync(id);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [HttpPut("[controller]/UpdateSubscribeDetails")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]

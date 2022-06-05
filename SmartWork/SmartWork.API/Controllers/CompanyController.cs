@@ -2,11 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
-using SmartWork.Core.Entities;
+using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
-
 
 namespace SmartWork.API.Controllers
 {
@@ -23,31 +22,85 @@ namespace SmartWork.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Companies/IsAny")]
-        public Task<IActionResult> IsAnyAsync() => 
-            _companyService.AnyAsync();
+        public async Task<IActionResult> IsAnyAsync() 
+        { 
+            var result = await _companyService.AnyAsync();
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [AllowAnonymous]
         [HttpPost("Companies/List")]
-        public Task<IActionResult> Get(PageInfo pageInfo) => 
-            _companyService.GetAsync(pageInfo);
+        public async Task<IActionResult> GetCompaniesListAsync(PageInfo pageInfo) 
+        {
+            var companiesList = await _companyService.GetAsync(pageInfo);
+
+            if (companiesList != null)
+            {
+                return new OkObjectResult(companiesList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        } 
 
         [AllowAnonymous]
         [HttpGet("[controller]/FindById/{id}")]
-        public Task<IActionResult> FindById(int id) =>
-            _companyService.FindAsync(id);
+        public async Task<IActionResult> FindByIdAsync(int id)
+        {
+            var company = await _companyService.FindAsync(id);
+
+            if (company != null)
+            {
+                return new OkObjectResult(company);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Add(AddCompanyDTO model) => 
-            _companyService.AddAsync(model);
+        public async Task<IActionResult> AddAsync(AddCompanyDTO addCompanyDTO)
+        {
+            var result = await _companyService.AddAsync(addCompanyDTO);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
         [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Update(UpdateCompanyDTO model) =>
-             _companyService.UpdateAsync(model);
+        public async Task<IActionResult> UpdateAsync(UpdateCompanyDTO updateCompanyDTO)
+        {
+            var result = await _companyService.UpdateAsync(updateCompanyDTO);
 
-        [HttpDelete("[controller]/Delete")]
-        public Task<IActionResult> Delete(Company company) =>
-             _companyService.RemoveAsync(company);
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [HttpDelete("[controller]/Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _companyService.RemoveAsync(id);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
     }
 }

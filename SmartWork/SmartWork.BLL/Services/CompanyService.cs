@@ -1,23 +1,28 @@
-﻿using SmartWork.Core.Abstractions.EntityConvertors;
+﻿using Microsoft.Extensions.Logging;
+using SmartWork.BLL.Services.General;
+using SmartWork.Core.Abstractions.EntityConvertors;
+using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
 
 namespace SmartWork.BLL.Services
 {
-    public class CompanyService : 
-        EntityService<Company, AddCompanyDTO, UpdateCompanyDTO>,
+    public class CompanyService : GeneraEntityOperations<Company, AddCompanyDTO, UpdateCompanyDTO>, 
         ICompanyService
     {
-        private readonly IGeneralEntityService<Company> _generalEntityService;
-        private readonly ICompanyEntityConverter _entityConverter;
+        private readonly IEntityRepository<Company> _companyRepository;
+        private readonly ICompanyEntityConverter _companyEntityConverter;
+        private readonly ILogger<CompanyService> _logger;
 
-        public CompanyService(IGeneralEntityService<Company> generalEntityService, 
-            ICompanyEntityConverter entityConverter) :
-            base(generalEntityService, entityConverter)
+        public CompanyService(IEntityRepository<Company> companyRepository,
+            ICompanyEntityConverter companyEntityConverter,
+            ILogger<CompanyService> logger) 
+            : base(companyRepository, companyEntityConverter, logger)
         {
-            _generalEntityService = generalEntityService;
-            _entityConverter = entityConverter;
+            _companyRepository = companyRepository;
+            _companyEntityConverter = companyEntityConverter;
+            _logger = logger;
         }
     }
 }

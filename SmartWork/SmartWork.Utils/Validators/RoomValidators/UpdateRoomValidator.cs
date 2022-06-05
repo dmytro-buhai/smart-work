@@ -12,7 +12,7 @@ namespace SmartWork.Utils.Validators.RoomValidators
                .WithMessage("Specify the company for this office");
             RuleFor(x => x.Name).ObjectName();
             RuleFor(x => x.Number).Matches(@"^\w+$");
-            RuleFor(x => x.Square).Matches(@"^\d+$");
+            RuleFor(x => x.Square).NotEmpty().GreaterThan(0);
             RuleFor(x => x.AmountOfWorkplaces).GreaterThan(0);
             RuleFor(x => x.PhotoFileName).PhotoFileName();
         }

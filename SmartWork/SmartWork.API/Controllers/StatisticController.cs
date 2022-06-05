@@ -24,7 +24,14 @@ namespace SmartWork.API.Controllers
         [HttpPost("Statistics/List")]
         public async Task<IActionResult> GetAsync(PageInfo pageInfo)
         {
-            return new OkObjectResult(await _statisticService.GetAsync(pageInfo));
+            var statisticsList = await _statisticService.GetAsync(pageInfo);
+            
+            if (statisticsList != null)
+            {
+                return new OkObjectResult(statisticsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
         [HttpPost("[controller]/AddAttendanceStatisticInfo")]

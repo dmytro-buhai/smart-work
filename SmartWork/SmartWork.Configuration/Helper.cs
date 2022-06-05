@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
-using SmartWork.BLL.Services.General;
 using SmartWork.Configuration.Resources;
 using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.Entities;
 using SmartWork.Utils;
 using System;
 using System.IO;
@@ -66,9 +64,9 @@ namespace SmartWork.Configuration
 
         public static async Task SeedDataAsync(IServiceProvider serviceProvider)
         {
-            var companyService = serviceProvider.GetRequiredService<IGeneralEntityService<Company>>();
-            var officeService = serviceProvider.GetRequiredService<IGeneralEntityService<Office>>();
-            var roomService = serviceProvider.GetRequiredService<IGeneralEntityService<Room>>();
+            var companyService = serviceProvider.GetRequiredService<ICompanyService>();
+            var officeService = serviceProvider.GetRequiredService<IOfficeService>();
+            var roomService = serviceProvider.GetRequiredService<IRoomService>();
             var seed = new Seed(companyService, officeService, roomService);
             await seed.SeedData();
         }

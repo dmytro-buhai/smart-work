@@ -1,31 +1,60 @@
-﻿using SmartWork.Core.Abstractions.EntityConvertors;
+﻿using Microsoft.Extensions.Logging;
+using SmartWork.BLL.Services.General;
+using SmartWork.Core.Abstractions.EntityConvertors;
+using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.EquipmentDTOs;
 using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.DTOs.StatisticDTOs;
 using SmartWork.Core.DTOs.SubscribeDTOs;
 using SmartWork.Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
 {
-    public class RoomService : 
-        EntityService<Room, AddRoomDTO, UpdateRoomDTO>, 
+    public class RoomService :
+        GeneraEntityOperations<Room, AddRoomDTO, UpdateRoomDTO>, 
         IRoomService
     {
-        private readonly IGeneralEntityService<Room> _generalRoomService;
-        private readonly IRoomEntityConverter _entityConverter;
+        private readonly IEntityRepository<Room> _roomRepository;
+        private readonly IRoomEntityConverter _roomEntityConverter;
         private readonly ISubscribeService _subscribeService;
+        private readonly IStatisticService _statisticService;
+        private readonly ILogger<RoomService> _logger;
 
-        public RoomService(IGeneralEntityService<Room> generalRoomService,
-             IRoomEntityConverter entityConverter,
-             ISubscribeService subscribeService) :
-             base(generalRoomService, entityConverter)
+        public RoomService(IEntityRepository<Room> roomRepository,
+             IRoomEntityConverter roomEntityConverter,
+             ISubscribeService subscribeService,
+             IStatisticService statisticService,
+             ILogger<RoomService> logger) 
+             : base(roomRepository, roomEntityConverter, logger)
         {
-            _generalRoomService = generalRoomService;
-            _entityConverter = entityConverter;
+            _roomRepository = roomRepository;
             _subscribeService = subscribeService;
+            _statisticService = statisticService;
+            _roomEntityConverter = roomEntityConverter;
+            _logger = logger;
+        }
+
+        public override async Task<bool> AddAsync(AddRoomDTO addRoomDTO)
+        {
+            try
+            {
+                var roomEntity = _roomEntityConverter.ToEntity(addRoomDTO);
+                var room = await _roomRepository.AddAsync(roomEntity);
+                await _roomRepository.SaveChangesAsync();
+                await _subscribeService.AddDefaultsSubscribeDetailsForRoom(room);
+                await _statisticService.AddDefaultsStatisticDataForRoom(room);
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during adding new room: {ex.Message}");
+                return false;
+            }
         }
 
         public Task<bool> UpdateSubscribeDetails(UpdateSubscribeDetailDTO newSubscribeDetails)
@@ -36,7 +65,7 @@ namespace SmartWork.BLL.Services
         public async Task<InfoRoomDTO> GetRoomInfoById(int roomId)
         {
             var includesForRoom = new string[] { "Equipment", "Statistics", "SubscribeDetails" };
-            var room = await _generalRoomService.FindWithIncludesAsync(roomId, includesForRoom);
+            var room = await FindWithIncludesAsync(roomId, includesForRoom);
 
             if(room == null)
             {
@@ -49,7 +78,7 @@ namespace SmartWork.BLL.Services
                 OfficeId = room.OfficeId,
                 Name = room.Name,
                 Number = room.Number,
-                Square = room.Square.ToString(),
+                Square = room.Square,
                 AmountOfWorkplaces = room.AmountOfWorkplaces.ToString(),
                 PhotoFileName = room.PhotoFileName,
             };

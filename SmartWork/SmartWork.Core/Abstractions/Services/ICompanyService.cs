@@ -3,7 +3,7 @@ using SmartWork.Core.Entities;
 
 namespace SmartWork.Core.Abstractions.Services
 {
-    public interface ICompanyService : IEntityService<Company, AddCompanyDTO, UpdateCompanyDTO>
+    public interface ICompanyService : IGeneralEntityOperations<Company, AddCompanyDTO, UpdateCompanyDTO>
     {
           
     }

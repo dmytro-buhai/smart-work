@@ -1,5 +1,7 @@
 ﻿using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.Entities;
+using SmartWork.Core.DTOs.CompanyDTOs;
+using SmartWork.Core.DTOs.OfficeDTOs;
+using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.Models;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,13 +10,13 @@ namespace SmartWork.Configuration
 {
     public class Seed
     {
-        private readonly IGeneralEntityService<Company> _companyService;
-        private readonly IGeneralEntityService<Office> _officeService;
-        private readonly IGeneralEntityService<Room> _roomServise;
+        private readonly ICompanyService _companyService;
+        private readonly IOfficeService _officeService;
+        private readonly IRoomService _roomServise;
 
-        public Seed(IGeneralEntityService<Company> companyService,
-                    IGeneralEntityService<Office> officeService,
-                    IGeneralEntityService<Room> roomServise)
+        public Seed(ICompanyService companyService,
+                    IOfficeService officeService,
+                    IRoomService roomServise)
         {
             _companyService = companyService;
             _officeService = officeService;
@@ -28,7 +30,7 @@ namespace SmartWork.Configuration
 
             if (!isAnyCompanies)
             {
-                var company = new Company
+                var addCompanyDTO = new AddCompanyDTO
                 {
                     Name = "SmartWork company inc.",
                     Address = "SmartWork street, 64",
@@ -37,14 +39,14 @@ namespace SmartWork.Configuration
                     PhotoFileName = "default_company_photo_file_name"
                 };               
 
-                await _companyService.AddAsync(company);
+                await _companyService.AddAsync(addCompanyDTO);
             } 
 
             var isAnyOffices = await _officeService.AnyAsync();
 
             if (!isAnyOffices)
             {
-                var office = new Office
+                var addOfficeDTO = new AddOfficeDTO
                 {
                     CompanyId = (await _companyService.GetAsync(pageInfo)).FirstOrDefault().Id,
                     Name = "SmartWork the best office",
@@ -54,14 +56,14 @@ namespace SmartWork.Configuration
                     IsFavourite = false
                 };
 
-                await _officeService.AddAsync(office);
+                await _officeService.AddAsync(addOfficeDTO);
             }
 
             var isAnyRooms = await _roomServise.AnyAsync();
 
             if (!isAnyRooms)
             {
-                var room = new Room
+                var addRoomDTO = new AddRoomDTO
                 {
                     OfficeId = (await _officeService.GetAsync(pageInfo)).FirstOrDefault().Id,
                     Name = "SmartWork the best room",
@@ -70,7 +72,7 @@ namespace SmartWork.Configuration
                     PhotoFileName = "default_room_photo_file_name",
                 };
 
-                await _roomServise.AddAsync(room);
+                await _roomServise.AddAsync(addRoomDTO);
             }
         }
     }
