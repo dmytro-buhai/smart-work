@@ -25,7 +25,7 @@ namespace SmartWork.Core.DTOs.OfficeDTOs
 
         public bool IsFavourite { get; set; }
 
-        public ICollection<Subscribe> Subscribes { get; set; }
+        public Company Company { get; set; }
 
         public ICollection<Room> Rooms { get; set; }
     }

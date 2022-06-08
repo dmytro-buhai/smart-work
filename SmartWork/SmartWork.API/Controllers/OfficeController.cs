@@ -35,7 +35,7 @@ namespace SmartWork.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("Offices/List/{amountOfitems}")]
+        [HttpGet("Offices/SimpleList/{amountOfitems}")]
         public async Task<IActionResult> GetOfficesListAsync(int amountOfitems)
         {
             var pageInfo = new PageInfo { CountItems = amountOfitems };
@@ -44,6 +44,21 @@ namespace SmartWork.API.Controllers
             if (officesList != null)
             {
                 return new OkObjectResult(officesList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Offices/List/{amountOfitems}")]
+        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync(int amountOfitems)
+        {
+            var pageInfo = new PageInfo { CountItems = amountOfitems };
+            var officeList = await _officeService.GetOfficesWithCompanyAndRoomsAsync(pageInfo);
+
+            if (officeList != null)
+            {
+                return new OkObjectResult(officeList);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));

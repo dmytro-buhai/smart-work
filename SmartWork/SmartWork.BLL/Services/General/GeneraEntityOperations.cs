@@ -191,7 +191,7 @@ namespace SmartWork.BLL.Services.General
 
             try
             {
-                return _repository.GetWithIncludesAsync(pageInfo, includeNames);
+                return _repository.GetWithThreeIncludesAsync(pageInfo, includeNames);
             }
             catch (Exception ex)
             {
