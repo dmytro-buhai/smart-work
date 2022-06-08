@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.RoomDTOs;
 using SmartWork.Core.DTOs.SubscribeDTOs;
-using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
@@ -112,9 +111,9 @@ namespace SmartWork.API.Controllers
         {
             var result = await _roomService.AddAsync(addRoomDTO);
 
-            if (result)
+            if (result != default)
             {
-                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+                return new OkObjectResult(result);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));

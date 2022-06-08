@@ -12,7 +12,7 @@ namespace SmartWork.Core.Abstractions.Services
         where TAddDTO : IDTO
         where TUpdateDTO : IDTO
     {
-        Task<bool> AddAsync(TAddDTO addEntityDTO);
+        Task<int> AddAsync(TAddDTO addEntityDTO);
         Task<bool> AddAsync(IEnumerable<TAddDTO> transferObjects);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<TEntity> FindAsync(int id);

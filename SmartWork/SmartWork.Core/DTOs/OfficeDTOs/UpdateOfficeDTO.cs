@@ -24,9 +24,5 @@ namespace SmartWork.Core.DTOs.OfficeDTOs
         public string PhotoFileName { get; set; }
 
         public bool IsFavourite { get; set; }
-
-        public ICollection<Subscribe> Subscribes { get; set; }
-
-        public ICollection<Room> Rooms { get; set; }
     }
 }

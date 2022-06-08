@@ -35,9 +35,10 @@ namespace SmartWork.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Offices/List")]
-        public async Task<IActionResult> GetOfficesListAsync(PageInfo pageInfo)
+        [HttpGet("Offices/List/{amountOfitems}")]
+        public async Task<IActionResult> GetOfficesListAsync(int amountOfitems)
         {
+            var pageInfo = new PageInfo { CountItems = amountOfitems };
             var officesList = await _officeService.GetAsync(pageInfo);
 
             if (officesList != null)
@@ -62,20 +63,22 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAsync(AddOfficeDTO addOfficeDTO)
         {
             var result = await _officeService.AddAsync(addOfficeDTO);
 
-            if (result)
+            if (result != default)
             {
-                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+                return new OkObjectResult(result);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
         [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateAsync(UpdateOfficeDTO updateOfficeDTO)
@@ -90,7 +93,8 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
-        [HttpDelete("[controller]/Delete")]
+        [AllowAnonymous]
+        [HttpDelete("[controller]/Delete/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _officeService.RemoveAsync(id);

@@ -38,7 +38,7 @@ namespace SmartWork.BLL.Services
             _logger = logger;
         }
 
-        public override async Task<bool> AddAsync(AddRoomDTO addRoomDTO)
+        public override async Task<int> AddAsync(AddRoomDTO addRoomDTO)
         {
             try
             {
@@ -48,12 +48,12 @@ namespace SmartWork.BLL.Services
                 await _subscribeService.AddDefaultsSubscribeDetailsForRoom(room);
                 await _statisticService.AddDefaultsStatisticDataForRoom(room);
 
-                return true;
+                return room.Id;
             }
             catch (Exception ex)
             {
                 _logger.LogError($"error during adding new room: {ex.Message}");
-                return false;
+                return default;
             }
         }
 

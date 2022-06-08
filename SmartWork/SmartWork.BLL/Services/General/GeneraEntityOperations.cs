@@ -32,19 +32,19 @@ namespace SmartWork.BLL.Services.General
             _logger = logger;
         }
 
-        public virtual async Task<bool> AddAsync(TAddDTO addEntityDTO)
+        public virtual async Task<int> AddAsync(TAddDTO addEntityDTO)
         {
             try
             {
                 var entity = _entityConverter.ToEntity(addEntityDTO);
                 await _repository.AddAsync(entity);
                 await _repository.SaveChangesAsync();
-                return true;
+                return entity.Id;
             }
             catch (Exception ex)
             {
                 _logger.LogError($"error during adding {typeof(TEntity).Name}: {ex.Message}");
-                return false;
+                return default;
             }
         }
 

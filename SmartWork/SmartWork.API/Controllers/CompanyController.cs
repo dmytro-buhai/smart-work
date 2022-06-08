@@ -68,9 +68,9 @@ namespace SmartWork.API.Controllers
         {
             var result = await _companyService.AddAsync(addCompanyDTO);
 
-            if (result)
+            if (result != default)
             {
-                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+                return new OkObjectResult(result);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
