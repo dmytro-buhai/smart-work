@@ -74,6 +74,11 @@ namespace SmartWork.BLL.Services
             }
         }
 
+        public Task<List<SubscribeDetail>> GetSubscribeDetailsForRooms(int[] roomsIDs)
+        {
+            return _subscribeDetailRepository.GetAsync((sd => roomsIDs.Contains(sd.RoomId)));
+        }
+
         public async Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail)
         {
 

@@ -1,5 +1,6 @@
 ﻿using SmartWork.Core.DTOs.SubscribeDTOs;
 using SmartWork.Core.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SmartWork.Core.Abstractions.Services
@@ -7,6 +8,7 @@ namespace SmartWork.Core.Abstractions.Services
     public interface ISubscribeService
     {
         public Task<bool> AddDefaultsSubscribeDetailsForRoom(Room room);
+        Task<List<SubscribeDetail>> GetSubscribeDetailsForRooms(int[] roomsIDs);
         public Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail);
     }
 }
