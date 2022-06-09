@@ -85,7 +85,7 @@ namespace SmartWork.BLL.Services
 
             var equipments = new List<InfoEquipmentDTO>();
             var subscribeDetails = new List<InfoSubscribeDetailDTO>();
-            var statistics = new List<InfoStatisticDTO>();
+            var statistics = new List<SimpleInfoStatisticDTO>();
 
             foreach (var equipment in room.Equipment)
             {
@@ -115,13 +115,12 @@ namespace SmartWork.BLL.Services
 
             foreach (var statistic in room.Statistics)
             {
-                statistics.Add(new InfoStatisticDTO
+                statistics.Add(new SimpleInfoStatisticDTO
                 {
                     Id = statistic.Id,
                     Type = $"{statistic.Type}",
                     Title = statistic.Title,
-                    Description = statistic.Description,
-                    Data = statistic.Data
+                    Description = statistic.Description
                 });
             }
 

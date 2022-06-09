@@ -9,6 +9,7 @@ using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
@@ -75,18 +76,119 @@ namespace SmartWork.BLL.Services
             return _statisticRepository.GetAsync(pageInfo);
         }
 
-        public Task<Statistic> FindAsync(int id)
+        public async Task<List<InfoStatisticDTO>> GetByRoomIdAsync(int roomId)
         {
+            var statistics = await _statisticRepository.GetAsync((s => s.RoomId == roomId));
+            var infoStatisticList = new List<InfoStatisticDTO>();
+
+            if (statistics == null || statistics.Count == 0)
+            {
+                return infoStatisticList;
+            }
+
+            foreach(var statistic in statistics)
+            {
+                infoStatisticList.Add(ConvertToDetailedStatistic(statistic));
+            }
+
+            return infoStatisticList;
+        }
+
+        public async Task<InfoStatisticDTO> FindAsync(int statId)
+        {
+            var statistic = await _statisticRepository.FindAsync(statId);
+            return ConvertToDetailedStatistic(statistic);
+        }
+
+        public async Task<List<InfoStatisticDTO>> GetAttendanceStatisticAsync(PageInfo pageInfo)
+        {
+            var attendanceStatistic = await _statisticRepository
+                .GetAsync(pageInfo, (s => s.Type == StatisticType.Attendance));
+
+            var infoStatisticList = new List<InfoStatisticDTO>();
+
             try
             {
-                return _statisticRepository.FindAsync(id);
+                foreach (var stat in attendanceStatistic)
+                {
+                    var data = JsonConvert.DeserializeObject<List<SimpleAttendanceForDateDTO>>(stat.Data);
+                    var infoStatistic = new InfoStatisticDTO
+                    {
+                        Id = stat.Id,
+                        Title = stat.Title,
+                        Description = stat.Description,
+                        Type = stat.Type.ToString(),
+                        Dates = data.Select(d => d.Date).ToList(),
+                        Values = data.Select(d => d.Count).ToList(),
+                    };
+
+                    infoStatisticList.Add(infoStatistic);
+                }
             }
             catch (Exception ex)
             {
-                _logger.LogError($"error during finding statistic by id: {ex.Message}");
-                return default;
+                _logger.LogError(ex.Message);
             }
+
+            return infoStatisticList;
         }
+
+        public async Task<List<InfoStatisticDTO>> GetAttendanceStatisticForRoomAsync(int roomId)
+        {
+            var attendanceStatistic = await _statisticRepository
+                .GetAsync(new PageInfo { CountItems = 100 }, 
+                (s => s.RoomId == roomId && s.Type == StatisticType.Attendance));
+
+            var infoStatisticList = new List<InfoStatisticDTO>();
+
+            try
+            {
+                foreach (var stat in attendanceStatistic)
+                {
+                    var data = JsonConvert.DeserializeObject<List<SimpleAttendanceForDateDTO>>(stat.Data);
+                    var infoStatistic = new InfoStatisticDTO
+                    {
+                        Id = stat.Id,
+                        Title = stat.Title,
+                        Description = stat.Description,
+                        Type = stat.Type.ToString(),
+                        Dates = data.Select(d => d.Date).ToList(),
+                        Values = data.Select(d => d.Count).ToList(),
+                    };
+
+                    infoStatisticList.Add(infoStatistic);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+
+            return infoStatisticList;
+        }
+
+        public Task<List<Statistic>> GetClimateStatisticAsync(PageInfo pageInfo)
+        {
+            return _statisticRepository.GetAsync(pageInfo, (s => s.Type == StatisticType.Climate));
+        }
+
+        public Task<List<Statistic>> GetLightingStatisticAsync(PageInfo pageInfo)
+        {
+            return _statisticRepository.GetAsync(pageInfo, (s => s.Type == StatisticType.Lighting));
+        }
+
+        //public Task<Statistic> FindAsync(int id)
+        //{
+        //    try
+        //    {
+        //        return _statisticRepository.FindAsync(id);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"error during finding statistic by id: {ex.Message}");
+        //        return default;
+        //    }
+        //}
 
         public async Task<bool> AddAttendanceStatisticInfoAsync(AttendanceForDateDTO attendanceByDay)
         {
@@ -134,7 +236,7 @@ namespace SmartWork.BLL.Services
 
         private static void AddStatisticData<T>(ref Statistic statistic, T newStatisticInfo)
         {
-            var data = (List<T>)JsonConvert.DeserializeObject(statistic.Data);
+            var data = JsonConvert.DeserializeObject<List<T>>(statistic.Data);
 
             if (data == null)
             {
@@ -248,6 +350,42 @@ namespace SmartWork.BLL.Services
                 _logger.LogError($"error during adding lighting statistic: {ex.Message}");
                 return false;
             }
+        }
+
+        private InfoStatisticDTO ConvertToDetailedStatistic(Statistic statistic)
+        {
+            var infoStat = new InfoStatisticDTO
+            {
+                Id = statistic.Id,
+                Type = statistic.Type.ToString(),
+                Title = statistic.Title,
+                Description = statistic.Description,
+            };
+
+            var attendanceData = new List<SimpleAttendanceForDateDTO>();
+            var climateData = new List<SimpleClimateForDateDTO>();
+            var lightingData = new List<SimpleLightningForDateDTO>();
+
+            switch (statistic.Type)
+            {
+                case StatisticType.Attendance:
+                    attendanceData = JsonConvert.DeserializeObject<List<SimpleAttendanceForDateDTO>>(statistic.Data);
+                    infoStat.Dates = attendanceData.Select(d => d.Date).ToList();
+                    infoStat.Values = attendanceData.Select(d => d.Count).ToList();
+                    break;
+                case StatisticType.Climate:
+                    climateData = JsonConvert.DeserializeObject<List<SimpleClimateForDateDTO>>(statistic.Data);
+                    infoStat.Dates = climateData.Select(d => d.Date).ToList();
+                    infoStat.Values = climateData.Select(d => d.Temperature).ToList();
+                    break;
+                case StatisticType.Lighting:
+                    lightingData = JsonConvert.DeserializeObject<List<SimpleLightningForDateDTO>>(statistic.Data);
+                    infoStat.Dates = lightingData.Select(d => d.Date).ToList();
+                    infoStat.Values = lightingData.Select(d => d.Lumens).ToList();
+                    break;
+            }
+
+            return infoStat;
         }
     }
 }

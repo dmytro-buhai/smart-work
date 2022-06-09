@@ -12,7 +12,7 @@ namespace SmartWork.Core.Abstractions.Services
 {
     public interface IStatisticService
     {
-        public Task<Statistic> FindAsync(int id);
+        Task<InfoStatisticDTO> FindAsync(int statId);
         public Task<List<Statistic>> GetAsync(PageInfo pageInfo);
         public Task<bool> AddAsync(IEnumerable<AddStatisticDTO> statistics);
         public Task<bool> AddAttendanceStatisticInfoAsync(AttendanceForDateDTO attendanceStatistic);
@@ -20,5 +20,8 @@ namespace SmartWork.Core.Abstractions.Services
         public Task<bool> AddLightingStatisticInfo(LightingForDateDTO lightingStatistic);
         public Task<StatisticType> GetStatisticType(int statisticId);
         Task<bool> AddDefaultsStatisticDataForRoom(Room room);
+        Task<List<InfoStatisticDTO>> GetAttendanceStatisticAsync(PageInfo pageInfo);
+        Task<List<InfoStatisticDTO>> GetAttendanceStatisticForRoomAsync(int roomId);
+        Task<List<InfoStatisticDTO>> GetByRoomIdAsync(int roomId);
     }
 }

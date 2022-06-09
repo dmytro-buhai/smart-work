@@ -34,6 +34,62 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
+        [HttpPost("AttendanceStatistic/List")]
+        public async Task<IActionResult> GetAttendanceStatisticAsync(PageInfo pageInfo)
+        {
+            var attendanceStatisticsList = await _statisticService.GetAttendanceStatisticAsync(pageInfo);
+
+            if (attendanceStatisticsList != null)
+            {
+                return new OkObjectResult(attendanceStatisticsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("AttendanceStatistic/List/{roomId}")]
+        public async Task<IActionResult> GetAttendanceStatisticForRoomAsync(int roomId)
+        {
+            var attendanceStatisticsList = await _statisticService.GetAttendanceStatisticForRoomAsync(roomId);
+
+            if (attendanceStatisticsList != null)
+            {
+                return new OkObjectResult(attendanceStatisticsList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("[controller]/FindById/{id}")]
+        public async Task<IActionResult> FindByIdAsync(int id)
+        {
+            var statistic = await _statisticService.FindAsync(id);
+
+            if (statistic != null)
+            {
+                return new OkObjectResult(statistic);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("[controller]/GetByRoomId/{roomid}")]
+        public async Task<IActionResult> GetByRoomIdAsync(int roomid)
+        {
+            var statistics = await _statisticService.GetByRoomIdAsync(roomid);
+
+            if (statistics != null)
+            {
+                return new OkObjectResult(statistics);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
         [HttpPost("[controller]/AddAttendanceStatisticInfo")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAttendanceInfoAsync(AttendanceForDateDTO attendanceByDay)

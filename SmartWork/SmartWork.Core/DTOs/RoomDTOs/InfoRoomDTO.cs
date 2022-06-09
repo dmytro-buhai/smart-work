@@ -35,6 +35,6 @@ namespace SmartWork.Core.DTOs.RoomDTOs
 
         public ICollection<InfoSubscribeDetailDTO> SubscribeDetails { get; set; }
 
-        public ICollection<InfoStatisticDTO> Statistics { get; set; }
+        public ICollection<SimpleInfoStatisticDTO> Statistics { get; set; }
     }
 }

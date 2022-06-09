@@ -123,7 +123,7 @@ namespace SmartWork.BLL.Services.General
 
             try
             {
-                return _repository.FindWithIncludesAsync(id, includeNames);
+                return _repository.FindWithThreeIncludesAsync(id, includeNames);
             }
             catch (Exception ex)
             {

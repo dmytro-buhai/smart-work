@@ -47,7 +47,17 @@ namespace SmartWork.Data.Repositories
             return this.entities.Include(includeName).FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public virtual Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames)
+        public virtual Task<TEntity> FindWithTwoIncludesAsync(int id, string[] includeNames)
+        {
+            return this.entities.Include(includeNames[0])
+                                .Include(includeNames[1])
+                                .Where(x => x.Id == id)
+                                .AsSplitQuery()
+                                .AsNoTracking()
+                                .FirstOrDefaultAsync();
+        }
+
+        public virtual Task<TEntity> FindWithThreeIncludesAsync(int id, string[] includeNames)
         {
             return this.entities.Include(includeNames[0])
                                 .Include(includeNames[1])
@@ -61,6 +71,16 @@ namespace SmartWork.Data.Repositories
         public virtual Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression)
         {
             return this.entities.FirstOrDefaultAsync(expression);
+        }
+
+        public virtual Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression = null)
+        {
+            if (expression != null)
+            {
+                return this.entities.Where(expression).ToListAsync();
+            }
+
+            return this.entities.ToListAsync();
         }
 
         public virtual Task<List<TEntity>> GetAsync(PageInfo pageInfo, Expression<Func<TEntity, bool>> expression = null)

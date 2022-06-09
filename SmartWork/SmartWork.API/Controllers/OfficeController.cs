@@ -68,7 +68,7 @@ namespace SmartWork.API.Controllers
         [HttpGet("[controller]/FindById/{id}")]
         public async Task<IActionResult> FindByIdAsync(int id)
         {
-            var office = await _officeService.FindAsync(id);
+            var office = await _officeService.FindOfficeWithCompanyAndRoomsAsync(id);
 
             if (office != null)
             {

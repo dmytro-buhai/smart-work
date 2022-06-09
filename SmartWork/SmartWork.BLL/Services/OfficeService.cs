@@ -30,6 +30,38 @@ namespace SmartWork.BLL.Services
             _logger = logger;
         }
 
+        public async Task<InfoOfficeDTO> FindOfficeWithCompanyAndRoomsAsync(int id)
+        {
+            try
+            {
+                const string CompanyIncludeName = "Company";
+                const string RoomsIncludeName = "Rooms";
+
+                var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
+                var office = await _officeRepository.FindWithTwoIncludesAsync(id, includeNames);
+
+                var officeInfo = new InfoOfficeDTO
+                {
+                    Id = office.Id,
+                    CompanyId = office.CompanyId,
+                    Name = office.Name,
+                    Address = office.Address,
+                    PhoneNumber = office.PhoneNumber,
+                    PhotoFileName = office.PhotoFileName,
+                    IsFavourite = office.IsFavourite,
+                    Company = office.Company,
+                    Rooms = office.Rooms
+                };
+               
+                return officeInfo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during getting '{typeof(Office).Name}' from db: {ex.Message}");
+                return default;
+            }
+        }
+
         public async Task<List<InfoOfficeDTO>> GetOfficesWithCompanyAndRoomsAsync(PageInfo pageInfo)
         {
             var infoOfficeList = new List<InfoOfficeDTO>();

@@ -12,8 +12,9 @@ namespace SmartWork.Core.Abstractions.Repositories
         Task<TEntity> FindAsync(int id);
         Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> expression);
         Task<TEntity> FindWithIncludeAsync(int id, string includeName);
-        Task<TEntity> FindWithIncludesAsync(int id, string[] includeNames);
+        Task<TEntity> FindWithThreeIncludesAsync(int id, string[] includeNames);
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression = null);
+        Task<List<TEntity>> GetAsync(Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetAsync(PageInfo pageInfo, Expression<Func<TEntity, bool>> expression = null);
         Task<List<TEntity>> GetWithIncludeAsync(PageInfo pageInfo, string includeName);
         Task<List<TEntity>> GetWithTwoIncludesAsync(PageInfo pageInfo, string[] includeNames);
@@ -25,5 +26,6 @@ namespace SmartWork.Core.Abstractions.Repositories
         Task RemoveAsync(TEntity entities);
         Task RemoveAsync(IEnumerable<TEntity> entities);
         Task SaveChangesAsync();
+        Task<TEntity> FindWithTwoIncludesAsync(int id, string[] includeNames);
     }
 }
