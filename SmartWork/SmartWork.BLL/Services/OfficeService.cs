@@ -62,34 +62,18 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<List<InfoOfficeDTO>> GetOfficesWithCompanyAndRoomsAsync(PageInfo pageInfo)
+        public async Task<PagedList<Office>> GetOfficesWithCompanyAndRoomsAsync(PagingParams param)
         {
-            var infoOfficeList = new List<InfoOfficeDTO>();
             try
             {
                 const string CompanyIncludeName = "Company";
                 const string RoomsIncludeName = "Rooms";
 
                 var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
-                var offices = await _officeRepository.GetWithTwoIncludesAsync(pageInfo, includeNames);
+                var offices = await PagedList<Office>
+                    .CreateAsync(_officeRepository, param.PageNumber, param.PageSize);
 
-                foreach (var office in offices)
-                {
-                    infoOfficeList.Add(new InfoOfficeDTO
-                    {
-                        Id = office.Id,
-                        CompanyId = office.CompanyId,
-                        Name = office.Name,
-                        Address = office.Address,
-                        PhoneNumber = office.PhoneNumber,
-                        PhotoFileName = office.PhotoFileName,
-                        IsFavourite = office.IsFavourite,
-                        Company = office.Company,
-                        Rooms = office.Rooms
-                    });
-                }
-
-                return infoOfficeList;
+                return offices;
 
             }
             catch (Exception ex)

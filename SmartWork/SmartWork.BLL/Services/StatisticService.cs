@@ -357,6 +357,7 @@ namespace SmartWork.BLL.Services
             var infoStat = new InfoStatisticDTO
             {
                 Id = statistic.Id,
+                RoomId = statistic.RoomId,
                 Type = statistic.Type.ToString(),
                 Title = statistic.Title,
                 Description = statistic.Description,

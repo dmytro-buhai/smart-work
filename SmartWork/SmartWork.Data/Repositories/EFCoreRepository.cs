@@ -93,6 +93,20 @@ namespace SmartWork.Data.Repositories
             return this.entities.Take(pageInfo.CountItems).ToListAsync();
         }
 
+        public virtual Task<List<TEntity>> GetPageListAsync(int skip, int take)
+        {
+            return this.entities.Skip(skip).Take(take).OrderBy(e => e.Id).ToListAsync();
+        }
+
+        public virtual Task<List<TEntity>> GetPageListWithTwoIncludesAsync(int skip, int take, string[] includeNames)
+        {
+            return this.entities.Skip(skip).Take(take)
+                                           .Include(includeNames[0])
+                                           .Include(includeNames[1])
+                                           .OrderBy(e => e.Id)
+                                           .ToListAsync();
+        }
+
         public virtual Task<List<TEntity>> GetWithIncludeAsync(PageInfo pageInfo, string includeName)
         {
             return this.entities.Take(pageInfo.CountItems).Include(includeName).ToListAsync();

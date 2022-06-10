@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartWork.API.Extensions;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.OfficeDTOs;
 using SmartWork.Core.Enums;
@@ -50,14 +51,15 @@ namespace SmartWork.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("Offices/List/{amountOfitems}")]
-        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync(int amountOfitems)
+        [HttpGet("Offices/List")]
+        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync([FromQuery]PagingParams param)
         {
-            var pageInfo = new PageInfo { CountItems = amountOfitems };
-            var officeList = await _officeService.GetOfficesWithCompanyAndRoomsAsync(pageInfo);
+            var officeList = await _officeService.GetOfficesWithCompanyAndRoomsAsync(param);
 
             if (officeList != null)
             {
+                Response.AddPaginationHeader(officeList.CurrentPage, officeList.PageSize,
+                    officeList.TotalCount, officeList.TotalPages);
                 return new OkObjectResult(officeList);
             }
 
@@ -72,10 +74,10 @@ namespace SmartWork.API.Controllers
 
             if (office != null)
             {
-                return new OkObjectResult(office);
+                return Ok(office);
             }
 
-            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+            return NotFound();
         }
 
         [AllowAnonymous]
