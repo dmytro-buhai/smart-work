@@ -71,7 +71,7 @@ namespace SmartWork.BLL.Services
 
                 var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
                 var offices = await PagedList<Office>
-                    .CreateAsync(_officeRepository, param.PageNumber, param.PageSize);
+                    .CreateAsync(_officeRepository, param.PageNumber, param.PageSize, includeNames);
 
                 return offices;
 
