@@ -28,6 +28,7 @@ namespace SmartWork.Core.Abstractions.Repositories
         Task SaveChangesAsync();
         Task<TEntity> FindWithTwoIncludesAsync(int id, string[] includeNames);
         Task<List<TEntity>> GetPageListAsync(int skip, int take);
-        Task<List<TEntity>> GetPageListWithTwoIncludesAsync(int skip, int take, string[] includeNames);
+        Task<List<TEntity>> GetPageListWithTwoIncludesAsync(int skip, int take, 
+            string[] includeNames, Expression<Func<TEntity, bool>> expression);
     }
 }

@@ -8,6 +8,7 @@ using SmartWork.Core.Entities;
 using SmartWork.Core.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
@@ -62,16 +63,27 @@ namespace SmartWork.BLL.Services
             }
         }
 
-        public async Task<PagedList<Office>> GetOfficesWithCompanyAndRoomsAsync(PagingParams param)
+        public async Task<PagedList<Office>> GetOfficesWithCompanyAndRoomsAsync(OfficeParams param)
         {
             try
             {
                 const string CompanyIncludeName = "Company";
                 const string RoomsIncludeName = "Rooms";
 
+                Expression<Func<Office, bool>> expression = null;
+
+                
+                if (param.IsFavourite)
+                {
+                    Expression<Func<Office, bool>> isFavouriteExpression = (o => o.IsFavourite == param.IsFavourite);
+                    expression = isFavouriteExpression;
+                }
+                
                 var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
+
                 var offices = await PagedList<Office>
-                    .CreateAsync(_officeRepository, param.PageNumber, param.PageSize, includeNames);
+                    .CreateAsync(_officeRepository, param.PageNumber, param.PageSize, 
+                    includeNames, expression);
 
                 return offices;
 

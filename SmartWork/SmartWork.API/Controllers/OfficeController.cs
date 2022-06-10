@@ -52,7 +52,7 @@ namespace SmartWork.API.Controllers
 
         [AllowAnonymous]
         [HttpGet("Offices/List")]
-        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync([FromQuery]PagingParams param)
+        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync([FromQuery]OfficeParams param)
         {
             var officeList = await _officeService.GetOfficesWithCompanyAndRoomsAsync(param);
 

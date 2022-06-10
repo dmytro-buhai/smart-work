@@ -98,13 +98,23 @@ namespace SmartWork.Data.Repositories
             return this.entities.Skip(skip).Take(take).OrderBy(e => e.Id).ToListAsync();
         }
 
-        public virtual Task<List<TEntity>> GetPageListWithTwoIncludesAsync(int skip, int take, string[] includeNames)
+        public virtual Task<List<TEntity>> GetPageListWithTwoIncludesAsync(int skip, int take, 
+            string[] includeNames, Expression<Func<TEntity, bool>> expression = null)
         {
-            return this.entities.Skip(skip).Take(take)
-                                           .Include(includeNames[0])
-                                           .Include(includeNames[1])
-                                           .OrderBy(e => e.Id)
-                                           .ToListAsync();
+            return expression == null ?
+                    this.entities.Skip(skip)
+                                 .Take(take)
+                                 .Include(includeNames[0])
+                                 .Include(includeNames[1])
+                                 .OrderBy(e => e.Id)
+                                 .ToListAsync()  :
+                    this.entities.Skip(skip)
+                                 .Take(take)
+                                 .Where(expression)
+                                 .Include(includeNames[0])
+                                 .Include(includeNames[1])
+                                 .OrderBy(e => e.Id)
+                                 .ToListAsync();
         }
 
         public virtual Task<List<TEntity>> GetWithIncludeAsync(PageInfo pageInfo, string includeName)

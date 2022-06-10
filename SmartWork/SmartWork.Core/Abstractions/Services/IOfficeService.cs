@@ -9,6 +9,6 @@ namespace SmartWork.Core.Abstractions.Services
     public interface IOfficeService : IGeneralEntityOperations<Office, AddOfficeDTO, UpdateOfficeDTO>
     {
         Task<InfoOfficeDTO> FindOfficeWithCompanyAndRoomsAsync(int id);
-        Task<PagedList<Office>> GetOfficesWithCompanyAndRoomsAsync(PagingParams param);
+        Task<PagedList<Office>> GetOfficesWithCompanyAndRoomsAsync(OfficeParams param);
     }
 }
