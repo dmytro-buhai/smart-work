@@ -74,6 +74,25 @@ namespace SmartWork.BLL.Services
             }
         }
 
+        public async Task<List<InfoUserSubscribe>> GetUserSubscribesAsync(string userId)
+        {
+            var infoUserSubscribes = new List<InfoUserSubscribe>();
+            try
+            {
+                var subscribes = await _subscribeRepository.GetAsync(x => x.UserId == userId);
+                foreach (var sub in subscribes)
+                {
+                    infoUserSubscribes.Add(CreateInfoUserSubscribe(sub));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during detting user subscribes: {ex.Message}");
+            }
+
+            return infoUserSubscribes;
+        }
+
         public async Task<InfoUserSubscribe> OrderSubscribe(OrderSubscribeDTO orderSubscribe)
         {
             try
@@ -147,6 +166,18 @@ namespace SmartWork.BLL.Services
             await _subscribeDetailRepository.SaveChangesAsync();
 
             return true;
+        }
+
+        private InfoUserSubscribe CreateInfoUserSubscribe(Subscribe userSubscribe)
+        {
+            return new InfoUserSubscribe
+            {
+                Id = userSubscribe.Id,
+                RoomId = userSubscribe.RoomId,
+                UserId = userSubscribe.UserId,
+                StartDate = userSubscribe.StartDate,
+                EndDate = userSubscribe.EndDate
+            };
         }
     }
 }

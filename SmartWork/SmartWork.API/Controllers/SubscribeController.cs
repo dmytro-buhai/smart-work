@@ -39,11 +39,32 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [HttpGet("[controller]s/GetByUser/{username}")]
+        public async Task<IActionResult> GetUserSubscribesAsync(string username)
+        {
+            var user = await GetUserAsync(username);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("username", "your username does not exist");
+                return ValidationProblem();
+            }
+
+            var orderedUserSubscribes = await _subscribeService.GetUserSubscribesAsync(user.Id);
+
+            if (orderedUserSubscribes != null)
+            {
+                return Ok(orderedUserSubscribes);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
         [HttpPost("[controller]/OrderUserSubscribe")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> OrderUserSubscribeAsync(OrderSubscribeDTO orderSubscribe)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == orderSubscribe.Username);
+            var user = await GetUserAsync(orderSubscribe.Username);
 
             if(user == null)
             {
@@ -63,6 +84,11 @@ namespace SmartWork.API.Controllers
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        private async Task<User> GetUserAsync(string username)
+        {
+            return await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == username);
         }
     }
 }

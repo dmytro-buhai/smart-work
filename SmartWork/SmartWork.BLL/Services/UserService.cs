@@ -181,7 +181,7 @@ namespace SmartWork.BLL.Services
             return new UserDTO
             {
                 DisplayName = user.DisplayName,
-                Username = user.Email,
+                Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
         }
