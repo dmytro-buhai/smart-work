@@ -24,7 +24,7 @@ namespace SmartWork.Configuration
 
             if ((await userManager.FindByEmailAsync(adminEmail)) == null)
             {
-                var admin = new User { Email = adminEmail, UserName = adminEmail, FullName = "admin" };
+                var admin = new User { Email = adminEmail, UserName = adminEmail, DisplayName = "admin" };
                 var result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {

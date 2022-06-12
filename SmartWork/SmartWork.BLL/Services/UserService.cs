@@ -151,18 +151,12 @@ namespace SmartWork.BLL.Services
         {
             const string userRole = "user";
 
-            if (await _userManager.Users.AnyAsync(x => x.Email == transferObject.Email))
-            {
-                return new BadRequestObjectResult("Email taken");
-            }
-            
             var user = new User
             {
                 Email = transferObject.Email,
-                UserName = transferObject.Email,
-                FullName = transferObject.FullName,
+                UserName = transferObject.Username,
+                DisplayName = transferObject.DisplayName,
                 PhoneNumber = transferObject.PhoneNumber,
-                DateOfBirth = transferObject.DateOfBirth
             };
 
             var result = await _userManager.CreateAsync(user, transferObject.Password);
@@ -186,7 +180,7 @@ namespace SmartWork.BLL.Services
         {
             return new UserDTO
             {
-                DisplayName = user.FullName,
+                DisplayName = user.DisplayName,
                 Username = user.Email,
                 Token = _tokenService.CreateToken(user)
             };
@@ -221,9 +215,8 @@ namespace SmartWork.BLL.Services
 
             user.Email = transferObject.Email;
             user.UserName = transferObject.Email;
-            user.FullName = transferObject.FullName;
+            user.DisplayName = transferObject.DisplayName;
             user.PhoneNumber = transferObject.PhoneNumber;
-            user.DateOfBirth = transferObject.DateOfBirth;
 
             return await _userManager.UpdateAsync(user);
         }

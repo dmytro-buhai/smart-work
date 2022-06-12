@@ -41,6 +41,11 @@ namespace SmartWork.BLL.Services
                 var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
                 var office = await _officeRepository.FindWithTwoIncludesAsync(id, includeNames);
 
+                if(office == null)
+                {
+                    return default;
+                }
+
                 var officeInfo = new InfoOfficeDTO
                 {
                     Id = office.Id,

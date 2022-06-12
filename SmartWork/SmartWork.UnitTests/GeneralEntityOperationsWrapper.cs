@@ -35,16 +35,17 @@ namespace SmartWork.UnitTests
             _logger = logger;
         }
 
-        public override async Task<bool> AddAsync(TAddDTO addEntityDTO)
+        public override async Task<int> AddAsync(TAddDTO addEntityDTO)
         {
             try
             {
                 var entity = _entityConverter.ToEntity(addEntityDTO);
-                return true;
+                entity.Id = 1;
+                return entity.Id;
             }
             catch (Exception ex)
             {
-                return false;
+                return default;
             }
         }
 

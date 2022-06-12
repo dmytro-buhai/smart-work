@@ -28,7 +28,7 @@ namespace SmartWork.UnitTests
         {
             var result = await _generalCompanyOperationsWrapper.AddAsync(new Mock<AddCompanyDTO>().Object);
 
-            if (result)
+            if (result != 0)
             {
                 Assert.Pass();
             }
