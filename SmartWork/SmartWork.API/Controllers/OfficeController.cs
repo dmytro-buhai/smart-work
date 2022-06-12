@@ -80,7 +80,6 @@ namespace SmartWork.API.Controllers
             return NotFound();
         }
 
-        [AllowAnonymous]
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAsync(AddOfficeDTO addOfficeDTO)
@@ -95,7 +94,6 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
-        [AllowAnonymous]
         [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> UpdateAsync(UpdateOfficeDTO updateOfficeDTO)
@@ -110,7 +108,6 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
-        [AllowAnonymous]
         [HttpDelete("[controller]/Delete/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {

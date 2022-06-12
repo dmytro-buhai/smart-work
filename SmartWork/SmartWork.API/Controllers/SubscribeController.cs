@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SmartWork.Core.Abstractions.Services;
+using SmartWork.Core.DTOs.SubscribeDTOs;
+using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
+using SmartWork.Utils.ActionFilters;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
@@ -11,11 +16,13 @@ namespace SmartWork.API.Controllers
     [ApiController]
     public class SubscribeController : ControllerBase
     {
+        private readonly UserManager<User> _userManager;
         private readonly ISubscribeService _subscribeService;
 
-        public SubscribeController(ISubscribeService subscribeService)
+        public SubscribeController(ISubscribeService subscribeService, UserManager<User> userManager)
         {
             _subscribeService = subscribeService;
+            _userManager = userManager;
         }
 
         [AllowAnonymous]
@@ -27,6 +34,32 @@ namespace SmartWork.API.Controllers
             if (subscribeDetails != null)
             {
                 return new OkObjectResult(subscribeDetails);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [HttpPost("[controller]/OrderUserSubscribe")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> OrderUserSubscribeAsync(OrderSubscribeDTO orderSubscribe)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == orderSubscribe.Username);
+
+            if(user == null)
+            {
+                ModelState.AddModelError("username", "your username does not exist");
+                return ValidationProblem();
+            }
+            else
+            {
+                orderSubscribe.UserId = user.Id;
+            }
+
+            var orderedUserSubscribe = await _subscribeService.OrderSubscribe(orderSubscribe);
+
+            if (orderedUserSubscribe != null)
+            {
+                return Ok(orderedUserSubscribe);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));

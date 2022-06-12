@@ -105,7 +105,6 @@ namespace SmartWork.API.Controllers
             return new OkObjectResult(roomInfo);
         }
 
-        [AllowAnonymous]
         [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAsync(AddRoomDTO addRoomDTO)

@@ -9,6 +9,7 @@ namespace SmartWork.Core.Abstractions.Services
     {
         public Task<bool> AddDefaultsSubscribeDetailsForRoom(Room room);
         Task<List<SubscribeDetail>> GetSubscribeDetailsForRooms(int[] roomsIDs);
+        Task<InfoUserSubscribe> OrderSubscribe(OrderSubscribeDTO orderSubscribe);
         public Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail);
     }
 }

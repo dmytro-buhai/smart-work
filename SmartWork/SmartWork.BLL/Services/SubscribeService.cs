@@ -74,6 +74,37 @@ namespace SmartWork.BLL.Services
             }
         }
 
+        public async Task<InfoUserSubscribe> OrderSubscribe(OrderSubscribeDTO orderSubscribe)
+        {
+            try
+            {
+                var subscribe = new Subscribe
+                {
+                    RoomId = orderSubscribe.RoomId,
+                    UserId = orderSubscribe.UserId,
+                    StartDate = orderSubscribe.StartDate,
+                    EndDate = orderSubscribe.EndDate
+                };
+
+                var currentSubscribe = await _subscribeRepository.AddAsync(subscribe);
+                await _subscribeRepository.SaveChangesAsync();
+
+                return new InfoUserSubscribe
+                {
+                    Id = currentSubscribe.Id,
+                    RoomId = subscribe.RoomId,
+                    UserId = subscribe.UserId,
+                    StartDate = subscribe.StartDate,
+                    EndDate = subscribe.EndDate
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during creating subscribe: ${ex.Message}");
+                return default;
+            }
+        }
+
         public Task<List<SubscribeDetail>> GetSubscribeDetailsForRooms(int[] roomsIDs)
         {
             return _subscribeDetailRepository.GetAsync((sd => roomsIDs.Contains(sd.RoomId)));
