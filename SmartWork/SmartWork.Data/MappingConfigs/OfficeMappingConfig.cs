@@ -19,7 +19,7 @@ namespace SmartWork.Data.MappingConfigs
                 .HasMaxLength(256)
                 .IsRequired(true);
             builder.Property(x => x.PhoneNumber)
-                .HasMaxLength(12)
+                .HasMaxLength(10)
                 .IsRequired(true);
             builder.Property(x => x.IsFavourite)
                 .IsRequired(true);

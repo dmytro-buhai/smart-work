@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartWork.API.Extensions;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Enums;
@@ -35,8 +36,24 @@ namespace SmartWork.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Companies/List")]
-        public async Task<IActionResult> GetCompaniesListAsync(PageInfo pageInfo) 
+        [HttpGet("Companies/List")]
+        public async Task<IActionResult> GetCompaniesAsync([FromQuery] PagingParams param)
+        {
+            var companyList = await _companyService.GetPagedListAsync(param);
+
+            if (companyList != null)
+            {
+                Response.AddPaginationHeader(companyList.CurrentPage, companyList.PageSize,
+                    companyList.TotalCount, companyList.TotalPages);
+                return new OkObjectResult(companyList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("Companies/FullList")]
+        public async Task<IActionResult> GetCompaniesFullListAsync(PageInfo pageInfo) 
         {
             var companiesList = await _companyService.GetAsync(pageInfo);
 

@@ -5,6 +5,9 @@ using SmartWork.Core.Abstractions.Repositories;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.CompanyDTOs;
 using SmartWork.Core.Entities;
+using SmartWork.Core.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace SmartWork.BLL.Services
 {
@@ -23,6 +26,22 @@ namespace SmartWork.BLL.Services
             _companyRepository = companyRepository;
             _companyEntityConverter = companyEntityConverter;
             _logger = logger;
+        }
+
+        public async Task<PagedList<Company>> GetPagedListAsync(PagingParams param)
+        {
+            try
+            {
+                var companies = await PagedList<Company>
+                    .CreateAsync(_companyRepository, param.PageNumber, param.PageSize);
+
+                return companies;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during getting '{typeof(Company).Name}' from db: {ex.Message}");
+                return default;
+            }
         }
     }
 }
