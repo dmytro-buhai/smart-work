@@ -10,13 +10,13 @@ namespace SmartWork.Data.MappingConfigs
         {
             builder.ToTable("Subscribes");
 
-            builder.Property(x => x.SubscribeDetailId)
+            builder.Property(x => x.RoomId)
                 .IsRequired(true);
             builder.Property(x => x.UserId)
                 .IsRequired(true);
-            builder.Property(x => x.StartSubscribe)
+            builder.Property(x => x.StartDate)
                 .IsRequired(true);
-            builder.Property(x => x.EndSubscribe)
+            builder.Property(x => x.EndDate)
                 .IsRequired(true); 
         }
     }

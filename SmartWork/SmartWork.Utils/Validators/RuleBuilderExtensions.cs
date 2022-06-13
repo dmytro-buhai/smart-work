@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using System;
+using System.Text.RegularExpressions;
 
 namespace SmartWork.Utils.Validators
 {
@@ -7,14 +8,25 @@ namespace SmartWork.Utils.Validators
     {
         public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder)
         {
-            var options = ruleBuilder
-                          .NotEmpty()
-                          .NotNull()
-                          .MinimumLength(8)
-                          .MaximumLength(16)
-                          .Matches("^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$")
-                          .WithMessage("Password must contains numbers, capital letters and symbols");
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasMiniMaxChars = new Regex(@".{8,16}");
+            var hasLowerChar = new Regex(@"[a-z]+");
+            var hasSymbols = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]");
 
+            var options = ruleBuilder
+                            .Must(password => !string.IsNullOrWhiteSpace(password))
+                            .WithMessage("Password should not be empty")
+                            .Must(password => hasNumber.IsMatch(password))
+                            .WithMessage("Password should contain at least one numeric value.")
+                            .Must(password => hasUpperChar.IsMatch(password))
+                            .WithMessage("Password should contain at least one upper case letter.")
+                            .Must(password => hasMiniMaxChars.IsMatch(password))
+                            .WithMessage("Password should not be lesser than 8 or greater than 16 characters.")
+                            .Must(password => hasLowerChar.IsMatch(password))
+                            .WithMessage("Password should contain at least one lower case letter.")
+                            .Must(password => hasSymbols.IsMatch(password))
+                            .WithMessage("Password should contain at least one special case character.");
             return options;
         }
 

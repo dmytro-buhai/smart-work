@@ -21,6 +21,9 @@ namespace SmartWork.Data.MappingConfigs
             builder.Property(x => x.Square)
                 .HasMaxLength(256)
                 .IsRequired(true);
+            builder.Property(x => x.AmountOfWorkplaces)
+                .HasMaxLength(1024)
+                .IsRequired(true);
             builder.Property(x => x.PhotoFileName)
                 .IsRequired(true);            
         }

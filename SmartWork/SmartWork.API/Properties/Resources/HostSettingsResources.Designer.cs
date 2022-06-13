@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SmartWork.Configuration.Resources {
+namespace SmartWork.API.Properties.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SmartWork.Configuration.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SmartWork.Configuration.Resources.HostSettingsResources", typeof(HostSettingsResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SmartWork.API.Properties.Resources.HostSettingsResources", typeof(HostSettingsResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,15 +70,6 @@ namespace SmartWork.Configuration.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {Timestamp} {Message}{NewLine:1}{Exception:1}.
-        /// </summary>
-        internal static string FileOutputTemplate {
-            get {
-                return ResourceManager.GetString("FileOutputTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The Application failed to start..
         /// </summary>
         internal static string LogApplicationFatal {
@@ -93,15 +84,6 @@ namespace SmartWork.Configuration.Resources {
         internal static string LogApplicationStartInformation {
             get {
                 return ResourceManager.GetString("LogApplicationStartInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Logs/log-.txt.
-        /// </summary>
-        internal static string LogRelativeFilePath {
-            get {
-                return ResourceManager.GetString("LogRelativeFilePath", resourceCulture);
             }
         }
         

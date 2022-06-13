@@ -6,9 +6,12 @@ namespace SmartWork.Core.Entities
     {
         public int OfficeId { get; set; }
         public string Name { get; set; }
-        public int? Number { get; set; }
+        public string Number { get; set; }
         public int Square { get; set; }
+        public int AmountOfWorkplaces { get; set; }
         public string PhotoFileName { get; set; }
         public virtual ICollection<Equipment> Equipment { get; set; }
+        public virtual ICollection<Statistic> Statistics { get; set; }
+        public virtual ICollection<SubscribeDetail> SubscribeDetails { get; set; }
     }
 }

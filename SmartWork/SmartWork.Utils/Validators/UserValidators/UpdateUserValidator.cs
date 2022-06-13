@@ -8,10 +8,9 @@ namespace SmartWork.Utils.Validators
         public UpdateUserValidator()
         {
             RuleFor(x => x.Email).EmailAddress();
-            RuleFor(x => x.FullName).NotEmpty().MaximumLength(128)
-                .WithMessage("Please, specify your full name");
+            RuleFor(x => x.DisplayName).NotEmpty().MaximumLength(128)
+                .WithMessage("Please, specify your display name");
             RuleFor(x => x.PhoneNumber).PhoneNumber();
-            RuleFor(x => x.DateOfBirth).BirthDate();
         }
     }
 }

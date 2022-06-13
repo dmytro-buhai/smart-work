@@ -14,7 +14,10 @@ namespace SmartWork.Core.DTOs.RoomDTOs
         public string Number { get; set; }
 
         [Display(Name = "Room Square")]
-        public string Square { get; set; }
+        public int Square { get; set; }
+
+        [Display(Name = "Amount of workplaces")]
+        public int AmountOfWorkplaces { get; set; }
 
         [Display(Name = "Room photo")]
         public string PhotoFileName { get; set; }

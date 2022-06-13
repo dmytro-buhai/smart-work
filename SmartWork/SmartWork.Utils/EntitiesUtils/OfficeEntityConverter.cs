@@ -30,9 +30,7 @@ namespace SmartWork.Utils.EntitiesUtils
                 Address = transferObject.Address,
                 PhoneNumber = transferObject.PhoneNumber,
                 PhotoFileName = transferObject.PhotoFileName,
-                IsFavourite = transferObject.IsFavourite,
-                Subscribes = transferObject.Subscribes,
-                Rooms = transferObject.Rooms
+                IsFavourite = transferObject.IsFavourite
             };
         }
 

@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using SmartWork.Configuration.Resources;
 using SmartWork.Core.Abstractions.Services;
-using SmartWork.Core.Entities;
 using SmartWork.Utils;
 using System;
 using System.IO;
@@ -22,7 +20,7 @@ namespace SmartWork.Configuration
             return configurationRootPath;
         }
         
-        public static void GetSecurePasswordForDb(string pathToPassword, out string dbPassword)
+        public static void GetSecurePasswordForDB(string pathToPassword, out string dbPassword)
         {
             using var reader = new StreamReader(pathToPassword);
             dbPassword = reader.ReadToEnd();
@@ -32,15 +30,20 @@ namespace SmartWork.Configuration
             dbPassword = dbPassword.Remove(dbPassword.LastIndexOf(']'));
         }
 
+        public static ILogger GetLogger()
+        {
+            return CreateLogger();
+        }
+
         internal static string GetLogFilePath()
         {
-            var logFilePath = HostSettingsResources.ResourceManager.GetString("LogRelativeFilePath");
+            var logFilePath = LogResources.ResourceManager.GetString("LogRelativeFilePath");
             return logFilePath;
         }
 
         internal static string GetLogFileOutputTemplate()
         {
-            var logFileOutputTemplate = HostSettingsResources.ResourceManager.GetString("FileOutputTemplate");
+            var logFileOutputTemplate = LogResources.ResourceManager.GetString("FileOutputTemplate");
             return logFileOutputTemplate;
         }
 
@@ -59,14 +62,7 @@ namespace SmartWork.Configuration
                 .CreateLogger();
         }
 
-        internal static async Task InitializeRolesAsync(IServiceProvider serviceProvider)
-        {
-            var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            var rolesManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            await RoleInitializer.InitializeAsync(userManager, rolesManager);
-        }
-
-        internal static async Task SeedDataAsync(IServiceProvider serviceProvider)
+        public static async Task SeedDataAsync(IServiceProvider serviceProvider)
         {
             var companyService = serviceProvider.GetRequiredService<ICompanyService>();
             var officeService = serviceProvider.GetRequiredService<IOfficeService>();

@@ -7,7 +7,8 @@ namespace SmartWork.Configuration
 {
     public class RoleInitializer
     {
-        public static async Task InitializeAsync(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task InitializeAsync(UserManager<User> userManager, 
+            RoleManager<IdentityRole> roleManager)
         {
             // Default admin account
             var adminEmail = RoleInitializerResources.ResourceManager.GetString("AdminEmail");
@@ -15,19 +16,15 @@ namespace SmartWork.Configuration
 
             // Roles
             var adminRole = RoleInitializerResources.ResourceManager.GetString("AdminRoleName");
-            var userRole = RoleInitializerResources.ResourceManager.GetString("UserRoleName");
 
             if ((await roleManager.FindByNameAsync(adminRole)) == null)
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
             }  
-            if ((await roleManager.FindByNameAsync(userRole)) == null)
-            {
-                await roleManager.CreateAsync(new IdentityRole(userRole));
-            }
+
             if ((await userManager.FindByEmailAsync(adminEmail)) == null)
             {
-                var admin = new User { Email = adminEmail, UserName = adminEmail };
+                var admin = new User { Email = adminEmail, UserName = adminEmail, DisplayName = "admin" };
                 var result = await userManager.CreateAsync(admin, adminPassword);
                 if (result.Succeeded)
                 {

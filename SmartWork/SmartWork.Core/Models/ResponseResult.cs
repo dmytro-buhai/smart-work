@@ -1,11 +1,8 @@
 ﻿using SmartWork.Core.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace SmartWork.Core.Models
 {
-    public class Response
+    public class ResponseResult
     {
         public string Name { get; set; }
 

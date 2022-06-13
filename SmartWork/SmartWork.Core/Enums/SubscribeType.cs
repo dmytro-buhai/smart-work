@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SmartWork.Core.Enums
+﻿namespace SmartWork.Core.Enums
 {
     public enum SubscribeType
     {
-        OneDay,
-        Weekly,
-        Monthly
+        NotSet,
+        Day,
+        Week,
+        Month
     }
 }

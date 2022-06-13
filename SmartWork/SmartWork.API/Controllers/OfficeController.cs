@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SmartWork.API.Extensions;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.OfficeDTOs;
-using SmartWork.Core.Entities;
+using SmartWork.Core.Enums;
+using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;
 using System.Threading.Tasks;
 
 namespace SmartWork.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class OfficeController : ControllerBase
     {
@@ -18,30 +21,104 @@ namespace SmartWork.API.Controllers
             _officeService = officeService;
         }
 
-        [HttpGet("IsAny")]
-        public Task<IActionResult> IsAnyAsync() =>
-           _officeService.AnyAsync();
+        [AllowAnonymous]
+        [HttpGet("Offices/IsAny")]
+        public async Task<IActionResult> IsAnyAsync()
+        {
+            var result = await _officeService.AnyAsync();
 
-        [HttpGet("GetOffices")]
-        public Task<IActionResult> Get() =>
-            _officeService.GetAsync(c => c.Id != 0);
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
 
-        [HttpGet("FindById")]
-        public Task<IActionResult> FindById(int id) =>
-            _officeService.FindAsync(id);
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
 
-        [HttpPost("Add")]
+        [AllowAnonymous]
+        [HttpGet("Offices/SimpleList/{amountOfitems}")]
+        public async Task<IActionResult> GetOfficesListAsync(int amountOfitems)
+        {
+            var pageInfo = new PageInfo { CountItems = amountOfitems };
+            var officesList = await _officeService.GetAsync(pageInfo);
+
+            if (officesList != null)
+            {
+                return new OkObjectResult(officesList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("Offices/List")]
+        public async Task<IActionResult> GetOfficesWithCompanyAndRoomsAsync([FromQuery]OfficeParams param)
+        {
+            var officeList = await _officeService.GetOfficesWithCompanyAndRoomsAsync(param);
+
+            if (officeList != null)
+            {
+                Response.AddPaginationHeader(officeList.CurrentPage, officeList.PageSize,
+                    officeList.TotalCount, officeList.TotalPages);
+                return new OkObjectResult(officeList);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpGet("[controller]/FindById/{id}")]
+        public async Task<IActionResult> FindByIdAsync(int id)
+        {
+            var office = await _officeService.FindOfficeWithCompanyAndRoomsAsync(id);
+
+            if (office != null)
+            {
+                return Ok(office);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost("[controller]/Add")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Add(AddOfficeDTO model) =>
-            _officeService.AddAsync(model);
+        public async Task<IActionResult> AddAsync(AddOfficeDTO addOfficeDTO)
+        {
+            var result = await _officeService.AddAsync(addOfficeDTO);
 
-        [HttpPut("Update")]
+            if (result != default)
+            {
+                return new OkObjectResult(result);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [HttpPut("[controller]/Update")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public Task<IActionResult> Update(UpdateOfficeDTO model) =>
-             _officeService.UpdateAsync(model);
+        public async Task<IActionResult> UpdateAsync(UpdateOfficeDTO updateOfficeDTO)
+        {
+            var result = await _officeService.UpdateAsync(updateOfficeDTO);
 
-        [HttpDelete("Delete")]
-        public Task<IActionResult> Delete(Office company) =>
-             _officeService.RemoveAsync(company);
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [HttpDelete("[controller]/Delete/{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _officeService.RemoveAsync(id);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
     }
 }

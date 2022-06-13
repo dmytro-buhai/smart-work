@@ -10,7 +10,7 @@ namespace SmartWork.Core.Entities
         public string PhoneNumber { get; set; }
         public bool IsFavourite { get; set; }
         public string PhotoFileName { get; set; }
-        public virtual ICollection<Subscribe> Subscribes { get; set; }
+        public virtual Company Company { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

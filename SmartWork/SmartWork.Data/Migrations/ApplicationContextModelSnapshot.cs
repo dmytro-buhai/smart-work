@@ -173,8 +173,8 @@ namespace SmartWork.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("PhotoFileName")
                         .IsRequired()
@@ -245,8 +245,8 @@ namespace SmartWork.Data.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("nvarchar(12)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("PhotoFileName")
                         .IsRequired()
@@ -266,14 +266,18 @@ namespace SmartWork.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AmountOfWorkplaces")
+                        .HasMaxLength(1024)
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("Number")
+                    b.Property<string>("Number")
                         .HasMaxLength(256)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<int>("OfficeId")
                         .HasColumnType("int");
@@ -321,6 +325,8 @@ namespace SmartWork.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoomId");
+
                     b.ToTable("Statistics");
                 });
 
@@ -331,17 +337,14 @@ namespace SmartWork.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("EndSubscribe")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("OfficeId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartSubscribe")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("SubscribeDetailId")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -349,9 +352,7 @@ namespace SmartWork.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OfficeId");
-
-                    b.HasIndex("SubscribeDetailId");
+                    b.HasIndex("RoomId");
 
                     b.HasIndex("UserId");
 
@@ -403,8 +404,8 @@ namespace SmartWork.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -412,9 +413,6 @@ namespace SmartWork.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -524,11 +522,13 @@ namespace SmartWork.Data.Migrations
 
             modelBuilder.Entity("SmartWork.Core.Entities.Office", b =>
                 {
-                    b.HasOne("SmartWork.Core.Entities.Company", null)
-                        .WithMany("Offices")
+                    b.HasOne("SmartWork.Core.Entities.Company", "Company")
+                        .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Company");
                 });
 
             modelBuilder.Entity("SmartWork.Core.Entities.Room", b =>
@@ -540,15 +540,20 @@ namespace SmartWork.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SmartWork.Core.Entities.Statistic", b =>
+                {
+                    b.HasOne("SmartWork.Core.Entities.Room", null)
+                        .WithMany("Statistics")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SmartWork.Core.Entities.Subscribe", b =>
                 {
-                    b.HasOne("SmartWork.Core.Entities.Office", null)
-                        .WithMany("Subscribes")
-                        .HasForeignKey("OfficeId");
-
-                    b.HasOne("SmartWork.Core.Entities.SubscribeDetail", "SubscribeDetail")
+                    b.HasOne("SmartWork.Core.Entities.Room", "Room")
                         .WithMany()
-                        .HasForeignKey("SubscribeDetailId")
+                        .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -558,37 +563,32 @@ namespace SmartWork.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubscribeDetail");
+                    b.Navigation("Room");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("SmartWork.Core.Entities.SubscribeDetail", b =>
                 {
-                    b.HasOne("SmartWork.Core.Entities.Room", "Room")
-                        .WithMany()
+                    b.HasOne("SmartWork.Core.Entities.Room", null)
+                        .WithMany("SubscribeDetails")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("SmartWork.Core.Entities.Company", b =>
-                {
-                    b.Navigation("Offices");
                 });
 
             modelBuilder.Entity("SmartWork.Core.Entities.Office", b =>
                 {
                     b.Navigation("Rooms");
-
-                    b.Navigation("Subscribes");
                 });
 
             modelBuilder.Entity("SmartWork.Core.Entities.Room", b =>
                 {
                     b.Navigation("Equipment");
+
+                    b.Navigation("Statistics");
+
+                    b.Navigation("SubscribeDetails");
                 });
 #pragma warning restore 612, 618
         }

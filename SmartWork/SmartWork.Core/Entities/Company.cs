@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SmartWork.Core.Entities
+﻿namespace SmartWork.Core.Entities
 {
     public class Company : Entity
     {
@@ -9,6 +7,5 @@ namespace SmartWork.Core.Entities
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
         public string PhotoFileName { get; set; }
-        public virtual ICollection<Office> Offices { get; set; }
     } 
 }
