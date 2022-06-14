@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SmartWork.API.Extensions;
 using SmartWork.Core.Abstractions.Services;
 using SmartWork.Core.DTOs.OfficeDTOs;
+using SmartWork.Core.Entities;
 using SmartWork.Core.Enums;
 using SmartWork.Core.Models;
 using SmartWork.Utils.ActionFilters;

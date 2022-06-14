@@ -13,6 +13,7 @@ namespace SmartWork.Utils.Validators.CompanyValidators
             RuleFor(x => x.Description).MaximumLength(512);
             RuleFor(x => x.PhotoFileName).NotEmpty()
                 .WithMessage("Please, specify a photo file name");
+            RuleFor(x => x.Host).NotEmpty();
         }
     }
 }

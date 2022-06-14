@@ -7,5 +7,6 @@
         public string PhoneNumber { get; set; }
         public string Description { get; set; }
         public string PhotoFileName { get; set; }
+        public string Host { get; set; }
     } 
 }

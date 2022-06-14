@@ -81,6 +81,7 @@ namespace SmartWork.BLL.Services
                 Square = room.Square,
                 AmountOfWorkplaces = room.AmountOfWorkplaces.ToString(),
                 PhotoFileName = room.PhotoFileName,
+                Host = room.Host
             };
 
             var equipments = new List<InfoEquipmentDTO>();

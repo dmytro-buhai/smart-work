@@ -21,5 +21,6 @@ namespace SmartWork.Core.DTOs.RoomDTOs
 
         [Display(Name = "Room photo")]
         public string PhotoFileName { get; set; }
+        public string Host { get; set; }
     }
 }

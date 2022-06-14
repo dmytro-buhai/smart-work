@@ -56,7 +56,8 @@ namespace SmartWork.BLL.Services
                     PhotoFileName = office.PhotoFileName,
                     IsFavourite = office.IsFavourite,
                     Company = office.Company,
-                    Rooms = office.Rooms
+                    Rooms = office.Rooms,
+                    Host = office.Host
                 };
                
                 return officeInfo;
@@ -82,6 +83,11 @@ namespace SmartWork.BLL.Services
                 {
                     Expression<Func<Office, bool>> isFavouriteExpression = (o => o.IsFavourite == param.IsFavourite);
                     expression = isFavouriteExpression;
+                } 
+                else if (!string.IsNullOrEmpty(param.Host))
+                {
+                    Expression<Func<Office, bool>> isHostExpression = (o => o.Host == param.Host);
+                    expression = isHostExpression;
                 }
                 
                 var includeNames = new[] { CompanyIncludeName, RoomsIncludeName };
