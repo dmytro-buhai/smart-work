@@ -4,7 +4,7 @@ namespace SmartWork.Core.DTOs.UserDTOs
 {
     public class UpdateUserDTO : IDTO
     {
-        public string Id { get; set; }
+        public string Username { get; set; }
 
         public string Email { get; set; }
 
