@@ -109,11 +109,11 @@ namespace SmartWork.API.Controllers
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAsync(AddRoomDTO addRoomDTO)
         {
-            var result = await _roomService.AddAsync(addRoomDTO);
+            var room = await _roomService.AddRoomWithDetailsAsync(addRoomDTO);
 
-            if (result != default)
+            if (room != default)
             {
-                return new OkObjectResult(result);
+                return new OkObjectResult(room);
             }
 
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
@@ -133,7 +133,7 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
-        [HttpDelete("[controller]/Delete")]
+        [HttpDelete("[controller]/Delete/{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
             var result = await _roomService.RemoveAsync(id);

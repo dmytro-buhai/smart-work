@@ -39,6 +39,20 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
+        [HttpGet("[controller]Details/GetByRoomId/{roomId}")]
+        public async Task<IActionResult> GetByRoomIdAsync(int roomId)
+        {
+            var subscribeDetails = await _subscribeService.GetSubscribeDetailsForRoom(roomId);
+
+            if (subscribeDetails != null)
+            {
+                return new OkObjectResult(subscribeDetails);
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
         [HttpGet("[controller]s/GetByUser/{username}")]
         public async Task<IActionResult> GetUserSubscribesAsync(string username)
         {

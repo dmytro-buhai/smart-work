@@ -1,4 +1,5 @@
 ﻿using SmartWork.Core.Abstractions;
+using SmartWork.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace SmartWork.Core.DTOs.RoomDTOs
@@ -21,6 +22,11 @@ namespace SmartWork.Core.DTOs.RoomDTOs
 
         [Display(Name = "Room photo")]
         public string PhotoFileName { get; set; }
+
         public string Host { get; set; }
+
+        public int SubscribeForDay { get; set; }
+        public int SubscribeForWeek { get; set; }
+        public int SubscribeForMonth { get; set; }
     }
 }

@@ -38,17 +38,18 @@ namespace SmartWork.BLL.Services
             _logger = logger;
         }
 
-        public override async Task<int> AddAsync(AddRoomDTO addRoomDTO)
+        public async Task<Room> AddRoomWithDetailsAsync(AddRoomDTO addRoomDTO)
         {
             try
             {
                 var roomEntity = _roomEntityConverter.ToEntity(addRoomDTO);
                 var room = await _roomRepository.AddAsync(roomEntity);
                 await _roomRepository.SaveChangesAsync();
-                await _subscribeService.AddDefaultsSubscribeDetailsForRoom(room);
+                await _subscribeService.AddSubscribeDetailsForRoom(room, addRoomDTO.SubscribeForDay, 
+                    addRoomDTO.SubscribeForWeek, addRoomDTO.SubscribeForMonth);
                 await _statisticService.AddDefaultsStatisticDataForRoom(room);
 
-                return room.Id;
+                return room;
             }
             catch (Exception ex)
             {
@@ -107,7 +108,7 @@ namespace SmartWork.BLL.Services
                 subscribeDetails.Add(new InfoSubscribeDetailDTO
                 {
                     Id = subscribeDetail.Id,
-                    Type = $"{subscribeDetail.Type}",
+                    Type = (int)subscribeDetail.Type,
                     Name = subscribeDetail.Name,
                     Price = subscribeDetail.Price,
                     Description = subscribeDetail.Description

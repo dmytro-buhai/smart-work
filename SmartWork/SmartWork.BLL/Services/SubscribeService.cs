@@ -27,6 +27,54 @@ namespace SmartWork.BLL.Services
             _logger = logger;
         }
 
+        public async Task<bool> AddSubscribeDetailsForRoom(Room room, int subscribeForDay, 
+                int subscribeForWeek, int subscribeForMonth)
+        {
+            var subscribeDetails = new List<SubscribeDetail>
+            {
+                new SubscribeDetail
+                {
+                    Name = $"Subscribe for a {SubscribeType.Day}",
+                    Description = $"Subscribe type: {SubscribeType.Day} " +
+                    $"for room {room.Name} {room.Number}",
+                    Type = SubscribeType.Day,
+                    Price = subscribeForDay,
+                    RoomId = room.Id
+                },
+                new SubscribeDetail
+                {
+                    Name = $"Subscribe for a {SubscribeType.Week}",
+                    Description = $"Subscribe type: {SubscribeType.Week} " +
+                    $"for room {room.Name} {room.Number}",
+                    Type = SubscribeType.Week,
+                    Price = subscribeForWeek,
+                    RoomId = room.Id
+                },
+                new SubscribeDetail
+                {
+                    Name = $"Subscribe for a {SubscribeType.Month}",
+                    Description = $"Subscribe type: {SubscribeType.Month} " +
+                    $"for room {room.Name} {room.Number}",
+                    Type = SubscribeType.Month,
+                    Price = subscribeForMonth,
+                    RoomId = room.Id
+                }
+            };
+
+            try
+            {
+                await _subscribeDetailRepository.AddAsync(subscribeDetails);
+                await _subscribeDetailRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error duting adding room subscribe details: {ex.Message}");
+                return false;
+            }
+        }
+
         public async Task<bool> AddDefaultsSubscribeDetailsForRoom(Room room)
         {
             var subscribeDetails = new List<SubscribeDetail>
@@ -127,6 +175,11 @@ namespace SmartWork.BLL.Services
         public Task<List<SubscribeDetail>> GetSubscribeDetailsForRooms(int[] roomsIDs)
         {
             return _subscribeDetailRepository.GetAsync((sd => roomsIDs.Contains(sd.RoomId)));
+        }
+
+        public Task<List<SubscribeDetail>> GetSubscribeDetailsForRoom(int roomId)
+        {
+            return _subscribeDetailRepository.GetAsync(sd => sd.RoomId == roomId);
         }
 
         public async Task<bool> UpdateSubscribeDetailsForRoom(UpdateSubscribeDetailDTO subscribeDetail)
