@@ -48,5 +48,18 @@ namespace SmartWork.UnitTests
 
             Assert.Fail();
         }
+
+        [Test]
+        public async Task UpdateCompany_ReturnsTrue()
+        {
+            var result = await _generalCompanyOperationsWrapper.UpdateAsync(new UpdateCompanyDTO());
+
+            if (result)
+            {
+                Assert.Pass();
+            }
+
+            Assert.Fail();
+        }
     }
 }
