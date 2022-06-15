@@ -35,13 +35,19 @@ namespace SmartWork.UnitTests
             _logger = logger;
         }
 
-        public override async Task<int> AddAsync(TAddDTO addEntityDTO)
+        public override Task<int> AddAsync(TAddDTO addEntityDTO)
         {
+            if (addEntityDTO == null)
+            {
+                return default;
+            }
+
             try
             {
                 var entity = _entityConverter.ToEntity(addEntityDTO);
                 entity.Id = 1;
-                return entity.Id;
+
+                return Task.FromResult(entity.Id);
             }
             catch (Exception ex)
             {
@@ -51,6 +57,10 @@ namespace SmartWork.UnitTests
 
         public override Task<TEntity> FindAsync(int id)
         {
+            if (id < 0)
+            {
+                return null;
+            }
 
             var entity = new Mock<TEntity>().Object;
             entity.Id = id;
@@ -58,6 +68,33 @@ namespace SmartWork.UnitTests
 
             var result = _testEntities.FirstOrDefault(x => x.Id == id);
             
+            return Task.FromResult(result);
+        }
+
+        public override Task<bool> UpdateAsync(TUpdateDTO updateEntityDTO)
+        {
+            if(updateEntityDTO == null)
+            {
+                return default;
+            }
+
+            var entity = new Mock<TEntity>().Object;
+            entity = new Mock<TEntity>().Object;
+
+            var result = entity.Id != -1;
+
+            return Task.FromResult(result);
+        }
+
+        public override Task<bool> RemoveAsync(int entityId)
+        {
+            var entity = new Mock<TEntity>().Object;
+            entity.Id = entityId;
+            _testEntities.Add(entity);
+            _testEntities.Remove(entity);
+
+            var result = _testEntities.Count == 0;
+
             return Task.FromResult(result);
         }
     }

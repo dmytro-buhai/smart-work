@@ -15,7 +15,8 @@ namespace SmartWork.Utils.EntitiesUtils
                 Address = transferObject.Address,
                 PhoneNumber = transferObject.PhoneNumber,
                 Description = transferObject.Description,
-                PhotoFileName = transferObject.PhotoFileName
+                PhotoFileName = transferObject.PhotoFileName,
+                Host = transferObject.Host
             };
         }
 

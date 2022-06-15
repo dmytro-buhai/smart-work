@@ -7,6 +7,7 @@ namespace SmartWork.Core.Abstractions.Services
 {
     public interface IRoomService : IGeneralEntityOperations<Room, AddRoomDTO, UpdateRoomDTO>
     {
+        Task<Room> AddRoomWithDetailsAsync(AddRoomDTO addRoomDTO);
         Task<InfoRoomDTO> GetRoomInfoById(int roomId);
         public Task<bool> UpdateSubscribeDetails(UpdateSubscribeDetailDTO newSubscribeDetails);
     }

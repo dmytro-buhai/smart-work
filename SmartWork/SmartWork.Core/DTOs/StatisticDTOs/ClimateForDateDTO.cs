@@ -1,12 +1,7 @@
-﻿using SmartWork.Core.Abstractions;
-using System;
-
-namespace SmartWork.Core.DTOs.StatisticDTOs
+﻿namespace SmartWork.Core.DTOs.StatisticDTOs
 {
-    public class ClimateForDateDTO : IDTO
+    public class ClimateForDateDTO : StatisticForDate
     {
-        public int StatisticId { get; set; }
-        public DateTime Date { get; set; }
         public int Temperature { get; set; }
     }
 }

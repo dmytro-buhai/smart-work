@@ -108,12 +108,12 @@ namespace SmartWork.Data.Repositories
                                  .Include(includeNames[1])
                                  .OrderBy(e => e.Id)
                                  .ToListAsync()  :
-                    this.entities.Skip(skip)
+                    this.entities.Where(expression)
+                                 .OrderBy(e => e.Id)
+                                 .Skip(skip)
                                  .Take(take)
-                                 .Where(expression)
                                  .Include(includeNames[0])
                                  .Include(includeNames[1])
-                                 .OrderBy(e => e.Id)
                                  .ToListAsync();
         }
 

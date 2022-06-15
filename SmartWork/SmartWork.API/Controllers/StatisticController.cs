@@ -90,6 +90,49 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
+        [HttpPost("[controller]/AddAttendanceStatisticFromFile")]
+        public async Task<IActionResult> AddAttendanceStatisticFromFileAsync(string data)
+        {
+            var result = await _statisticService.AddAttendanceStatisticDataFromFile(data);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("[controller]/AddClimateStatisticFromFile")]
+        public async Task<IActionResult> AddClimateStatisticFromFileAsync(string data)
+        {
+            var result = await _statisticService.AddClimateStatisticDataFromFile(data);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
+        [HttpPost("[controller]/AddLightingStatisticDataFromFile")]
+        public async Task<IActionResult> AddLightingStatisticDataFromFileAsync(string data)
+        {
+            var result = await _statisticService.AddLightingStatisticDataFromFile(data);
+
+            if (result)
+            {
+                return new OkObjectResult(ResponseResult.GetResponse(ResponseType.Success));
+            }
+
+            return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
+        }
+
+        [AllowAnonymous]
         [HttpPost("[controller]/AddAttendanceStatisticInfo")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddAttendanceInfoAsync(AttendanceForDateDTO attendanceByDay)
@@ -104,6 +147,7 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
         [HttpPost("[controller]/AddClimateStatisticInfo")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddClimateInfoAsync(ClimateForDateDTO climateByDay)
@@ -118,6 +162,7 @@ namespace SmartWork.API.Controllers
             return new BadRequestObjectResult(ResponseResult.GetResponse(ResponseType.Failed));
         }
 
+        [AllowAnonymous]
         [HttpPost("[controller]/AddLightingStatisticInfo")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> AddClimateInfoAsync(LightingForDateDTO lightingByDay)

@@ -21,5 +21,6 @@ namespace SmartWork.Core.DTOs.CompanyDTOs
 
         [Display(Name = "Company photo")]
         public string PhotoFileName { get; set; }
+        public string Host { get; set; }
     }
 }

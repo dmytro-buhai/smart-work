@@ -12,5 +12,6 @@ namespace SmartWork.Core.Entities
         public string PhotoFileName { get; set; }
         public virtual Company Company { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
+        public string Host { get; set; }
     }
 }

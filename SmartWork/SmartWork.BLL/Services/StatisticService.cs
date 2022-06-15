@@ -177,19 +177,6 @@ namespace SmartWork.BLL.Services
             return _statisticRepository.GetAsync(pageInfo, (s => s.Type == StatisticType.Lighting));
         }
 
-        //public Task<Statistic> FindAsync(int id)
-        //{
-        //    try
-        //    {
-        //        return _statisticRepository.FindAsync(id);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError($"error during finding statistic by id: {ex.Message}");
-        //        return default;
-        //    }
-        //}
-
         public async Task<bool> AddAttendanceStatisticInfoAsync(AttendanceForDateDTO attendanceByDay)
         {
             var statistic = await _statisticRepository.FindAsync(attendanceByDay.StatisticId);
@@ -387,6 +374,60 @@ namespace SmartWork.BLL.Services
             }
 
             return infoStat;
+        }
+
+        public Task<bool> AddLightingStatisticDataFromFile(string data)
+        {
+            return AddStatisticDataFromFile<LightingForDateDTO>(data);
+        }
+
+        public Task<bool> AddClimateStatisticDataFromFile(string data)
+        {
+            return AddStatisticDataFromFile<ClimateForDateDTO>(data);
+        }
+
+        public Task<bool> AddAttendanceStatisticDataFromFile(string data)
+        {
+            return AddStatisticDataFromFile<AttendanceForDateDTO>(data);
+        }
+
+        private async Task<bool> AddStatisticDataFromFile<T>(string data) where T : StatisticForDate
+        {
+            var result = StatisticHandler.ParseDate<T>(data);
+
+            if (result.Count == 0)
+            {
+                return default;
+            }
+
+            try
+            {
+                var statistic = await _statisticRepository.FindAsync(result.FirstOrDefault().StatisticId);
+                AddStatisticRangeData(ref statistic, result);
+
+                await _statisticRepository.UpdateAsync(statistic);
+                await _statisticRepository.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"error during adding statistic data from file: {ex.Message}");
+                return false;
+            }
+        }
+
+        private static void AddStatisticRangeData<T>(ref Statistic statistic, List<T> newStatisticInfo)
+        {
+            var data = JsonConvert.DeserializeObject<List<T>>(statistic.Data);
+
+            if (data == null)
+            {
+                data = new List<T>();
+            }
+
+            data.AddRange(newStatisticInfo);
+            statistic.Data = JsonConvert.SerializeObject(data);
         }
     }
 }

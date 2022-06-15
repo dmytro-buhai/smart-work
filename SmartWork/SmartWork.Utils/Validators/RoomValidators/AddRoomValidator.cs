@@ -14,6 +14,7 @@ namespace SmartWork.Utils.Validators.RoomValidators
             RuleFor(x => x.Square).NotEmpty().GreaterThan(0);
             RuleFor(x => x.AmountOfWorkplaces).GreaterThan(0);
             RuleFor(x => x.PhotoFileName).PhotoFileName();
+            RuleFor(x => x.Host).NotEmpty();
         }
     }
 }

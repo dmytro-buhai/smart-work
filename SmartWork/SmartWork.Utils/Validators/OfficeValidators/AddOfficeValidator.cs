@@ -14,6 +14,7 @@ namespace SmartWork.Utils.Validators.OfficeValidators
             RuleFor(x => x.CompanyId).NotEmpty().GreaterThan(0)
                 .WithMessage("Specify the company for this office");
             RuleFor(x => x.IsFavourite).NotNull();
+            RuleFor(x => x.Host).NotEmpty();
         }
     }
 }

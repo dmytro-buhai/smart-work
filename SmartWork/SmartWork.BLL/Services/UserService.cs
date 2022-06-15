@@ -180,9 +180,11 @@ namespace SmartWork.BLL.Services
         {
             return new UserDTO
             {
+                Email = user.Email,
                 DisplayName = user.DisplayName,
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhoneNumber = user.PhoneNumber
             };
         }
 
@@ -211,10 +213,10 @@ namespace SmartWork.BLL.Services
         /// <returns></returns>
         public async Task<IdentityResult> UpdateAsync(UpdateUserDTO transferObject)
         {
-            var user = await _userManager.FindByIdAsync(transferObject.Id);
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == transferObject.Username);
 
             user.Email = transferObject.Email;
-            user.UserName = transferObject.Email;
+            user.UserName = transferObject.Username;
             user.DisplayName = transferObject.DisplayName;
             user.PhoneNumber = transferObject.PhoneNumber;
 

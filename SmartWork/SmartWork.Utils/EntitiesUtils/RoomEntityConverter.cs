@@ -41,7 +41,8 @@ namespace SmartWork.Utils.EntitiesUtils
                 Number = transferObject.Number,
                 Square = transferObject.Square,
                 AmountOfWorkplaces = transferObject.AmountOfWorkplaces,
-                PhotoFileName = transferObject.PhotoFileName
+                PhotoFileName = transferObject.PhotoFileName,
+                Host = transferObject.Host,
             };
         }
 
@@ -55,7 +56,9 @@ namespace SmartWork.Utils.EntitiesUtils
                 Number = transferObject.Number,
                 Square = transferObject.Square,
                 AmountOfWorkplaces = transferObject.AmountOfWorkplaces,
-                PhotoFileName = transferObject.PhotoFileName
+                PhotoFileName = transferObject.PhotoFileName,
+                SubscribeDetails = transferObject.SubscribeDetails,
+                Host = transferObject.Host
             };
         }
     }

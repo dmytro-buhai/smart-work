@@ -20,5 +20,6 @@ namespace SmartWork.Core.DTOs.OfficeDTOs
         public string PhotoFileName { get; set; }
 
         public bool IsFavourite { get; set; }
+        public string Host { get; set; }
     }
 }
