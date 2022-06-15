@@ -23,5 +23,8 @@ namespace SmartWork.Core.Abstractions.Services
         Task<List<InfoStatisticDTO>> GetAttendanceStatisticAsync(PageInfo pageInfo);
         Task<List<InfoStatisticDTO>> GetAttendanceStatisticForRoomAsync(int roomId);
         Task<List<InfoStatisticDTO>> GetByRoomIdAsync(int roomId);
+        Task<bool> AddLightingStatisticDataFromFile(string data);
+        Task<bool> AddClimateStatisticDataFromFile(string data);
+        Task<bool> AddAttendanceStatisticDataFromFile(string data);
     }
 }
