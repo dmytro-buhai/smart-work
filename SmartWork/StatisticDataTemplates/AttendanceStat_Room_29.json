@@ -1,0 +1,32 @@
+[
+    {
+        "StatisticId":57,
+        "Date":"2022-06-13",
+        "Count":25
+    },
+    {
+        "StatisticId":57,
+        "Date":"2022-06-14",
+        "Count":26
+    },
+    {
+        "StatisticId":57,
+        "Date":"2022-06-15",
+        "Count":32
+    },
+    {
+        "StatisticId":57,
+        "Date":"2022-06-16",
+        "Count":18
+    },
+    {
+        "StatisticId":57,
+        "Date":"2022-06-17",
+        "Count":25
+    },
+    {
+        "StatisticId":57,
+        "Date":"2022-06-18",
+        "Count":28
+    }
+]
